@@ -237,6 +237,104 @@ Public Class Sql
 
     End Function
 
+    Public Shared Function ClipboardDataImportProductList(ByVal data As DataTable) As DataTable
+        dtTable = New DataTable
+
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            With cm
+                .Connection = cn
+                .CommandTimeout = 0
+                .CommandText = "BEGIN TRANSACTION DELETE FROM Tool.dbo.Sams COMMIT TRANSACTION"
+                .ExecuteNonQuery()
+            End With
+
+            cn.Close()
+
+
+            For a As Integer = 0 To data.Rows.Count - 1
+                If Trim(data.Rows(a).Item(0)) <> "" Then
+
+
+                    query = "BEGIN TRANSACTION " &
+                                "INSERT INTO Tool.dbo.Sams " &
+                                "VALUES ('" & Trim(data.Rows(a).Item(0)) & "' ) " &
+                                "COMMIT TRANSACTION"
+
+                    If cn.State = ConnectionState.Closed Then cn.Open()
+                    With cm
+                        .Connection = cn
+                        .CommandTimeout = 0
+                        .CommandText = query
+                        .ExecuteNonQuery()
+                    End With
+                    cn.Close()
+                End If
+
+            Next
+
+            query = "select distinct LTRIM(RTRIM(TYPE_PartNumber)) AS sku,TYPE_Description2 AS product_name,TYPE_ProdHier1 AS brand_name," &
+                        "case TYPE_MaterialType " &
+                        "when '001' then type_product + '1' " &
+                        "when '002' then type_product + '2' " &
+                        "when '510' then type_product + '3' " &
+                        "When '520' then type_product + '4' " &
+                        "when '600' then type_product + '1' " &
+                        "else type_product + '3' end AS type_name,ISNULL(type_prodhier2,'RE001') AS tag_name,'YES' AS track_inventory,( " &
+                        "select TOp 1 CAST(MP_NextPrice AS DECIMAL(18,4)) FROM " & DB & ".dbo.mprice " &
+                        "where MP_PartNumber=TYPE_PartNumber " &
+                        "and MP_EffectiveDate <= GETDATE() and MP_ExpDate >= GETDATE() " &
+                        "And MP_PriceGroup='01' " &
+                        "order by MP_EffectiveDate desc) AS store_supply_price,( " &
+                        "select TOp 1 " &
+                        "case when TYPE_TaxGroup='00' then CAST(MP_NextPrice AS DECIMAL(18,4)) else CAST(MP_NextPrice / 1.1 AS DECIMAL(18,4)) end FROM " & DB & ".dbo.mprice " &
+                        "where MP_PartNumber=TYPE_PartNumber " &
+                        "and MP_EffectiveDate <= GETDATE() and MP_ExpDate >= GETDATE() " &
+                        "And MP_PriceGroup='02' " &
+                        "order by MP_EffectiveDate desc) AS store_retail_price,case when TYPE_TaxGroup='00' then '-' else 'PPN' end AS tax_name, " &
+                        "(select TOp 1 CAST(MP_NextPrice AS DECIMAL(18,4)) FROM " & DB & ".dbo.mprice " &
+                        "where MP_PartNumber=TYPE_PartNumber " &
+                        "and MP_EffectiveDate <= GETDATE() and MP_ExpDate >= GETDATE() " &
+                        "And MP_PriceGroup='01' " &
+                        "order by MP_EffectiveDate desc) AS company_supply_price,( " &
+                        "select TOp 1 case when TYPE_TaxGroup='00' then CAST(MP_NextPrice AS DECIMAL(18,4)) else CAST(MP_NextPrice / 1.1 AS DECIMAL(18,4)) end FROM " & DB & ".dbo.mprice " &
+                        "where MP_PartNumber=TYPE_PartNumber " &
+                        "And MP_EffectiveDate <= GETDATE() And MP_ExpDate >= GETDATE() " &
+                        "and MP_PriceGroup='02' " &
+                        "order by MP_EffectiveDate desc) AS wholesale_price,TYPE_SPL_Material1 AS product_code,'YES' AS can_be_ordered," &
+                        "CASE WHEN TYPE_MaterialType IN ('520','510','610') THEN 'YES' " &
+                        "ELSE 'NO' END AS is_consignment,'S' + type_prodhier5 AS supplier_code FROM " & DB & ".dbo.MTIPE with (nolock) " &
+                        "inner join " & DB & ".dbo.MPDISC with (nolock) on product=TYPE_DiscGroup " &
+                        "where DiscGroup='01' " &
+                        "and Salesorg='101' " &
+                        "And SalesOffice='0110' " &
+                        "and exists (select * FROM tool.dbo.sams " &
+                        "where item=type_partnumber)"
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            With cm
+                .Connection = cn
+                .CommandTimeout = 0
+                .CommandText = query
+            End With
+
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+            Return dtTable
+            cn.Close()
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+
+
+    End Function
+
     Public Shared Function ClipboardItemRealStock(ByVal data As DataTable, opt As Integer, search As String) As DataTable
         dtTable = New DataTable
 

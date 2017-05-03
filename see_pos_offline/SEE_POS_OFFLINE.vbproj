@@ -200,6 +200,12 @@
     <Compile Include="Form\frmDailySalesPayments.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\frmDataImportProductList.Designer.vb">
+      <DependentUpon>frmDataImportProductList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmDataImportProductList.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\frmDetailMasterItem.designer.vb">
       <DependentUpon>frmDetailMasterItem.vb</DependentUpon>
     </Compile>
@@ -535,6 +541,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmDailySalesPayments.resx">
       <DependentUpon>frmDailySalesPayments.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmDataImportProductList.resx">
+      <DependentUpon>frmDataImportProductList.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmDetailMasterItem.resx">
       <DependentUpon>frmDetailMasterItem.vb</DependentUpon>

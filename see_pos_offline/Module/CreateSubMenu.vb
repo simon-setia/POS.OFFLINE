@@ -241,7 +241,8 @@ Module CreateSubMenu
         Dim mnuUsers As ToolStripMenuItem
         Dim mnuChangePassword As ToolStripMenuItem
         Dim mnuMenuAccess As ToolStripMenuItem
-        Dim mnuEXIM As ToolStripMenuItem
+        Dim mnuDataImport As ToolStripMenuItem
+
 
         'clear menustrip items
         mnuMain.Items.Clear()
@@ -276,11 +277,12 @@ Module CreateSubMenu
             .Name = "mnuMenuAccess"
         End With
 
-        mnuEXIM = New ToolStripMenuItem
-        With mnuEXIM
-            .Text = "Export/Import"
-            .Name = "mnuEXIM"
+        mnuDataImport = New ToolStripMenuItem
+        With mnuDataImport
+            .Text = "Data Import"
+            .Name = "mnuDataImport"
         End With
+
 
 
         mnuMain.Items.Add(mnuParameter)
@@ -288,7 +290,7 @@ Module CreateSubMenu
         mnuMain.Items.Add(mnuUsers)
         mnuMain.Items.Add(mnuChangePassword)
         mnuMain.Items.Add(mnuMenuAccess)
-        mnuMain.Items.Add(mnuEXIM)
+        mnuMain.Items.Add(mnuDataImport)
 
 
         AddHandler mnuParameter.Click, AddressOf MenuItemClicked
@@ -296,8 +298,7 @@ Module CreateSubMenu
         AddHandler mnuUsers.Click, AddressOf MenuItemClicked
         AddHandler mnuChangePassword.Click, AddressOf MenuItemClicked
         AddHandler mnuMenuAccess.Click, AddressOf MenuItemClicked
-        DropMenuEXIM(mnuEXIM)
-
+        DropMenuDataImport(mnuDataImport)
 
     End Sub
 
@@ -330,29 +331,29 @@ Module CreateSubMenu
 
     End Sub
 
-    Private Sub DropMenuEXIM(ByVal header As ToolStripMenuItem)
-        Dim mnuExportData As ToolStripMenuItem
-        Dim mnuImportData As ToolStripMenuItem
+    Private Sub DropMenuDataImport(ByVal header As ToolStripMenuItem)
+        Dim mnuDataImportProductList As ToolStripMenuItem
+        Dim mnuDataImportSupplier As ToolStripMenuItem
 
-        'Cashier Menu
-        mnuExportData = New ToolStripMenuItem
-        With mnuExportData
-            .Text = "Export Data"
-            .Name = "mnuExportData"
-        End With
-
-        mnuImportData = New ToolStripMenuItem
-        With mnuImportData
-            .Text = "Import Data"
-            .Name = "mnuImportData"
+        mnuDataImportSupplier = New ToolStripMenuItem
+        With mnuDataImportSupplier
+            .Text = "Supplier List"
+            .Name = "mnuDataImportSupplier"
 
         End With
 
-        AddHandler mnuExportData.Click, AddressOf MenuItemClicked
-        AddHandler mnuImportData.Click, AddressOf MenuItemClicked
+        mnuDataImportProductList = New ToolStripMenuItem
+        With mnuDataImportProductList
+            .Text = "Product List"
+            .Name = "mnuDataImportProductList"
+        End With
 
-        header.DropDownItems.Add(mnuExportData)
-        header.DropDownItems.Add(mnuImportData)
+
+        AddHandler mnuDataImportSupplier.Click, AddressOf MenuItemClicked
+        AddHandler mnuDataImportProductList.Click, AddressOf MenuItemClicked
+
+        header.DropDownItems.Add(mnuDataImportSupplier)
+        header.DropDownItems.Add(mnuDataImportProductList)
 
     End Sub
 
@@ -1382,6 +1383,17 @@ Module CreateSubMenu
                     frm.ShowDialog()
 
                     MDIMain.Text = "TMBookstore - Database"
+
+                Case "mnuDataImportProductList"
+
+                    frm = frmDataImportProductList
+                    frm.MdiParent = MDIMain
+
+                    frm.Show()
+
+                    AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
+
+                    MDIMain.Text = "TMBookstore - Data Import"
                 Case "mnuUsers"
 
                     If Not logOn = "00-IT" Then
