@@ -508,7 +508,7 @@ Partial Class frmWarehouseStockLevel
         Me.cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbFilter.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbFilter.FormattingEnabled = True
-        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description", "ISBN", "Prodhier1", "Prodhier4", "Prodhier5"})
+        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description", "ISBN", "Prodhier1", "Prodhier3", "Prodhier4", "Prodhier5"})
         Me.cmbFilter.Location = New System.Drawing.Point(12, 615)
         Me.cmbFilter.Name = "cmbFilter"
         Me.cmbFilter.Size = New System.Drawing.Size(108, 21)
