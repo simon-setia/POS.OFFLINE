@@ -158,7 +158,16 @@ Public Class Sql
                                 "WHERE stok_partnumber=type_partnumber " &
                                 "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
                                 "COMMIT TRANSACTION"
-                    ElseIf opt = 4 Then 'prodhier4
+                    ElseIf opt = 4 Then 'prodhier3
+                        query = "BEGIN TRANSACTION " &
+                                "INSERT INTO Tool.dbo.Sams " &
+                                "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
+                                "WHERE type_prodhier3='" & data.Rows(a).Item(0) & "' " &
+                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
+                                "WHERE stok_partnumber=type_partnumber " &
+                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
+                                "COMMIT TRANSACTION"
+                    ElseIf opt = 5 Then 'prodhier4
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
