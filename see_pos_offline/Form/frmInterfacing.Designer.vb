@@ -246,7 +246,7 @@ Partial Class frmInterfacing
         Me.ControlBox = False
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.picTitle)
+        Me.Controls.Add(Me.picapplicationSettings.Title)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.GridInterfacing)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle

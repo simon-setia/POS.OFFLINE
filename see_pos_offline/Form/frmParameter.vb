@@ -1,19 +1,16 @@
-﻿
-Imports genLib.General
-Imports connLib.DBConnection
+﻿Imports connLib.DBConnection
 Imports secuLib.Security
-Imports System.Drawing.Drawing2D
-Imports System.Text.RegularExpressions
-Imports prolib.Process
-Imports saveLib.Save
-Imports iniLib.Ini
-Imports sqlLib.Sql
-Imports System.IO
-Imports mainLib
+Imports mainlib
+Imports SEE_POS_COMMON
 
 Public Class FrmParameter
     Private table As DataTable
     Private mstate As Integer
+
+    Private iniFactory As IniFactory = New IniFactory()
+    Private applicationSettings As ApplicationSetting
+    Private parameterService As ParameterService = New ParameterService()
+    Private appData As AppData = New AppData()
 
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
@@ -74,18 +71,18 @@ lanjut:
                 Next
             Next
 
-            INIWrite(srcPath, ProjectID, "PosPrinter", encryptString(Trim(txtPosPrinter.Text)))
-            posPrinter = Trim(txtPosPrinter.Text)
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "PosPrinter", encryptString(Trim(txtPosPrinter.Text)))
+            applicationSettings.posPrinter = Trim(txtPosPrinter.Text)
 
-            tblParam = New DataTable
-            tblParam = GetParameter()
-       
+            applicationSettings.tblParam = New DataTable
+            applicationSettings.tblParam = AppData.GetParameter()
+
             Me.Cursor = Cursors.Default
-            MsgBox("Parameter is up to date", MsgBoxStyle.Information, Title)
+            MsgBox("Parameter is up to date", MsgBoxStyle.Information, applicationSettings.applicationSettings.Title)
 
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
     End Sub
 
@@ -95,7 +92,7 @@ lanjut:
             If cn.State = ConnectionState.Closed Then cn.Open()
             With cm
                 .Connection = cn
-                .CommandText = "UPDATE " & DB & ".dbo.mparam SET Param_Value='" & value & "'" & _
+                .CommandText = "UPDATE " & applicationSettings.DB & ".dbo.mparam SET Param_Value='" & value & "'" &
                                 " WHERE Param_Description='" & kode & "'"
                 .ExecuteNonQuery()
             End With
@@ -138,10 +135,10 @@ lanjut:
 
             RefreshData()
 
-            txtPosPrinter.Text = decryptString(INIRead(srcPath, ProjectID, "PosPrinter", ""))
+            txtPosPrinter.Text = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "PosPrinter", ""))
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
 
         End Try
 
@@ -160,13 +157,13 @@ lanjut:
                 For Each c As Control In TabControl1.TabPages(t).Controls
                     If TypeOf c Is ComboBox Then
                         If c.Tag <> "" Then
-                            For i As Integer = 0 To tblParam.Rows.Count - 1
-                                If c.Tag = tblParam.Rows(i).Item("Param_Description") Then
+                            For i As Integer = 0 To applicationSettings.tblParam.Rows.Count - 1
+                                If c.Tag = applicationSettings.tblParam.Rows(i).Item("Param_Description") Then
 
                                     If c.Tag = "SYSTEM SQL" Then
-                                        CType(c, ComboBox).SelectedIndex = tblParam.Rows(i).Item("Param_Value")
+                                        CType(c, ComboBox).SelectedIndex = applicationSettings.tblParam.Rows(i).Item("Param_Value")
                                     Else
-                                        CType(c, ComboBox).SelectedValue = tblParam.Rows(i).Item("Param_Value")
+                                        CType(c, ComboBox).SelectedValue = applicationSettings.tblParam.Rows(i).Item("Param_Value")
                                     End If
 
                                 End If
@@ -178,21 +175,21 @@ lanjut:
 
                     If TypeOf c Is TextBox Then
                         If c.Tag <> "" Then
-                            For i As Integer = 0 To tblParam.Rows.Count - 1
-                                If c.Tag = tblParam.Rows(i).Item("Param_Description") Then
-                                    If tblParam.Rows(i).Item("Param_Value_Type") = "M" Then
-                                        CType(c, TextBox).Text = String.Format("{0:#,##0}", CDec(tblParam.Rows(i).Item("Param_Value")))
+                            For i As Integer = 0 To applicationSettings.tblParam.Rows.Count - 1
+                                If c.Tag = applicationSettings.tblParam.Rows(i).Item("Param_Description") Then
+                                    If applicationSettings.tblParam.Rows(i).Item("Param_Value_Type") = "M" Then
+                                        CType(c, TextBox).Text = String.Format("{0:#,##0}", CDec(applicationSettings.tblParam.Rows(i).Item("Param_Value")))
                                     End If
 
-                                    If tblParam.Rows(i).Item("Param_Value_Type") = "N" Then
-                                        CType(c, TextBox).Text = CInt(tblParam.Rows(i).Item("Param_Value"))
+                                    If applicationSettings.tblParam.Rows(i).Item("Param_Value_Type") = "N" Then
+                                        CType(c, TextBox).Text = CInt(applicationSettings.tblParam.Rows(i).Item("Param_Value"))
                                     End If
 
-                                    If tblParam.Rows(i).Item("Param_Value_Type") = "T" Then
+                                    If applicationSettings.tblParam.Rows(i).Item("Param_Value_Type") = "T" Then
                                         If c.Tag = "PASS REPRINT" Then
-                                            CType(c, TextBox).Text = decryptString(CStr(tblParam.Rows(i).Item("Param_Value")))
+                                            CType(c, TextBox).Text = decryptString(CStr(applicationSettings.tblParam.Rows(i).Item("Param_Value")))
                                         Else
-                                            CType(c, TextBox).Text = CStr(tblParam.Rows(i).Item("Param_Value"))
+                                            CType(c, TextBox).Text = CStr(applicationSettings.tblParam.Rows(i).Item("Param_Value"))
                                         End If
 
                                     End If
@@ -206,9 +203,9 @@ lanjut:
 
                     If TypeOf c Is CheckBox Then
                         If c.Tag <> "" Then
-                            For i As Integer = 0 To tblParam.Rows.Count - 1
-                                If c.Tag = tblParam.Rows(i).Item("Param_Description") Then
-                                    CType(c, CheckBox).CheckState = CInt(tblParam.Rows(i).Item("Param_Value"))
+                            For i As Integer = 0 To applicationSettings.tblParam.Rows.Count - 1
+                                If c.Tag = applicationSettings.tblParam.Rows(i).Item("Param_Description") Then
+                                    CType(c, CheckBox).CheckState = CInt(applicationSettings.tblParam.Rows(i).Item("Param_Value"))
                                 End If
                             Next
 
@@ -218,9 +215,9 @@ lanjut:
 
                     If TypeOf c Is DateTimePicker Then
                         If c.Tag <> "" Then
-                            For i As Integer = 0 To tblParam.Rows.Count - 1
-                                If c.Tag = tblParam.Rows(i).Item("Param_Description") Then
-                                    CType(c, DateTimePicker).Value = CDate(tblParam.Rows(i).Item("Param_Value"))
+                            For i As Integer = 0 To applicationSettings.tblParam.Rows.Count - 1
+                                If c.Tag = applicationSettings.tblParam.Rows(i).Item("Param_Description") Then
+                                    CType(c, DateTimePicker).Value = CDate(applicationSettings.tblParam.Rows(i).Item("Param_Value"))
                                 End If
                             Next
 
@@ -236,21 +233,6 @@ lanjut:
             Throw ex
         End Try
     End Sub
-
-    'Private Sub FrmParameter_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
-    '    Dim bounds As New Rectangle(0, 0, Me.ClientSize.Width, Me.ClientSize.Height)
-    '    Dim topPoint As New Point((Me.ClientSize.Width - 1) \ 2, 0)
-    '    Dim bottomPoint As New Point((Me.ClientSize.Width - 1) \ 2, Me.ClientSize.Height - 1)
-    '    Dim colors As Color() = {Color.White, Color.White, Color.Khaki, Color.Khaki}
-    '    Dim positions As Single() = {0.0F, 0.15F, 0.85F, 1.0F}
-    '    Dim blend As New ColorBlend
-    '    blend.Colors = colors
-    '    blend.Positions = positions
-    '    Using lgb As New LinearGradientBrush(topPoint, bottomPoint, Color.White, Color.White)
-    '        lgb.InterpolationColors = blend
-    '        e.Graphics.FillRectangle(lgb, bounds)
-    '    End Using
-    'End Sub
 
     Private Sub chckAutoGenerate_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chckAutoGenerate.CheckedChanged
         If chckAutoGenerate.Checked = True Then
@@ -328,7 +310,7 @@ lanjut:
 
                 table = New DataTable
 
-                table = GETDetailTaxOrg(cmbTaxOrg.SelectedValue)
+                table = appData.GETDetailTaxOrg(cmbTaxOrg.SelectedValue)
 
                 txtNPWPNo.Text = table.Rows(0).Item(0)
                 txtNPWPName.Text = table.Rows(0).Item(1)
@@ -384,12 +366,12 @@ lanjut:
 
             gridPOS.Columns(1).Width = gridPOS.Width - 54
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
     End Sub
 
-    Private Sub cmbPAM_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbPamCustomer.Click, cmbPamSlsOrg.Click, _
-                                                                                                 cmbPamCostCenter.Click, cmbPamSalesOffice.Click, _
+    Private Sub cmbPAM_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbPamCustomer.Click, cmbPamSlsOrg.Click,
+                                                                                                 cmbPamCostCenter.Click, cmbPamSalesOffice.Click,
                                                                                                  cmbPamSalesman.Click, cmbPamWarehouse.Click
         Try
 
@@ -411,7 +393,7 @@ lanjut:
             End Select
 
             gridPAM.Location = New Point(senderCmb.Left, senderCmb.Location.Y + 22)
-            gridPAM.Size = New Point(GetColumnWidth(gridPAM.Columns.Count, gridPAM) + _
+            gridPAM.Size = New Point(GetColumnWidth(gridPAM.Columns.Count, gridPAM) +
                             (senderCmb.Width - GetColumnWidth(gridPAM.Columns.Count, gridPAM)), GetRowHeight(gridPAM.Rows.Count, gridPAM))
             senderCmb.DroppedDown = False
 
@@ -432,7 +414,7 @@ lanjut:
 
             gridPAM.Columns(1).Width = gridPAM.Width - 54
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
     End Sub
 
@@ -455,7 +437,7 @@ lanjut:
 
             gridCompanyProfile.Location = New Point(senderCmb.Left, senderCmb.Location.Y + 22)
             gridCompanyProfile.Size = New Point(GetColumnWidth(gridCompanyProfile.Columns.Count, gridCompanyProfile) _
-                                    + (senderCmb.Width - GetColumnWidth(gridCompanyProfile.Columns.Count, gridCompanyProfile)), _
+                                    + (senderCmb.Width - GetColumnWidth(gridCompanyProfile.Columns.Count, gridCompanyProfile)),
                                     GetRowHeight(gridCompanyProfile.Rows.Count, gridCompanyProfile))
 
             senderCmb.DroppedDown = False
@@ -473,44 +455,9 @@ lanjut:
 
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
     End Sub
-
-    'Private Sub cmbCurrency_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbCurrency.Click
-    '    Try
-
-    '        Dim senderCmb As ComboBox = DirectCast(sender, ComboBox)
-
-
-    '        Select Case senderCmb.Tag
-
-
-    '        End Select
-
-    '        gridGeneral.Location = New Point(senderCmb.Left, senderCmb.Location.Y + 22)
-    '        gridGeneral.Size = New Point(GetColumnWidth(gridGeneral.Columns.Count, gridGeneral) _
-    '                                + (senderCmb.Width - GetColumnWidth(gridGeneral.Columns.Count, gridGeneral)), _
-    '                                GetRowHeight(gridGeneral.Rows.Count, gridGeneral))
-
-    '        senderCmb.DroppedDown = False
-
-    '        If gridGeneral.Visible = True Then
-    '            gridGeneral.Visible = False
-    '        Else
-    '            If gridGeneral.RowCount > 0 Then gridGeneral.Visible = True
-    '        End If
-
-    '        gridGeneral.Tag = senderCmb.Tag
-
-    '        gridGeneral.Columns(0).Width = 50
-    '        gridGeneral.Columns(1).Width = 230
-
-
-    '    Catch ex As Exception
-    '        MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
-    '    End Try
-    'End Sub
 
     Private Sub chckBestPrice_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chckBestPrice.CheckedChanged
         If chckBestPrice.Checked = True Then

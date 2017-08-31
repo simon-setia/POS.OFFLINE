@@ -91,10 +91,6 @@
       <Project>{9D5AF149-09AB-4402-A4E8-2E3E1BF24EE7}</Project>
       <Name>connLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\genLib\genLib.vbproj">
-      <Project>{E6536479-7C83-45D4-B757-0E4CFF395705}</Project>
-      <Name>genLib</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -815,7 +815,7 @@ Partial Class frmTransfer
         Me.Controls.Add(Me.txtItem)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Label11)
-        Me.Controls.Add(Me.lblTitle)
+        Me.Controls.Add(Me.lblapplicationSettings.Title)
         Me.Controls.Add(Me.btnUpload)
         Me.Controls.Add(Me.gridAll)
         Me.Controls.Add(Me.Label1)

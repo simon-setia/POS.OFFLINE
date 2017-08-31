@@ -123,7 +123,7 @@ Public Class frmWarehouseStockLevel
             lblRecords.Text = GridWarehouseStockLevel.RowCount & " records"
             Me.Cursor = Cursors.Default
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -162,7 +162,7 @@ Public Class frmWarehouseStockLevel
             gridAll.Columns(1).Width = gridAll.Width - 54
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -194,15 +194,15 @@ Public Class frmWarehouseStockLevel
 
                 mDataset.Tables.Add(table.Copy)
                 If WriteXLSFile(strFileName, mDataset) Then
-                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
 
                 End If
             Else
                 Call ExporttoCSV(table, strFileName, vbTab)
-                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub
@@ -306,7 +306,7 @@ Public Class frmWarehouseStockLevel
 
             ''bs.Sort = "type_description ASC"
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -373,7 +373,7 @@ ReClipboard:
                     End If
 
                     If d.Columns.Count > 1 Then
-                        MsgBox("Data Clipboard Not Valid!!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Data Clipboard Not Valid!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
 
                     End If
@@ -440,7 +440,7 @@ ReClipboard:
         Catch ex As Exception
             Me.Cursor = System.Windows.Forms.Cursors.Default
             'If Err.Number = 5 Then GoTo ReClipboard
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
         Clipboard.Clear()
 

@@ -1,42 +1,15 @@
-Imports System
 Imports System.IO
-Imports System.Text
-Imports iniLib.Ini
 Imports secuLib.Security
-Imports genLib.General
 Imports connLib.DBConnection
 Imports mainlib
 Imports System.Data.SqlClient
+Imports SEE_POS_COMMON
 
 Public Class frmSetupSQL
 
     Private message As String = ""
-
-    'Private Function Validasi(ByRef msg As String) As Boolean
-
-    '    If Trim(txtServer.Text) = "" Then
-    '        msg = "Server Name Must be Fill"
-    '        txtServer.Focus()
-    '        Return False
-    '    End If
-
-    '    If Trim(cmbAuthentication.Text) = "" Then
-    '        msg = "Choose Authentication"
-    '        cmbAuthentication.Focus()
-    '        Return False
-    '    End If
-
-    '    If cmbAuthentication.SelectedIndex = 1 Then
-    '        If Trim(txtLogin.Text) = "" Then
-    '            msg = "User Name Must be Fill"
-    '            txtLogin.Focus()
-    '            Return False
-    '        End If
-
-    '    End If
-    '    Return True
-
-    'End Function
+    Private iniFactory As IniFactory = New IniFactory()
+    Private applicationSettings As ApplicationSetting
 
     Private Sub frmSetupSQL_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim temp As String = ""
@@ -44,18 +17,18 @@ Public Class frmSetupSQL
         cmbServer.SelectedIndex = 1
         Try
             cmbDatabase.Items.Clear()
-            srcPath = Application.StartupPath & "\config.ini"
-            If File.Exists(srcPath) Then
-                temp = INIRead(srcPath, ProjectID, "Server", "")
+            applicationSettings.srcPath = Application.StartupPath & "\config.ini"
+            If File.Exists(applicationSettings.srcPath) Then
+                temp = iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Server", "")
 
                 If temp <> "" Then
-                    cmbServer.Text = INIRead(srcPath, ProjectID, "Server", "")
-                    txtHostName.Text = decryptString(INIRead(srcPath, ProjectID, "HostName", ""))
-                    cmbDatabase.Text = decryptString(INIRead(srcPath, ProjectID, "Database", ""))
-                    cmbAuthentication.SelectedIndex = decryptString(INIRead(srcPath, ProjectID, "Authentication", "0"))
-                    numPort.Value = decryptString(INIRead(srcPath, ProjectID, "Port", "0"))
-                    txtLogin.Text = decryptString(INIRead(srcPath, ProjectID, "User", ""))
-                    txtPassword.Text = decryptString(INIRead(srcPath, ProjectID, "Password", ""))
+                    cmbServer.Text = iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Server", "")
+                    txtHostName.Text = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "HostName", ""))
+                    cmbDatabase.Text = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Database", ""))
+                    cmbAuthentication.SelectedIndex = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Authentication", "0"))
+                    numPort.Value = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Port", "0"))
+                    txtLogin.Text = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "User", ""))
+                    txtPassword.Text = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Password", ""))
                 Else
                     cmbServer.Text = ""
                     txtHostName.Text = ""
@@ -77,14 +50,14 @@ Public Class frmSetupSQL
 
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Exclamation, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
 
         End Try
 
     End Sub
 
     Private Sub LoadImage()
-       
+
         btnSave.Image = mainClass.imgList.ImgBtnSave
 
         btnCancel.Image = mainClass.imgList.ImgBtnCancel
@@ -107,12 +80,12 @@ Public Class frmSetupSQL
         'cn = New SqlConnection
 
         'If Not Validasi(message) = True Then
-        '    MsgBox(message, MsgBoxStyle.Exclamation, Title)
+        '    MsgBox(message, MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
         '    Exit Sub
         'End If
         Try
 
-          
+
             query = "SELECT name FROM sys.sysdatabases order by name"
             'query = "SHOW DATABASES"
 
@@ -122,8 +95,8 @@ Public Class frmSetupSQL
 
             'cn.ConnectionString = "Server='" & host & "';" & _
             '                       "Port='" & numPort.Value & "';uid='" & txtLogin.Text & "';pwd='" & txtPassword.Text & "';"
-            cn.ConnectionString = "Data Source='" & host & "';" & _
-                               "User Id='" & txtLogin.Text & "';" & _
+            cn.ConnectionString = "Data Source='" & host & "';" &
+                               "User Id='" & txtLogin.Text & "';" &
                                "Password='" & txtPassword.Text & "';Persist Security Info=true;"
 
             cm = New SqlCommand
@@ -146,7 +119,7 @@ Public Class frmSetupSQL
 
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Exclamation, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
             Exit Sub
         End Try
 
@@ -173,42 +146,42 @@ Public Class frmSetupSQL
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             'If Not Validasi(message) = True Then
-            '    MsgBox(message, MsgBoxStyle.Exclamation, Title)
+            '    MsgBox(message, MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
             '    Exit Sub
             'End If
 
             If Trim(cmbDatabase.Text) = "" Then
-                MsgBox("Database Must be Fill", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Database Must be Fill", MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
                 cmbDatabase.Focus()
                 Exit Sub
             End If
 
-            srcPath = Application.StartupPath & "\config.ini"
-            INIWrite(srcPath, ProjectID, "Server", cmbServer.Text)
-            INIWrite(srcPath, ProjectID, "HostName", encryptString(txtHostName.Text))
-            INIWrite(srcPath, ProjectID, "Database", encryptString(cmbDatabase.Text))
-            INIWrite(srcPath, ProjectID, "Authentication", encryptString(cmbAuthentication.SelectedIndex))
-            INIWrite(srcPath, ProjectID, "Port", encryptString(numPort.Value))
-            INIWrite(srcPath, ProjectID, "User", encryptString(txtLogin.Text))
-            INIWrite(srcPath, ProjectID, "Password", encryptString(txtPassword.Text))
+            applicationSettings.srcPath = Application.StartupPath & "\config.ini"
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "Server", cmbServer.Text)
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "HostName", encryptString(txtHostName.Text))
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "Database", encryptString(cmbDatabase.Text))
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "Authentication", encryptString(cmbAuthentication.SelectedIndex))
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "Port", encryptString(numPort.Value))
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "User", encryptString(txtLogin.Text))
+            iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "Password", encryptString(txtPassword.Text))
 
-            If decryptString(INIRead(srcPath, ProjectID, "PosPrinter", "")) = "" Then
-                INIWrite(srcPath, ProjectID, "PosPrinter", encryptString(""))
+            If decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "PosPrinter", "")) = "" Then
+                iniFactory.INIWrite(applicationSettings.srcPath, applicationSettings.ProjectID, "PosPrinter", encryptString(""))
             End If
 
-            MsgBox("Restart Programs", MsgBoxStyle.Information, Title)
+            MsgBox("Restart Programs", MsgBoxStyle.Information, applicationSettings.applicationSettings.Title)
 
             Application.Exit()
 
             Shell(Application.StartupPath & "\SEE ME.exe")
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Exclamation, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
         End Try
     End Sub
 
     Private Sub btnCancel_Click_1(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
-        If Connect = False Then
+        If applicationSettings.Connect = False Then
             End
         Else
             Me.Close()

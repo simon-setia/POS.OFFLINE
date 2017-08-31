@@ -1,7 +1,4 @@
-﻿Imports genLib.General
-Imports connLib.DBConnection
-Imports sqlLib.Sql
-Imports proLib.Process
+﻿Imports connLib.DBConnection
 Imports System.Data.SqlClient
 
 Public Class frmEvent
@@ -60,7 +57,7 @@ Public Class frmEvent
             cmbFilter.SelectedIndex = 0
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
 
@@ -93,28 +90,28 @@ Public Class frmEvent
         Try
 
             If Trim(txtEventName.Text) = "" Then
-                MsgBox("Please input event name promo", MsgBoxStyle.Information, Title)
+                MsgBox("Please input event name promo", MsgBoxStyle.Information, applicationSettings.Title)
                 txtEventName.Focus()
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
 
             If Trim(txtNote.Text) = "" Then
-                MsgBox("Please input event note promo", MsgBoxStyle.Information, Title)
+                MsgBox("Please input event note promo", MsgBoxStyle.Information, applicationSettings.Title)
                 txtNote.Focus()
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
 
             If Trim(cmbDiscType.Text) = "" Then
-                MsgBox("Please select disc type promo", MsgBoxStyle.Information, Title)
+                MsgBox("Please select disc type promo", MsgBoxStyle.Information, applicationSettings.Title)
                 cmbDiscType.Focus()
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
 
             If Not GridEvent.Rows.Count > 0 Then
-                MsgBox("No detail", MsgBoxStyle.Information, Title)
+                MsgBox("No detail", MsgBoxStyle.Information, applicationSettings.Title)
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
@@ -125,7 +122,7 @@ Public Class frmEvent
             UpdateHistoryPOS(lblDocNo.Text, "MP")
         Catch ex As Exception
             DialogResult = Windows.Forms.DialogResult.None
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -145,9 +142,9 @@ Public Class frmEvent
                         .Connection = cn
 
 
-                        .CommandText = "INSERT INTO " & DB & ".dbo.mdiscd (promoid,item,prodhier,partnumber,disc,createuser,createdate,description)" & _
-                                                                            " VALUES ('" & lblDocNo.Text & "','" & GridEvent.Rows(i).Cells(0).Value & "','" & cmbFilter.SelectedIndex + 1 & "'," & _
-                                                                            "'" & GridEvent.Rows(i).Cells(1).Value & "','" & GridEvent.Rows(i).Cells(3).Value & "'," & _
+                        .CommandText = "INSERT INTO " & DB & ".dbo.mdiscd (promoid,item,prodhier,partnumber,disc,createuser,createdate,description)" &
+                                                                            " VALUES ('" & lblDocNo.Text & "','" & GridEvent.Rows(i).Cells(0).Value & "','" & cmbFilter.SelectedIndex + 1 & "'," &
+                                                                            "'" & GridEvent.Rows(i).Cells(1).Value & "','" & GridEvent.Rows(i).Cells(3).Value & "'," &
                                                                             "'" & logOn & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "','" & GridEvent.Rows(i).Cells(2).Value & "')"
 
                         .ExecuteNonQuery()
@@ -168,9 +165,9 @@ Public Class frmEvent
                     cm = New SqlCommand
                     With cm
                         .Connection = cn
-                        .CommandText = "INSERT INTO " & DB & ".dbo.mdiscd (promoid,item,prodhier,partnumber,disc,createuser,createdate,description)" & _
-                                                                           " VALUES ('" & lblDocNo.Text & "','" & GridEvent.Rows(i).Cells(0).Value & "','" & cmbFilter.SelectedIndex + 1 & "'," & _
-                                                                           "'" & GridEvent.Rows(i).Cells(1).Value & "','" & GridEvent.Rows(i).Cells(3).Value & "'," & _
+                        .CommandText = "INSERT INTO " & DB & ".dbo.mdiscd (promoid,item,prodhier,partnumber,disc,createuser,createdate,description)" &
+                                                                           " VALUES ('" & lblDocNo.Text & "','" & GridEvent.Rows(i).Cells(0).Value & "','" & cmbFilter.SelectedIndex + 1 & "'," &
+                                                                           "'" & GridEvent.Rows(i).Cells(1).Value & "','" & GridEvent.Rows(i).Cells(3).Value & "'," &
                                                                            "'" & logOn & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "','" & GridEvent.Rows(i).Cells(2).Value & "')"
 
                         .ExecuteNonQuery()
@@ -193,7 +190,7 @@ Public Class frmEvent
                 .CommandText = "DELETE FROM " & DB & ".dbo.mdiscd WHERE promoid='" & lblDocNo.Text & "'"
                 .ExecuteNonQuery()
             End With
-           
+
             cn.Close()
             Throw ex
         End Try
@@ -208,13 +205,13 @@ Public Class frmEvent
                 .Connection = cn
 
                 If state = 0 Then
-                    .CommandText = "INSERT INTO " & DB & ".dbo.mdisch (company,salesorg,salesoffice,promoid,description,note," & _
-                                                               "disctype,trntype,assignto,periodfrom,periodto,materialtype,prodhier,validflag," & _
-                                                               "closeflag,autogenerate,minmargin,maxdisc,maxitem,createuser,createdate,minpayment)" & _
-                                                               " VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & frmMasterEvent.cmbSalesOrg.SelectedValue & "'," & _
-                                                               "'" & GetValueParamText("POS SALESOFFICE") & "','" & lblDocNo.Text & "','" & txtEventName.Text & "'," & _
-                                                               "'" & txtNote.Text & "','" & hDiscType & "','" & cmbTransType.SelectedIndex & "','" & cmbAssignTo.SelectedItem & "'," & _
-                                                               "'" & Format(dtPeriodFrom.Value, formatDate) & "','" & Format(dtPeriodTo.Value, formatDate) & "','001'," & _
+                    .CommandText = "INSERT INTO " & DB & ".dbo.mdisch (company,salesorg,salesoffice,promoid,description,note," &
+                                                               "disctype,trntype,assignto,periodfrom,periodto,materialtype,prodhier,validflag," &
+                                                               "closeflag,autogenerate,minmargin,maxdisc,maxitem,createuser,createdate,minpayment)" &
+                                                               " VALUES ('" & GetValueParamText("DEFAULT COMPANY") & "','" & frmMasterEvent.cmbSalesOrg.SelectedValue & "'," &
+                                                               "'" & GetValueParamText("POS SALESOFFICE") & "','" & lblDocNo.Text & "','" & txtEventName.Text & "'," &
+                                                               "'" & txtNote.Text & "','" & hDiscType & "','" & cmbTransType.SelectedIndex & "','" & cmbAssignTo.SelectedItem & "'," &
+                                                               "'" & Format(dtPeriodFrom.Value, formatDate) & "','" & Format(dtPeriodTo.Value, formatDate) & "','001'," &
                                                                "'" & cmbFilter.SelectedIndex + 1 & "','N','N','" & Mid(cmbAutoGenerate.SelectedItem, 1, 1) & "',0,0,0,'" & logOn & "','" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "','" & CDec(txtMinPayment.Text) & "')"
                 Else
 
@@ -231,7 +228,7 @@ Public Class frmEvent
                 .CommandText = "DELETE FROM " & DB & ".dbo.mdiscd WHERE promoid='" & lblDocNo.Text & "'"
                 .ExecuteNonQuery()
             End With
-            
+
             cn.Close()
             Throw ex
         End Try
@@ -260,7 +257,7 @@ Public Class frmEvent
             If Not Trim(cmbItem.Text) = "" Then
 
                 If IsExists(cmbItem.SelectedValue) Then
-                    MsgBox("Item is Exists!!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item is Exists!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -269,15 +266,15 @@ Public Class frmEvent
                     table = New DataTable
                     table = GETDetailMember(Trim(cmbItem.SelectedValue))
 
-                    GridEvent.Rows.Add( _
-                      New Object() {GetLastSeqnum(), cmbItem.SelectedValue, _
+                    GridEvent.Rows.Add(
+                      New Object() {GetLastSeqnum(), cmbItem.SelectedValue,
                                     CType(cmbItem.SelectedItem, DataRowView).Item(1), 0})
                 Else
-                    GridEvent.Rows.Add( _
-                      New Object() {GetLastSeqnum(), cmbItem.SelectedValue, _
+                    GridEvent.Rows.Add(
+                      New Object() {GetLastSeqnum(), cmbItem.SelectedValue,
                                     CType(cmbItem.SelectedItem, DataRowView).Item(1), 0})
                 End If
-              
+
 
             End If
 
@@ -286,7 +283,7 @@ Public Class frmEvent
             If txtItem.Text.Length > 0 Then
 
                 If IsExists(txtItem.Text) Then
-                    MsgBox("Item is Exists!!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item is Exists!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -294,7 +291,7 @@ Public Class frmEvent
 
                 table = GetDetailItem(txtItem.Text)
 
-                GridEvent.Rows.Add( _
+                GridEvent.Rows.Add(
                                    New Object() {GetLastSeqnum(), Trim(txtItem.Text), table.Rows(0).Item(1), 0})
                 txtItem.Clear()
 
@@ -405,7 +402,7 @@ Public Class frmEvent
                 gridAll.Location = New Point(cmbItem.Left, cmbItem.Location.Y - 150)
             End If
 
-            gridAll.Size = New Point(GetColumnWidth(gridAll.Columns.Count, gridAll) + _
+            gridAll.Size = New Point(GetColumnWidth(gridAll.Columns.Count, gridAll) +
                             (cmbItem.Width - GetColumnWidth(gridAll.Columns.Count, gridAll)) + 80, GetRowHeight(gridAll.Rows.Count, gridAll))
             cmbItem.DroppedDown = False
 
@@ -425,7 +422,7 @@ Public Class frmEvent
             End If
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -436,7 +433,7 @@ Public Class frmEvent
     End Sub
 
     Private Sub btnDelete_Click(sender As System.Object, e As System.EventArgs) Handles btnDelete.Click
-        If MsgBox("Are you sure Remove Item " & GridEvent.Rows(GridEvent.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, Title) = MsgBoxResult.No Then Exit Sub
+        If MsgBox("Are you sure Remove Item " & GridEvent.Rows(GridEvent.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, applicationSettings.Title) = MsgBoxResult.No Then Exit Sub
         GridEvent.Rows.RemoveAt(GridEvent.CurrentRow.Index)
     End Sub
 

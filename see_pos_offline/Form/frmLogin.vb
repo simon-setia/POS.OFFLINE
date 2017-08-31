@@ -31,7 +31,7 @@ Public Class frmLogin
         Try
             Login()
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -82,7 +82,7 @@ Public Class frmLogin
         If e.KeyChar = ChrW(Keys.Enter) Then
 
             'If Not IsEmailValid(Trim(txtUserId.Text)) = True Then
-            '    MsgBox("User Not Valid!", MsgBoxStyle.Exclamation, Title)
+            '    MsgBox("User Not Valid!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             '    Exit Sub
             'End If
             Try
@@ -100,12 +100,12 @@ Public Class frmLogin
                         txtUserId.Focus()
                         txtPassword.Enabled = False
                         txtPassword.Clear()
-                        MsgBox("User not exists!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("User not exists!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
                 End If
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
             End Try
 
@@ -134,7 +134,7 @@ Public Class frmLogin
             Try
                 Login()
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
 
         End If
@@ -152,7 +152,7 @@ Public Class frmLogin
 
                 If Trim(txtUserId.Text) = "00-IT" Then
                     DialogResult = Windows.Forms.DialogResult.None
-                    MsgBox("Password is wrong!", MsgBoxStyle.Critical, Title)
+                    MsgBox("Password is wrong!", MsgBoxStyle.Critical, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -163,7 +163,7 @@ Public Class frmLogin
                     DialogResult = Windows.Forms.DialogResult.OK
                 Else
                     DialogResult = Windows.Forms.DialogResult.None
-                    MsgBox("Password is wrong!", MsgBoxStyle.Critical, Title)
+                    MsgBox("Password is wrong!", MsgBoxStyle.Critical, applicationSettings.Title)
                     Exit Sub
                 End If
             End If

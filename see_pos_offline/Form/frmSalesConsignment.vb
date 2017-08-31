@@ -76,7 +76,7 @@ Public Class frmSalesConsignment
             gridAll.Columns(1).Width = gridAll.Width - 54
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -98,7 +98,7 @@ Public Class frmSalesConsignment
             Me.Cursor = Cursors.Default
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 End Class

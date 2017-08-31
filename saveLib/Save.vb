@@ -1,6 +1,6 @@
 Imports System.IO
 Imports ExcelLibrary.SpreadSheet
-Imports genLib.General
+Imports
 
 Public Class Save
     Public Shared Sub ExporttoCSV(ByVal table As DataTable, ByVal filename As String, _
@@ -38,11 +38,11 @@ Public Class Save
 
     Public Shared Function WriteXLSFile(ByVal pFileName As String, ByVal pDataSet As DataSet) As Boolean
         Try
-            'This function CreateWorkbook will cause xls file cannot be opened
+            'This Function() CreateWorkbook will cause xls file cannot be opened
             'normally when file size below 7 KB, see my work around below
             'ExcelLibrary.DataSetHelper.CreateWorkbook(pFileName, pDataSet)
 
-            'Create a workbook instance
+            '    Create a workbook instance
             Dim workbook As Workbook = New Workbook()
             Dim worksheet As Worksheet
             Dim iRow As Integer = 0
@@ -81,7 +81,7 @@ Public Class Save
                             Select Case dc.DataType
                                 Case GetType(DateTime)
                                     DateTime.TryParse(sTemp, dtTemp)
-                                    worksheet.Cells(iRow, iCol) = New Cell(dtTemp, formatDate)
+                                    worksheet.Cells(iRow, iCol) = New Cell(dtTemp, applicationSettings.formatDate)
                                 Case GetType(Double)
                                     Double.TryParse(sTemp, dTemp)
                                     worksheet.Cells(iRow, iCol) = New Cell(dTemp, "#,##0.00")

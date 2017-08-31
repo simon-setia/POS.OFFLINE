@@ -130,12 +130,12 @@ Public Class frmStockCard
 
                     mDataset.Tables.Add(table.Copy)
                     If WriteXLSFile(strFileName, mDataset) Then
-                        MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                        MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
 
                     End If
                 Else
                     Call ExporttoCSV(table, strFileName, vbTab)
-                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
                 End If
             Else
                 DialogResult = DialogResult.None
@@ -143,7 +143,7 @@ Public Class frmStockCard
             End If
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub

@@ -58,7 +58,7 @@ Public Class frmSummarySalesItem
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -101,15 +101,15 @@ Public Class frmSummarySalesItem
 
                 mDataset.Tables.Add(table.Copy)
                 If WriteXLSFile(strFileName, mDataset) Then
-                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
 
                 End If
             Else
                 Call ExporttoCSV(table, strFileName, vbTab)
-                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
 
@@ -258,7 +258,7 @@ Public Class frmSummarySalesItem
             gridAll.Columns(1).Width = gridAll.Width - 54
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 

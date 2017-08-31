@@ -32,13 +32,13 @@ Public Class frmListVoucher
     '    voucherAmt = ValidateVoucherAmt(Trim(text))
 
     '    If voucherAmt = 0 Then
-    '        MsgBox("Voucher Code not found!!!", MsgBoxStyle.Exclamation, Title)
+    '        MsgBox("Voucher Code not found!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
     '        Exit Sub
     '    End If
 
     '    If GridVoucher.Rows.Count > 0 Then
     '        If IsExistsVoucherCode(Trim(txtVoucherCode.Text), tableVoucher) Then
-    '            MsgBox("Voucher Code is exists!!!", MsgBoxStyle.Exclamation, Title)
+    '            MsgBox("Voucher Code is exists!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
     '            Exit Sub
     '        End If
     '    End If
@@ -88,7 +88,7 @@ Public Class frmListVoucher
     End Function
 
     Private Sub removeVoucher_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles removeVoucher.Click
-        If MsgBox("Are you sure Remove Voucher Code " & GridVoucher.Rows(GridVoucher.CurrentRow.Index).Cells(2).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, Title) = MsgBoxResult.No Then Exit Sub
+        If MsgBox("Are you sure Remove Voucher Code " & GridVoucher.Rows(GridVoucher.CurrentRow.Index).Cells(2).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, applicationSettings.Title) = MsgBoxResult.No Then Exit Sub
         GridVoucher.Rows.RemoveAt(GridVoucher.CurrentRow.Index)
 
     End Sub

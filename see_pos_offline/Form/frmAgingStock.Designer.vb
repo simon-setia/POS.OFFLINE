@@ -666,7 +666,7 @@ Partial Class frmAgingStock
         Me.Controls.Add(Me.gridAll)
         Me.Controls.Add(Me.btnRefresh)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.picTitle)
+        Me.Controls.Add(Me.picapplicationSettings.Title)
         Me.Controls.Add(Me.GridStockAging)
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.cmbSupplier)

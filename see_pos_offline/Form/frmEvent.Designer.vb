@@ -706,7 +706,7 @@ Partial Class frmEvent
         Me.BackColor = System.Drawing.Color.SteelBlue
         Me.ClientSize = New System.Drawing.Size(816, 584)
         Me.ControlBox = False
-        Me.Controls.Add(Me.lblTitle)
+        Me.Controls.Add(Me.lblapplicationSettings.Title)
         Me.Controls.Add(Me.txtMinPayment)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.gridAll)

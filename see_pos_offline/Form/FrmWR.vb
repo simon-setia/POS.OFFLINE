@@ -241,7 +241,7 @@ Public Class FrmWR
             If OPD.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 txtDNNo.Text = Mid(Path.GetFileName(OPD.FileName), 1, 14)
                 If DNExists(Trim(txtDNNo.Text)) = True Then
-                    MsgBox("DN exists!", MsgBoxStyle.Critical, Title)
+                    MsgBox("DN exists!", MsgBoxStyle.Critical, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -250,7 +250,7 @@ Public Class FrmWR
                 For i As Integer = 1 To table.Rows.Count - 1
                     If Trim(table.Rows(i).Item(0)) = "" Then GoTo block
                     If Not ItemExists(table.Rows(i).Item(0)) = True Then
-                        'MsgBox("Item not exists!", MsgBoxStyle.Exclamation, Title)
+                        'MsgBox("Item not exists!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         'Exit Sub
 
                         list = list & Mid(table.Rows(i).Item(0), 1, 13) & vbCrLf
@@ -260,7 +260,7 @@ Public Class FrmWR
                     data = GetDetailItem(table.Rows(i).Item(0))
 
                     If data.Rows(0).Item("type_status") = 1 Then
-                        MsgBox("Item blocked!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item blocked!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
 
@@ -291,13 +291,13 @@ block:
 
                 End If
 
-                MsgBox("Import Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Import Finish", MsgBoxStyle.Information, applicationSettings.Title)
 
             End If
 
         Catch ex As Exception
 
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -330,7 +330,7 @@ block:
                         temp = GetTS(doc, 1)
 
                         If temp.Rows.Count = 0 Then
-                            MsgBox("Reff Document TS have been receive!!", MsgBoxStyle.Exclamation, Title)
+                            MsgBox("Reff Document TS have been receive!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                             Exit Sub
                         End If
 
@@ -346,19 +346,19 @@ block:
                         mfromWH = cmbFromWH.SelectedValue
 
                     Else
-                        MsgBox("Reff Document not found!!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Reff Document not found!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
 
                 Else
 
                     If Not ValidatePOStatus(doc, IIf(mtransID = "GR101", "PO101", "PO102")) = True Then
-                        MsgBox("PO not found!!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("PO not found!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
                     temp = GETPO(doc)
                     If temp.Rows.Count = 0 Then
-                        MsgBox("PO have been receive all!!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("PO have been receive all!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
                     mSuppCode = temp.Rows(0).Item(2)
@@ -369,7 +369,7 @@ block:
                 For i As Integer = 0 To temp.Rows.Count - 1
                     If Trim(temp.Rows(i).Item(0)) = "" Then GoTo block
                     If Not ItemExists(temp.Rows(i).Item(0)) = True Then
-                        'MsgBox("Item not exists!", MsgBoxStyle.Exclamation, Title)
+                        'MsgBox("Item not exists!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         'Exit Sub
 
                         list = list & Mid(temp.Rows(i).Item(0), 1, 13) & vbCrLf
@@ -380,7 +380,7 @@ block:
 
                     If data.Rows.Count > 0 Then
                         If data.Rows(0).Item("type_status") = 1 Then
-                            MsgBox("Item blocked!", MsgBoxStyle.Exclamation, Title)
+                            MsgBox("Item blocked!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                             Exit Sub
                         End If
                     End If
@@ -416,9 +416,9 @@ block:
 
 
                 mReffno = txtReffNo.Text
-                MsgBox("Import Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Import Finish", MsgBoxStyle.Information, applicationSettings.Title)
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
 
 
@@ -523,7 +523,7 @@ block:
 
     Private Sub GridWR_CellEndEdit(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles GridWR.CellEndEdit
         If GridWR.Rows(GridWR.CurrentRow.Index).Cells(5).Value > tempStock Then
-            MsgBox("Qty over than BM qty!!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Qty over than BM qty!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             GridWR.Rows(GridWR.CurrentRow.Index).Cells(5).Value = tempStock
         End If
         GridWR.Columns(5).ReadOnly = True
@@ -536,11 +536,11 @@ block:
         If Trim(txtReffNo.Text) = "" Then
 
             If mflag = 1 Then
-                MsgBox("Please Choose PO No!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please Choose PO No!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 txtReffNo.Focus()
 
             Else
-                MsgBox("Please Choose TS No!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please Choose TS No!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 txtReffNo.Focus()
             End If
             Exit Sub
@@ -548,25 +548,25 @@ block:
 
         If mflag = 1 Then
             If Trim(txtDNNo.Text) = "" Then
-                MsgBox("Please Input Reff Doc!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please Input Reff Doc!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 txtDNNo.Focus()
                 Exit Sub
             End If
         End If
 
         If Trim(txtNote.Text) = "" Then
-            MsgBox("Please Input Note!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Please Input Note!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             txtNote.Focus()
             Exit Sub
         End If
 
         If GridWR.RowCount = 0 Then
-            MsgBox("No Detail!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("No Detail!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             Exit Sub
         End If
 
         If mReffno <> Trim(txtReffNo.Text) Then
-            MsgBox("Detail item not belongs to document TS", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Detail item not belongs to document TS", MsgBoxStyle.Exclamation, applicationSettings.Title)
             Exit Sub
         End If
 
@@ -574,13 +574,13 @@ block:
             Me.Cursor = Cursors.WaitCursor
             SaveData(state)
             UpdateHistoryPOS(Trim(lblDocNo.Text), mTransDoc)
-            MsgBox("Data Saved Successfully", MsgBoxStyle.Information, Title)
+            MsgBox("Data Saved Successfully", MsgBoxStyle.Information, applicationSettings.Title)
             state = 0
             DetailClear()
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -696,7 +696,7 @@ block:
     End Sub
 
     Private Sub DeleteToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles DeleteToolStripMenuItem.Click
-        If MsgBox("Are you sure Remove Item " & GridWR.Rows(GridWR.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, Title) = MsgBoxResult.No Then Exit Sub
+        If MsgBox("Are you sure Remove Item " & GridWR.Rows(GridWR.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, applicationSettings.Title) = MsgBoxResult.No Then Exit Sub
         GridWR.Rows.RemoveAt(GridWR.CurrentRow.Index)
         Total()
     End Sub
@@ -713,7 +713,7 @@ block:
             DetailClear()
         Else
             If state = 1 Or state = 2 Then
-                MsgBox("Please Finish Editing!!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please Finish Editing!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             Else
                 Me.Close()
@@ -727,7 +727,7 @@ block:
             state = 1
             DetailClear()
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub

@@ -152,7 +152,7 @@ Public Class frmCloseCashier
         '    Shell(Application.StartupPath & "\print.bat")
 
         'End If
-        MsgBox("Close Cashier Success", MsgBoxStyle.Information, Title)
+        MsgBox("Close Cashier Success", MsgBoxStyle.Information, applicationSettings.Title)
 
     End Sub
 
@@ -209,7 +209,7 @@ Public Class frmCloseCashier
             cn.Close()
         Catch ex As Exception
             cn.Close()
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 

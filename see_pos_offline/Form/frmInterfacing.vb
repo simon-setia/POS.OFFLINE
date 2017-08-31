@@ -37,7 +37,7 @@ Public Class frmInterfacing
             GridInterfacing.DataSource = dtTabel
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
 

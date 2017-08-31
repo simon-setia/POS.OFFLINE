@@ -93,7 +93,7 @@ Class frmReportViewer
             ReportViewer1.RefreshReport()
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
 

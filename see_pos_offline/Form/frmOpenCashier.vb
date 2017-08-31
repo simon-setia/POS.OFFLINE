@@ -28,17 +28,17 @@ Public Class frmOpenCashier
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             If cmbEmployeeID.Text = "" Then
-                MsgBox("Please choose employee ID", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please choose employee ID", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             End If
 
             If Not txtAmount.Text > 0 Then
-                MsgBox("Open cashier amount must greater than zero", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Open cashier amount must greater than zero", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             End If
 
             If ValidateOpenCashierEmpID(cmbEmployeeID.SelectedValue) = True Then
-                MsgBox("Employee ID have been open cashier", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Employee ID have been open cashier", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             End If
 
@@ -61,11 +61,11 @@ Public Class frmOpenCashier
             cn.Close()
 
             PrintOpenCashier(CDec(txtAmount.Text))
-            MsgBox("Open Cashier Success", MsgBoxStyle.Information, Title)
+            MsgBox("Open Cashier Success", MsgBoxStyle.Information, applicationSettings.Title)
             Me.Close()
         Catch ex As Exception
             cn.Close()
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub
@@ -283,7 +283,7 @@ Public Class frmOpenCashier
 
             gridAll.Tag = senderCmb.Tag
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 

@@ -230,9 +230,9 @@ Partial Class frmListItem
         Me.Label3.ForeColor = System.Drawing.Color.White
         Me.Label3.Location = New System.Drawing.Point(6, 3)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(153, 24)
+        Me.Label3.Size = New System.Drawing.Size(107, 24)
         Me.Label3.TabIndex = 442
-        Me.Label3.Text = "ITEM LIST"
+        Me.Label3.Text = "SEARCH ITEM"
         Me.Label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'DataGridViewTextBoxColumn1

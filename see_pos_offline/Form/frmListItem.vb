@@ -1,27 +1,15 @@
 ﻿Imports System.Drawing.Drawing2D
-Imports connlib.DBConnection
-Imports genLib.General
-Imports prolib.Process
+Imports connLib.DBConnection
 Imports saveLib.Save
+Imports SEE_POS_COMMON
 
 Public Class frmListItem
 
-    'Private Sub frmListItem_Paint(ByVal sender As Object, ByVal e As System.Windows.Forms.PaintEventArgs) Handles Me.Paint
-    '    Dim bounds As New Rectangle(0, 0, Me.ClientSize.Width, Me.ClientSize.Height)
-    '    Dim topPoint As New Point((Me.ClientSize.Width - 1) \ 2, 0)
-    '    Dim bottomPoint As New Point((Me.ClientSize.Width - 1) \ 2, Me.ClientSize.Height - 1)
-    '    Dim colors As Color() = {Color.White, Color.White, Color.Khaki, Color.Khaki}
-    '    Dim positions As Single() = {0.0F, 0.15F, 0.85F, 1.0F}
-    '    Dim blend As New ColorBlend
-    '    blend.Colors = colors
-    '    blend.Positions = positions
-    '    Using lgb As New LinearGradientBrush(topPoint, bottomPoint, Color.White, Color.White)
-    '        lgb.InterpolationColors = blend
-    '        e.Graphics.FillRectangle(lgb, bounds)
-    '    End Using
-    'End Sub
-
     Private mWH As String = ""
+    Private query As String = ""
+    Private table As DataTable
+    Private applicationsettings As ApplicationSetting
+    Private parameterService As ParameterService = New ParameterService()
 
     Public WriteOnly Property List_WH As String
         Set(ByVal value As String)
@@ -45,7 +33,7 @@ Public Class frmListItem
                 Cursor = Cursors.Default
             Catch ex As Exception
                 Cursor = Cursors.Default
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationsettings.applicationSettings.Title)
             End Try
         End If
     End Sub
@@ -61,11 +49,11 @@ Public Class frmListItem
             '            "'" & GetValueParamText("DEFAULT WH") & "','" & Trim(text) & "','" & state & "'," & _
             '            "'" & GetValueParamText("STOCK MINUS") & "'"
 
-            query = "SELECT TOP 50 LTRIM(RTRIM(mtipe.type_partnumber)) item,mtipe.type_description judul," & _
-                    "CASE WHEN mtipe.type_materialtype in ('520','510','610') THEN 'Consignment' ELSE 'Credit' END sts," & _
-                    "CAST(ISNULL(mpart.part_rfsstock ,0)AS INT)Stock,mtipe.type_materialinfo author " & _
+            query = "SELECT TOP 50 LTRIM(RTRIM(mtipe.type_partnumber)) item,mtipe.type_description judul," &
+                    "CASE WHEN mtipe.type_materialtype in ('520','510','610') THEN 'Consignment' ELSE 'Credit' END sts," &
+                    "CAST(ISNULL(mpart.part_rfsstock ,0)AS INT) AS stock,mtipe.type_materialinfo AS author " &
                     "FROM dbo.mtipe INNER JOIN dbo.mpart ON mpart.part_partnumber=mtipe.type_partnumber "
-                
+
             If state = 0 Then
                 query = query + "WHERE mtipe.type_partnumber LIKE '%' + '" & Trim(text) & "' + '%' AND mtipe.type_status<>1 "
             ElseIf state = 1 Then
@@ -77,12 +65,10 @@ Public Class frmListItem
             End If
 
             query = query + "AND mpart.Part_WH='" & mWH & "' " &
-                            "AND mpart.Part_Branch='" & GetValueParamText("DEFAULT BRANCH") & "' "
+                            "AND mpart.Part_Branch='" & ParameterService.GetValueParamText("DEFAULT BRANCH") & "' "
 
-            If GetValueParamText("STOCK MINUS") = 0 Then
+            If parameterService.GetValueParamText("STOCK MINUS") = 0 Then
                 query = query + "AND mpart.part_rfsstock<>0 "
-                query = query + "AND EXISTS (SELECT hkstok.* FROM dbo.hkstok WHERE hkstok.stok_partnumber=mtipe.type_partnumber AND hkstok.stok_warehouse='" & mWH & "') "
-
             End If
 
             '
@@ -96,16 +82,6 @@ Public Class frmListItem
                 .SelectCommand = cm
                 .Fill(table)
             End With
-
-            'GridListItem.Rows.Clear()
-            'If table.Rows.Count > 0 Then
-            '    For i As Integer = 0 To table.Rows.Count - 1
-            '        GridListItem.Rows.Add( _
-            '                        New Object() {Trim(table.Rows(i).Item(0)), table.Rows(i).Item(1) _
-            '                                     , IIf(table.Rows(i).Item(2) = "C", "Consignment", "Credit"), CInt(table.Rows(i).Item(3))})
-            '    Next
-
-            'End If
 
             With GridListItem
                 .AutoGenerateColumns = False

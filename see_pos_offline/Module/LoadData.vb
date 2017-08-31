@@ -1,12 +1,14 @@
 Imports connLib.DBConnection
-Imports genLib.General
-Imports proLib.Process
-Imports sqlLib.Sql
 Imports System.Data.SqlClient
+Imports SEE_POS_COMMON
 
 Module LoadData
 
     Private dtTable As DataTable
+    Private query As String
+    Private applicationSettings As ApplicationSetting
+    Private parameterService As ParameterService = New ParameterService()
+    Private appData As AppData = New AppData()
 
     Public Sub LoadEDC(ByVal cmb As ComboBox)
         Try
@@ -17,7 +19,7 @@ Module LoadData
 
             With cm
                 .Connection = cn
-                .CommandText = "SELECT EDCID EDC_ID,[Description] EDC_Description FROM " & DB & ".dbo.medc"
+                .CommandText = "SELECT EDCID EDC_ID,[Description] EDC_Description FROM " & applicationSettings.DB & ".dbo.medc"
             End With
 
             da = New SqlDataAdapter
@@ -43,13 +45,13 @@ Module LoadData
 
     Public Sub LoadCard(ByVal cmb As ComboBox)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT cardtype Card_type,[description] Card_Description FROM " & DB & ".dbo.mcardtype"
+                .CommandText = "SELECT cardtype Card_type,[description] Card_Description FROM " & applicationSettings.DB & ".dbo.mcardtype"
             End With
 
             da = New SqlDataAdapter
@@ -83,7 +85,7 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT coy_branch Code,coy_description Name FROM " & DB & ".dbo.mbranch"
+                .CommandText = "SELECT coy_branch Code,coy_description Name FROM " & applicationSettings.DB & ".dbo.mbranch"
             End With
 
             da = New SqlDataAdapter
@@ -109,13 +111,13 @@ Module LoadData
 
     Public Sub LoadTaxOrg(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT tax_organization Code,tax_description Name FROM " & DB & ".dbo.mtaxorg"
+                .CommandText = "SELECT tax_organization Code,tax_description Name FROM " & applicationSettings.DB & ".dbo.mtaxorg"
             End With
 
             da = New SqlDataAdapter
@@ -141,12 +143,12 @@ Module LoadData
 
     Public Sub LoadTransaction(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT TrnCode Code,Description Name FROM " & DB & ".dbo.mktrd "
+                .CommandText = "SELECT TrnCode Code,Description Name FROM " & applicationSettings.DB & ".dbo.mktrd "
 
             End With
 
@@ -173,12 +175,12 @@ Module LoadData
 
     Public Sub loadUserGroup(ByVal cmb As DataGridViewComboBoxColumn)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT usergroup_id Code,usergroup_description Name FROM " & DB & ".dbo.musergroup"
+                .CommandText = "SELECT usergroup_id Code,usergroup_description Name FROM " & applicationSettings.DB & ".dbo.musergroup"
             End With
 
             da = New SqlDataAdapter
@@ -201,12 +203,12 @@ Module LoadData
 
     Public Sub LoadCompany(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Coy_CompanyCode Code,Coy_Description Name FROM " & DB & ".dbo.mcoy"
+                .CommandText = "SELECT Coy_CompanyCode Code,Coy_Description Name FROM " & applicationSettings.DB & ".dbo.mcoy"
             End With
 
             da = New SqlDataAdapter
@@ -232,12 +234,12 @@ Module LoadData
 
     Public Sub LoadCurrency(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Currency Code,Description Name FROM " & DB & ".dbo.mcurrency"
+                .CommandText = "SELECT Currency Code,Description Name FROM " & applicationSettings.DB & ".dbo.mcurrency"
             End With
 
             da = New SqlDataAdapter
@@ -263,13 +265,13 @@ Module LoadData
 
     Public Sub LoadGroup(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Mat_Tipe 'Type',Mat_Description 'Description' " & _
-                                " FROM " & DB & ".dbo.mmca"
+                .CommandText = "SELECT Mat_Tipe 'Type',Mat_Description 'Description' " &
+                                " FROM " & applicationSettings.DB & ".dbo.mmca"
 
             End With
 
@@ -296,14 +298,14 @@ Module LoadData
 
     Public Sub LoadProductGroup(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT productgroup 'Group',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mgprod"
+                .CommandText = "SELECT productgroup 'Group',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mgprod"
 
             End With
 
@@ -334,11 +336,11 @@ Module LoadData
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             If state = 0 Then
-                query = "SELECT prodhier1 'Code',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mprodhier1"
+                query = "SELECT prodhier1 'Code',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mprodhier1"
             Else
-                query = "SELECT prodhier1 'Code',[Description] 'Description' " & _
-                             " FROM " & DB & ".dbo.mprodhier1 WHERE [Description] LIKE '%" & Trim(text) & "%'"
+                query = "SELECT prodhier1 'Code',[Description] 'Description' " &
+                             " FROM " & applicationSettings.DB & ".dbo.mprodhier1 WHERE [Description] LIKE '%" & Trim(text) & "%'"
             End If
             cm = New SqlCommand
             With cm
@@ -369,13 +371,13 @@ Module LoadData
 
     Public Sub LoadProdhier2(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT prodhier2 'Code',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mprodhier2"
+                .CommandText = "SELECT prodhier2 'Code',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mprodhier2"
 
             End With
 
@@ -402,13 +404,13 @@ Module LoadData
 
     Public Sub LoadProdhier3(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT prodhier3 'Code',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mprodhier3"
+                .CommandText = "SELECT prodhier3 'Code',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mprodhier3"
 
             End With
 
@@ -435,13 +437,13 @@ Module LoadData
 
     Public Sub LoadProdhier4(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT prodhier4 'Code',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mprodhier4"
+                .CommandText = "SELECT prodhier4 'Code',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mprodhier4"
 
             End With
 
@@ -468,13 +470,13 @@ Module LoadData
 
     Public Sub LoadProdhier5(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT prodhier5 'Code',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mprodhier5"
+                .CommandText = "SELECT prodhier5 'Code',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mprodhier5"
 
             End With
 
@@ -506,8 +508,8 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT cust_kode 'Code',cust_nama 'Description'" & _
-                               " FROM " & DB & ".dbo.mcust WHERE cust_type='02'"
+                .CommandText = "SELECT cust_kode 'Code',cust_nama 'Description'" &
+                               " FROM " & applicationSettings.DB & ".dbo.mcust WHERE cust_type='02'"
 
             End With
 
@@ -534,13 +536,13 @@ Module LoadData
 
     Public Sub LoadDiscGroup(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT product_disc 'Code',[Description] 'Description' " & _
-                               " FROM " & DB & ".dbo.mproddisc"
+                .CommandText = "SELECT product_disc 'Code',[Description] 'Description' " &
+                               " FROM " & applicationSettings.DB & ".dbo.mproddisc"
 
             End With
 
@@ -567,12 +569,12 @@ Module LoadData
 
     Public Sub LoadSalesOrg(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT SO_Salesorg Code,SO_Name Name FROM " & DB & ".dbo.mslsorg"
+                .CommandText = "SELECT SO_Salesorg Code,SO_Name Name FROM " & applicationSettings.DB & ".dbo.mslsorg"
             End With
 
             da = New SqlDataAdapter
@@ -599,12 +601,12 @@ Module LoadData
 
     Public Sub LoadSalesman(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Sales_Code Code,Sales_Name Name FROM " & DB & ".dbo.mslsmn"
+                .CommandText = "SELECT Sales_Code Code,Sales_Name Name FROM " & applicationSettings.DB & ".dbo.mslsmn"
             End With
 
             da = New SqlDataAdapter
@@ -631,13 +633,13 @@ Module LoadData
 
     Public Sub LoadEmployee(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal name As String, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             If state = 0 Then
-                query = "SELECT EmployeID Code,Emp_Name Name FROM " & DB & ".dbo.memp_employeid"
+                query = "SELECT EmployeID Code,Emp_Name Name FROM " & applicationSettings.DB & ".dbo.memp_employeid"
             Else
-                query = "SELECT EmployeID Code,Emp_Name Name FROM " & DB & ".dbo.memp_employeid" & _
+                query = "SELECT EmployeID Code,Emp_Name Name FROM " & applicationSettings.DB & ".dbo.memp_employeid" &
                             " WHERE Emp_Name LIKE '%" & name & "%'"
             End If
 
@@ -675,8 +677,8 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Cust_Kode Code,Cust_Nama Name from " & DB & ".dbo.mcust " & _
-                               "WHERE cust_branch='" & GetValueParamText("DEFAULT BRANCH") & "' " & _
+                .CommandText = "SELECT Cust_Kode Code,Cust_Nama Name from " & applicationSettings.DB & ".dbo.mcust " &
+                               "WHERE cust_branch='" & ParameterService.GetValueParamText("DEFAULT BRANCH") & "' " &
                                "AND cust_type='04'"
             End With
 
@@ -709,9 +711,9 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT EmployeID Code,Emp_Name Name FROM " & DB & ".dbo.memp_employeid with (nolock) " & _
-                                "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.tslsh WHERE employeID=hs_employeeID " & _
-                                "AND hs_invoicedate BETWEEN '" & Format(date1, formatDate) & "' AND '" & Format(date2, formatDate) & "' )"
+                .CommandText = "SELECT EmployeID Code,Emp_Name Name FROM " & applicationSettings.DB & ".dbo.memp_employeid with (nolock) " &
+                                "WHERE EXISTS (SELECT * FROM " & applicationSettings.DB & ".dbo.tslsh WHERE employeID=hs_employeeID " &
+                                "AND hs_invoicedate BETWEEN '" & Format(date1, applicationSettings.formatDate) & "' AND '" & Format(date2, applicationSettings.formatDate) & "' )"
             End With
 
             da = New SqlDataAdapter
@@ -738,14 +740,14 @@ Module LoadData
 
     Public Sub LoadCostCenter(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT CostCenter Code,[Description] Name FROM " & DB & ".dbo.mcostcenter " & _
-                                "WHERE Company='" & GetValueParamText("DEFAULT COMPANY") & "' " & _
-                                "AND Branch='" & GetValueParamText("DEFAULT BRANCH") & "'"
+                .CommandText = "SELECT CostCenter Code,[Description] Name FROM " & applicationSettings.DB & ".dbo.mcostcenter " &
+                                "WHERE Company='" & parameterService.GetValueParamText("DEFAULT COMPANY") & "' " &
+                                "AND Branch='" & parameterService.GetValueParamText("DEFAULT BRANCH") & "'"
             End With
 
             da = New SqlDataAdapter
@@ -770,13 +772,13 @@ Module LoadData
 
     Public Sub LoadSalesOffice(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT SalesOffice Code,Name FROM " & DB & ".dbo.mso " & _
-                                "WHERE branch='" & GetValueParamText("DEFAULT BRANCH") & "'"
+                .CommandText = "SELECT SalesOffice Code,Name FROM " & applicationSettings.DB & ".dbo.mso " &
+                                "WHERE branch='" & parameterService.GetValueParamText("DEFAULT BRANCH") & "'"
             End With
 
             da = New SqlDataAdapter
@@ -802,12 +804,12 @@ Module LoadData
 
     Public Sub LoadProducts(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT product_code Code,Product_description Name FROM " & DB & ".dbo.mctprod "
+                .CommandText = "SELECT product_code Code,Product_description Name FROM " & applicationSettings.DB & ".dbo.mctprod "
             End With
 
             da = New SqlDataAdapter
@@ -833,14 +835,14 @@ Module LoadData
 
     Public Sub LoadCustomer(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Cust_Kode Code,Cust_Nama Customer FROM " & DB & ".dbo.mcust " &
-                                "WHERE Cust_CompanyCode='" & GetValueParamText("DEFAULT COMPANY") & "' " &
-                                "AND Cust_Branch='" & GetValueParamText("DEFAULT BRANCH") & "'"
+                .CommandText = "SELECT Cust_Kode Code,Cust_Nama Customer FROM " & applicationSettings.DB & ".dbo.mcust " &
+                                "WHERE Cust_CompanyCode='" & parameterService.GetValueParamText("DEFAULT COMPANY") & "' " &
+                                "AND Cust_Branch='" & parameterService.GetValueParamText("DEFAULT BRANCH") & "'"
             End With
 
             da = New SqlDataAdapter
@@ -872,8 +874,8 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Cust_QQ Code,Cust_Nama Customer FROM " & DB & ".dbo.mcqq " &
-                                "WHERE Cust_SalesOffice='" & GetValueParamText("POS SALESOFFICE") & "' " &
+                .CommandText = "SELECT Cust_QQ Code,Cust_Nama Customer FROM " & applicationSettings.DB & ".dbo.mcqq " &
+                                "WHERE Cust_SalesOffice='" & parameterService.GetValueParamText("POS SALESOFFICE") & "' " &
                                 "AND Cust_Kode='" & cust & "'"
             End With
 
@@ -902,17 +904,17 @@ Module LoadData
 
             query = "SELECT type_partnumber item,type_description judul,type_materialtype tipe," &
                     "type_spl_material1 vendor,type_spl_material2 isbn,isnull(mp_nextprice,0) price," &
-                    "disc1, discpurch FROM " & DB & ".dbo.MTIPE " &
-                    "INNER JOIN " & DB & ".dbo.MCTPROD ON product_code=type_product AND product_group='" & group & "' " &
-                    "INNER JOIN " & DB & ".dbo.MMCA ON mat_tipe=type_materialtype AND mat_status='" & sts & "' " &
-                    "INNER JOIN " & DB & ".dbo.MPRICE on mp_partnumber=type_partnumber " &
-                    "INNER JOIN " & DB & ".dbo.MPDISC on product=type_discgroup " &
-                    "WHERE MP_PriceGroup='" & GetValueParamText("HET PRICE") & "' " &
-                    "AND mp_effectivedate <= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " &
-                    "AND mp_expdate >= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " &
-                    "AND exists (select * from " & DB & ".dbo.hkstok where stok_partnumber=TYPE_PartNumber) " &
-                    "AND salesorg='" & GetValueParamText("POS SLSORG") & "'and branch='" & GetValueParamText("DEFAULT BRANCH") & "' " &
-                    "AND salesoffice='" & GetValueParamText("POS SALESOFFICE") & "' and discgroup='01' "
+                    "disc1, discpurch FROM " & applicationSettings.DB & ".dbo.MTIPE " &
+                    "INNER JOIN " & applicationSettings.DB & ".dbo.MCTPROD ON product_code=type_product AND product_group='" & group & "' " &
+                    "INNER JOIN " & applicationSettings.DB & ".dbo.MMCA ON mat_tipe=type_materialtype AND mat_status='" & sts & "' " &
+                    "INNER JOIN " & applicationSettings.DB & ".dbo.MPRICE on mp_partnumber=type_partnumber " &
+                    "INNER JOIN " & applicationSettings.DB & ".dbo.MPDISC on product=type_discgroup " &
+                    "WHERE MP_PriceGroup='" & parameterService.GetValueParamText("HET PRICE") & "' " &
+                    "AND mp_effectivedate <= '" & Format(parameterService.GetValueParamDate("SYSTEM DATE"), applicationSettings.formatDate) & "' " &
+                    "AND mp_expdate >= '" & Format(parameterService.GetValueParamDate("SYSTEM DATE"), applicationSettings.formatDate) & "' " &
+                    "AND exists (select * from " & applicationSettings.DB & ".dbo.hkstok where stok_partnumber=TYPE_PartNumber) " &
+                    "AND salesorg='" & parameterService.GetValueParamText("POS SLSORG") & "'and branch='" & parameterService.GetValueParamText("DEFAULT BRANCH") & "' " &
+                    "AND salesoffice='" & parameterService.GetValueParamText("POS SALESOFFICE") & "' and discgroup='01' "
 
 
 
@@ -977,13 +979,13 @@ Module LoadData
     'Master Item
     Public Sub LoadPriceGroup(ByVal gridView As DataGridView)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT Pricegroup_Code,Pricegroup_Description" & _
-                                " FROM " & DB & ".dbo.pricegroup"
+                .CommandText = "SELECT Pricegroup_Code,Pricegroup_Description" &
+                                " FROM " & applicationSettings.DB & ".dbo.pricegroup"
             End With
 
             da = New SqlDataAdapter
@@ -1006,13 +1008,13 @@ Module LoadData
 
     Public Sub LoadUOM(ByVal gridView As DataGridView)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT UOM_Code,UOM_Description" & _
-                                " FROM " & DB & ".dbo.uom"
+                .CommandText = "SELECT UOM_Code,UOM_Description" &
+                                " FROM " & applicationSettings.DB & ".dbo.uom"
             End With
 
             da = New SqlDataAdapter
@@ -1035,13 +1037,13 @@ Module LoadData
 
     Public Sub LoadWarehouse(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT WH_Kode Code,WH_Description Name FROM " & DB & ".dbo.mwh " & _
-                                "WHERE wh_branch='" & GetValueParamText("DEFAULT BRANCH") & "'"
+                .CommandText = "SELECT WH_Kode Code,WH_Description Name FROM " & applicationSettings.DB & ".dbo.mwh " &
+                                "WHERE wh_branch='" & ParameterService.GetValueParamText("DEFAULT BRANCH") & "'"
             End With
 
             da = New SqlDataAdapter
@@ -1074,9 +1076,9 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT WH_Kode Code,WH_Description Name FROM " & DB & ".dbo.mwh " & _
-                                "WHERE wh_branch='" & GetValueParamText("DEFAULT BRANCH") & "' " & _
-                                "AND wh_kode <> '" & GetValueParamText("DEFAULT WH") & "'"
+                .CommandText = "SELECT WH_Kode Code,WH_Description Name FROM " & applicationSettings.DB & ".dbo.mwh " &
+                                "WHERE wh_branch='" & ParameterService.GetValueParamText("DEFAULT BRANCH") & "' " &
+                                "AND wh_kode <> '" & ParameterService.GetValueParamText("DEFAULT WH") & "'"
             End With
 
             da = New SqlDataAdapter
@@ -1104,13 +1106,13 @@ Module LoadData
 
     Public Sub LoadSupplier(ByVal cmb As ComboBox, ByVal gridView As DataGridView, ByVal name As String, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             If state = 0 Then
-                query = "SELECT SUP_supplier Code,SUP_Name Name FROM " & DB & ".dbo.mspl WHERE sup_sts=0"
+                query = "SELECT SUP_supplier Code,SUP_Name Name FROM " & applicationSettings.DB & ".dbo.mspl WHERE sup_sts=0"
             Else
-                query = "SELECT SUP_supplier Code,SUP_Name Name FROM " & DB & ".dbo.mspl" & _
+                query = "SELECT SUP_supplier Code,SUP_Name Name FROM " & applicationSettings.DB & ".dbo.mspl" &
                             " WHERE SUP_Name LIKE '%" & name & "%' AND sup_sts=0"
             End If
 
@@ -1141,13 +1143,13 @@ Module LoadData
 
     Public Sub LoadMaterialType(ByVal cmbBox As ComboBox, ByVal gridView As DataGridView, ByVal state As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT mat_tipe Type,mat_Description [Description]" & _
-                                " FROM " & DB & ".dbo.mmca WHERE mat_status in ('C','G')"
+                .CommandText = "SELECT mat_tipe Type,mat_Description [Description]" &
+                                " FROM " & applicationSettings.DB & ".dbo.mmca WHERE mat_status in ('C','G')"
             End With
 
             da = New SqlDataAdapter
@@ -1178,7 +1180,7 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " & _
+                .CommandText = "SELECT type_partnumber FROM " & applicationSettings.DB & ".dbo.mtipe " &
                                 "WHERE type_prodhier1='" & prodhier1 & "'"
             End With
 
@@ -1205,7 +1207,7 @@ Module LoadData
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " & _
+                .CommandText = "SELECT type_partnumber FROM " & applicationSettings.DB & ".dbo.mtipe " &
                                 "WHERE type_prodhier5='" & prodhier5 & "'"
             End With
 
@@ -1227,14 +1229,14 @@ Module LoadData
 
     Public Sub LoadUsers(ByVal gridview As DataGridView)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT uid_user,uid_name,uid_password,uid_information," & _
-                                "uid_blocksts,iud_usergroup,uid_createuser,uid_createdate,uid_createtime " & _
-                                "FROM " & DB & ".dbo.musers "
+                .CommandText = "SELECT uid_user,uid_name,uid_password,uid_information," &
+                                "uid_blocksts,iud_usergroup,uid_createuser,uid_createdate,uid_createtime " &
+                                "FROM " & applicationSettings.DB & ".dbo.musers "
             End With
 
             da = New SqlDataAdapter
@@ -1286,15 +1288,15 @@ Module LoadData
 
     Public Sub LoadUserInformation(ByVal gridview As DataGridView, ByVal active As Integer)
         Try
-            dtTable = New datatable
+            dtTable = New DataTable
             If cn.State = ConnectionState.Closed Then cn.Open()
 
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT user_id,user_fullname,user_groupid," & _
-                                "user_email,user_locked,user_active " & _
-                                "FROM " & DB & ".dbo.musers " & _
+                .CommandText = "SELECT user_id,user_fullname,user_groupid," &
+                                "user_email,user_locked,user_active " &
+                                "FROM " & applicationSettings.DB & ".dbo.musers " &
                                 "WHERE user_active='" & active & "'"
             End With
 
@@ -1367,17 +1369,17 @@ Module LoadData
             ''Else
             ''    doc = ""
             ''End If
-            doc = GetTempPOS(transid)
+            doc = appData.GetTempPOS(transid)
 
 createLastDoc:
             If doc = "" Then
-                Dim mdigit As String = GetValueParamText("DIGIT")
-                data = GetCounterDetail(transid)
+                Dim mdigit As String = ParameterService.GetValueParamText("DIGIT")
+                data = appData.GetCounterDetail(transid)
 
                 If data.Rows.Count = 0 Then
-                    CreateNewCounter(transid)
+                    appData.CreateNewCounter(transid)
 
-                    data = GetCounterDetail(transid)
+                    data = appData.GetCounterDetail(transid)
 
                 End If
 
@@ -1396,12 +1398,12 @@ createLastDoc:
                 Else
                     number = last
                 End If
-                doc = GetValueParamText("DEFAULT COMPANY") & GetValueParamText("DEFAULT BRANCH") & Right(data.Rows(0).Item(0), 2) & number & transid
+                doc = ParameterService.GetValueParamText("DEFAULT COMPANY") & ParameterService.GetValueParamText("DEFAULT BRANCH") & Right(data.Rows(0).Item(0), 2) & number & transid
 
 
-                If Not CheckHistoryPOS(doc, transid) = True Then
-                    InsertHistoryPOS(doc, transid)
-                    UpdateCounter(last, data.Rows(0).Item(0), transid)
+                If Not appData.CheckHistoryPOS(doc, transid) = True Then
+                    appData.InsertHistoryPOS(doc, transid)
+                    appData.UpdateCounter(last, data.Rows(0).Item(0), transid)
                 Else
                     'create ulang last doc
                     doc = ""

@@ -105,18 +105,6 @@
       <Project>{9D5AF149-09AB-4402-A4E8-2E3E1BF24EE7}</Project>
       <Name>connLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\genLib\genLib.vbproj">
-      <Project>{E6536479-7C83-45D4-B757-0E4CFF395705}</Project>
-      <Name>genLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\iniLib\iniLib.vbproj">
-      <Project>{A855847E-2836-4163-A844-F7FD687F5423}</Project>
-      <Name>iniLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\proLib\proLib.vbproj">
-      <Project>{BEE73DC0-2CA7-4B37-AB37-E8C4202FF918}</Project>
-      <Name>proLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\secuLib\secuLib.vbproj">
       <Project>{D98079AF-BCA1-4DBD-847B-54F79A96E41D}</Project>
       <Name>secuLib</Name>

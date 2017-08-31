@@ -127,7 +127,7 @@ Partial Class frmValidateMember
         Me.BackColor = System.Drawing.Color.SteelBlue
         Me.ClientSize = New System.Drawing.Size(398, 163)
         Me.ControlBox = False
-        Me.Controls.Add(Me.lblTitle)
+        Me.Controls.Add(Me.lblapplicationSettings.Title)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnApply)
         Me.Controls.Add(Me.memberPic)

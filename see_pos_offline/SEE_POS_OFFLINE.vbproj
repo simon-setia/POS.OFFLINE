@@ -66,9 +66,8 @@
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="ExcelLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\ExcelLibrary.dll</HintPath>
+    <Reference Include="ExcelLibrary">
+      <HintPath>Library\ExcelLibrary.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -128,12 +127,6 @@
     <Compile Include="Class\RawPrinterHelper.vb" />
     <Compile Include="Class\StackedHeaderDecorator..vb" />
     <Compile Include="Class\StackedHeaderGenerator.vb" />
-    <Compile Include="Form\FormTesting.Designer.vb">
-      <DependentUpon>FormTesting.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Form\FormTesting.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Form\frmAgingStock.Designer.vb">
       <DependentUpon>frmAgingStock.vb</DependentUpon>
     </Compile>
@@ -500,11 +493,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Utils\ExportExcel.vb" />
+    <Compile Include="Utils\IniFactory.vb" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form\FormTesting.resx">
-      <DependentUpon>FormTesting.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmAgingStock.resx">
       <DependentUpon>frmAgingStock.vb</DependentUpon>
     </EmbeddedResource>
@@ -718,45 +710,25 @@
     <Content Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\COMMON\COMMON.vbproj">
-      <Project>{daa5c89a-4959-40a5-8a0e-ab8da28b0a7c}</Project>
-      <Name>COMMON</Name>
-    </ProjectReference>
     <ProjectReference Include="..\connLib\connLib.vbproj">
       <Project>{9D5AF149-09AB-4402-A4E8-2E3E1BF24EE7}</Project>
       <Name>connLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\genLib\genLib.vbproj">
-      <Project>{E6536479-7C83-45D4-B757-0E4CFF395705}</Project>
-      <Name>genLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\imgLib\imgLib.vbproj">
       <Project>{BABD0BBE-83B9-4578-A8F7-93E6043F310C}</Project>
       <Name>imgLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\iniLib\iniLib.vbproj">
-      <Project>{A855847E-2836-4163-A844-F7FD687F5423}</Project>
-      <Name>iniLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\mainlib\mainlib.vbproj">
       <Project>{688F916F-83F7-4F6D-B976-2121B1C45BE4}</Project>
       <Name>mainlib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\proLib\proLib.vbproj">
-      <Project>{BEE73DC0-2CA7-4B37-AB37-E8C4202FF918}</Project>
-      <Name>proLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\saveLib\saveLib.vbproj">
-      <Project>{ac9a50bc-e2a3-4610-bdc3-1b12ca571ccf}</Project>
-      <Name>saveLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\secuLib\secuLib.vbproj">
       <Project>{D98079AF-BCA1-4DBD-847B-54F79A96E41D}</Project>
       <Name>secuLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\sqlLib\sqlLib.vbproj">
-      <Project>{0BA00CF9-5D5A-4BA1-9D50-C863F165D3E1}</Project>
-      <Name>sqlLib</Name>
+    <ProjectReference Include="..\SEE_POS_COMMON\SEE_POS_COMMON.vbproj">
+      <Project>{20ba7cf2-f2c0-412d-b7d2-5d0bea08f8df}</Project>
+      <Name>SEE_POS_COMMON</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -784,7 +756,9 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.101.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.101.0\build\net40\System.Data.SQLite.Core.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

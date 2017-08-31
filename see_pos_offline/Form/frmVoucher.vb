@@ -69,7 +69,7 @@ Public Class frmVoucher
             GridVoucherHeader.DataSource = table
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -137,7 +137,7 @@ Public Class frmVoucher
 
             gridAll.Columns(1).Width = gridAll.Width - 54
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -183,13 +183,13 @@ Public Class frmVoucher
             gridVoucherDetail.DataSource = table
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
     Private Sub btnValidate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnValidate.Click
         If Not GridVoucherHeader.Rows.Count > 0 Then
-            MsgBox("No Data", MsgBoxStyle.Information, Title)
+            MsgBox("No Data", MsgBoxStyle.Information, applicationSettings.Title)
         Else
             If MsgBox("Are you sure validate this voucher id " & Trim(GridVoucherHeader.SelectedCells(0).Value) & " ?", MsgBoxStyle.Information + MsgBoxStyle.YesNo) = MsgBoxResult.No Then Exit Sub
             ValidateVoucher(Trim(GridVoucherHeader.SelectedCells(0).Value))
@@ -201,7 +201,7 @@ Public Class frmVoucher
 
     Private Sub btnAbort_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAbort.Click
         If Not GridVoucherHeader.Rows.Count > 0 Then
-            MsgBox("No Data", MsgBoxStyle.Information, Title)
+            MsgBox("No Data", MsgBoxStyle.Information, applicationSettings.Title)
         Else
             If MsgBox("Are you sure close this voucher id " & Trim(GridVoucherHeader.SelectedCells(0).Value) & " ?", MsgBoxStyle.Information + MsgBoxStyle.YesNo) = MsgBoxResult.No Then Exit Sub
             CloseVoucher(Trim(GridVoucherHeader.SelectedCells(0).Value))

@@ -68,7 +68,7 @@ Public Class frmPayment
                 If GetValueParamNumber("ACTIVATE VOUCHER COUPON") = 0 Then
                     txtVoucherCode.Enabled = False
 
-                    MsgBox("Please activate voucher coupon in parameter first!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Please activate voucher coupon in parameter first!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                     btnVoucher.BackColor = Color.SteelBlue
                     btnVoucher.ForeColor = Color.White
@@ -99,7 +99,7 @@ Public Class frmPayment
 
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -163,7 +163,7 @@ Public Class frmPayment
         Try
             PaymentCard()
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -172,7 +172,7 @@ Public Class frmPayment
         Try
             PaymentCash()
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -219,7 +219,7 @@ Public Class frmPayment
                 txtCardAmount.Text = String.Format("{0:#,##0}", CDec(mSubTotal) - CDec(lblPaid.Text))
 
                 If Trim(cmbEDC.Text) = "" Then
-                    MsgBox("Fill EDC!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill EDC!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     cmbCardType.Focus()
                     Exit Sub
 
@@ -269,7 +269,7 @@ Public Class frmPayment
             txtCardAmount.Text = String.Format("{0:#,##0}", CDec(lblSubTotal.Text) - CDec(lblPaid.Text))
 
             If CDec(txtCardAmount.Text) < 0 Then
-                MsgBox("Payment card negative", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Payment card negative", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             End If
 
@@ -288,7 +288,7 @@ Public Class frmPayment
             Try
                 Dim data As New DataTable
                 If Trim(cmbEDC.Text) = "" Then
-                    MsgBox("Fill EDC!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill EDC!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     cmbCardType.Focus()
                     Exit Sub
 
@@ -315,7 +315,7 @@ Public Class frmPayment
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
 
             cmbCardType.Focus()
@@ -415,13 +415,13 @@ Public Class frmPayment
 
 
         If txtCardAmount.Text = 0 And txtCashAmount.Text = 0 And txtVoucherAmount.Text = 0 Then
-            MsgBox("Choose customer payment first!!!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Choose customer payment first!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             DialogResult = Windows.Forms.DialogResult.None
             Exit Sub
         End If
 
         If CDec(lblPaid.Text) < CDec(lblSubTotal.Text) Then
-            MsgBox("Paid must more than total!!!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Paid must more than total!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             DialogResult = Windows.Forms.DialogResult.None
             Exit Sub
         End If
@@ -432,7 +432,7 @@ Public Class frmPayment
             If txtCardAmount.Text <> 0 Then
                 If cmbCardType.Text = "" Then
 
-                    MsgBox("Choose card type!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Choose card type!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     cmbCardType.Focus()
                     Exit Sub
@@ -440,7 +440,7 @@ Public Class frmPayment
 
                 If Trim(txtCardNo.Text) = "" Then
 
-                    MsgBox("Fill card no!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill card no!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     txtCardNo.Focus()
                     Exit Sub
@@ -448,7 +448,7 @@ Public Class frmPayment
 
                 If Trim(txtCardName.Text) = "" Then
 
-                    MsgBox("Fill card name!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill card name!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     txtCardName.Focus()
                     Exit Sub
@@ -457,7 +457,7 @@ Public Class frmPayment
 
                 If Trim(cmbEDC.Text) = "" Then
 
-                    MsgBox("Choose EDC!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Choose EDC!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     cmbEDC.Focus()
                     Exit Sub
@@ -465,7 +465,7 @@ Public Class frmPayment
 
                 If Trim(txtApproval.Text) = "" Then
 
-                    MsgBox("Fill approval!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill approval!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     txtApproval.Focus()
                     Exit Sub
@@ -474,7 +474,7 @@ Public Class frmPayment
                 'If voucherState = 1 And cashState = 1 Then
                 '    If CDec(txtCardAmount.Text) > (CDec(lblSubTotal.Text) - CDec(lblPaid.Text)) Then
 
-                '        MsgBox("Card Amount can't more than sub total!", MsgBoxStyle.Exclamation, Title)
+                '        MsgBox("Card Amount can't more than sub total!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 '        DialogResult = Windows.Forms.DialogResult.None
 
                 '        Exit Sub
@@ -501,7 +501,7 @@ Public Class frmPayment
             Try
                 Dim data As New DataTable
                 If Trim(cmbCardType.Text) = "" Then
-                    MsgBox("Fill card type!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill card type!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     cmbCardType.Focus()
                     Exit Sub
 
@@ -528,7 +528,7 @@ Public Class frmPayment
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
         End If
     End Sub
@@ -574,7 +574,7 @@ Public Class frmPayment
             Try
                 Dim data As New DataTable
                 If Trim(cmbEDC.Text) = "" Then
-                    MsgBox("Fill EDC!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Fill EDC!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     cmbCardType.Focus()
                     Exit Sub
 
@@ -601,7 +601,7 @@ Public Class frmPayment
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
         End If
     End Sub
@@ -611,7 +611,7 @@ Public Class frmPayment
             If GetValueParamNumber("ACTIVATE VOUCHER COUPON") = 0 Then
                 txtVoucherCode.Enabled = False
 
-                MsgBox("Please activate voucher coupon in parameter first!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please activate voucher coupon in parameter first!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                 btnVoucher.BackColor = Color.SteelBlue
                 btnVoucher.ForeColor = Color.White
@@ -634,7 +634,7 @@ Public Class frmPayment
 
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
 
@@ -801,13 +801,13 @@ Public Class frmPayment
             voucherAmt = ValidateVoucherAmt(Trim(txtVoucherCode.Text), voucherid)
 
             If voucherAmt = 0 Then
-                MsgBox("Voucher Code not found!!!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Voucher Code not found!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             End If
 
             If tableVoucher.Rows.Count > 0 Then
                 If IsExistsVoucherCode(Trim(txtVoucherCode.Text), tableVoucher) Then
-                    MsgBox("Voucher Code is exists!!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Voucher Code is exists!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
             End If

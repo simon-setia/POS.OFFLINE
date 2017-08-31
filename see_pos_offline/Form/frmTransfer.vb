@@ -240,13 +240,13 @@ Public Class frmTransfer
                 If Trim(txtItem.Text) = "" Then Exit Sub
 
                 If Not ItemExists(Trim(txtItem.Text)) = True Then
-                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
 
                 If Not ItemAssignmentExists(Trim(txtItem.Text), GetValueParamText("DEFAULT WH")) = True Then
-                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -257,7 +257,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "510" Or
                         dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
-                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -266,7 +266,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "510" Or
                         dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
-                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -275,7 +275,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "002" Or
                         dataItem.Rows(0).Item("type_materialtype") = "600" Then
 
-                        MsgBox("Item must consignment", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must consignment", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -283,7 +283,7 @@ Public Class frmTransfer
 
                 If mTransID = "PN102" Then
                     If Not ItemBelongsSupplier(Trim(txtItem.Text), cmbFromWH.SelectedValue) = True Then
-                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
                 End If
@@ -292,7 +292,7 @@ Public Class frmTransfer
 
                     If CheckStockMinus(Trim(txtItem.Text), txtQty.Text, GetValueParamText("DEFAULT WH")) = True Then
 
-                        MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
 
                     End If
@@ -324,7 +324,7 @@ Public Class frmTransfer
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
 
         End If
@@ -396,7 +396,7 @@ Public Class frmTransfer
             DetailClear()
         Else
             If state = 1 Or state = 2 Then
-                MsgBox("Please Finish Editing!!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Please Finish Editing!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             Else
                 Me.Close()
@@ -500,7 +500,7 @@ Public Class frmTransfer
 
             gridAll.Columns(1).Width = gridAll.Width - 54
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -533,14 +533,14 @@ Public Class frmTransfer
                 If Trim(txtItem.Text) = "" Then Exit Sub
 
                 If Not ItemExists(Trim(txtItem.Text)) = True Then
-                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
                 dataItem = GetDetailItem(Trim(txtItem.Text))
 
                 If Not dataItem.Rows.Count > 0 Then
-                    MsgBox("Item not found in Warehouse", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not found in Warehouse", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -549,7 +549,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "510" Or
                         dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
-                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -558,7 +558,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "510" Or
                         dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
-                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -567,7 +567,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "002" Or
                         dataItem.Rows(0).Item("type_materialtype") = "600" Then
 
-                        MsgBox("Item must consignment", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must consignment", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -576,14 +576,14 @@ Public Class frmTransfer
 
                 If mTransID = "PN102" Then
                     If Not ItemBelongsSupplier(Trim(txtItem.Text), cmbFromWH.SelectedValue) = True Then
-                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
                 End If
 
                 If CheckStockMinus(Trim(txtItem.Text), txtQty.Text, GetValueParamText("DEFAULT WH")) = True Then
 
-                    MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Over Stock!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
 
                 End If
@@ -615,7 +615,7 @@ Public Class frmTransfer
                 txtItem.Focus()
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
 
         End If
@@ -624,13 +624,13 @@ Public Class frmTransfer
     Private Sub SaveTransaction()
 
         If Trim(txtNote.Text) = "" Then
-            MsgBox("Please Input Note!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Please Input Note!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             txtNote.Focus()
             Exit Sub
         End If
 
         If gridTransfer.RowCount = 0 Then
-            MsgBox("No Detail!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("No Detail!", MsgBoxStyle.Exclamation, applicationSettings.Title)
             Exit Sub
         End If
 
@@ -640,7 +640,7 @@ Public Class frmTransfer
             For i As Integer = 0 To gridTransfer.RowCount - 1
                 If CheckStockMinus(Trim(gridTransfer.Rows(i).Cells(1).Value), gridTransfer.Rows(i).Cells(5).Value, GetValueParamText("DEFAULT WH")) = True Then
 
-                    MsgBox("Item " & Trim(gridTransfer.Rows(i).Cells(1).Value) & " Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item " & Trim(gridTransfer.Rows(i).Cells(1).Value) & " Over Stock!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
 
                 End If
@@ -658,13 +658,13 @@ Public Class frmTransfer
 
             SaveData(state)
 
-            MsgBox("Data Saved Successfully", MsgBoxStyle.Information, Title)
+            MsgBox("Data Saved Successfully", MsgBoxStyle.Information, applicationSettings.Title)
             state = 0
             DetailClear()
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -974,12 +974,12 @@ Public Class frmTransfer
                 If Trim(DtSet.Rows(i).Item(0)) = "" Then Exit Sub
 
                 If Not ItemExists(Trim(DtSet.Rows(i).Item(0))) = True Then
-                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not available!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
                 If Not ItemAssignmentExists(Trim(DtSet.Rows(i).Item(0)), GetValueParamText("DEFAULT WH")) = True Then
-                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item not found in warehouse!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -990,7 +990,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "510" Or
                         dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
-                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -999,7 +999,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "510" Or
                         dataItem.Rows(0).Item("type_materialtype") = "610" Then
 
-                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item must credit", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -1009,7 +1009,7 @@ Public Class frmTransfer
                         dataItem.Rows(0).Item("type_materialtype") = "600" Then
 
                         MsgBox("Item must consignment = " & vbCrLf & Trim(dataItem.Rows(0).Item(0)) _
-                                & " - " & dataItem.Rows(0).Item(1), MsgBoxStyle.Exclamation, Title)
+                                & " - " & dataItem.Rows(0).Item(1), MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                         Exit Sub
                     End If
@@ -1017,14 +1017,14 @@ Public Class frmTransfer
 
                 If mTransID = "PN102" Then
                     If Not ItemBelongsSupplier(Trim(DtSet.Rows(i).Item(0)), cmbFromWH.SelectedValue) = True Then
-                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Item not belongs this supplier", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
                 End If
 
                 If CheckStockMinus(Trim(DtSet.Rows(i).Item(0)), CInt(DtSet.Rows(i).Item(1)), GetValueParamText("DEFAULT WH")) = True Then
 
-                    MsgBox("Item " + Trim(DtSet.Rows(i).Item(0)) + " - " + dataItem.Rows(0).Item("type_description") + " Over Stock!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Item " + Trim(DtSet.Rows(i).Item(0)) + " - " + dataItem.Rows(0).Item("type_description") + " Over Stock!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
 
                 End If

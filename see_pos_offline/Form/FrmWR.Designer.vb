@@ -762,7 +762,7 @@ Partial Class FrmWR
         Me.BackColor = System.Drawing.Color.SteelBlue
         Me.ClientSize = New System.Drawing.Size(1014, 654)
         Me.ControlBox = False
-        Me.Controls.Add(Me.lblTitle)
+        Me.Controls.Add(Me.lblapplicationSettings.Title)
         Me.Controls.Add(Me.Label13)
         Me.Controls.Add(Me.btnBrowse)
         Me.Controls.Add(Me.txtReffNo)

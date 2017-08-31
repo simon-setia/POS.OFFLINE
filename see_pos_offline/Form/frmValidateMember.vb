@@ -78,7 +78,7 @@ Public Class frmValidateMember
 
                 If mState = 0 Then 'Member exists
                     If Not MemberExists(Trim(txtMember.Text)) = True Then
-                        MsgBox("Member not found!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Member not found!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         DialogResult = Windows.Forms.DialogResult.None
                         Exit Sub
                     End If
@@ -93,10 +93,10 @@ Public Class frmValidateMember
                         mMemberDisc = table.Rows(0).Item(5)
                         mMemberMinPayment = table.Rows(0).Item(6)
 
-                        MsgBox("Member Valid", MsgBoxStyle.Information, Title)
+                        MsgBox("Member Valid", MsgBoxStyle.Information, applicationSettings.Title)
                         DialogResult = Windows.Forms.DialogResult.OK
                     Else
-                        MsgBox("No event disc for this member!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("No event disc for this member!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         DialogResult = Windows.Forms.DialogResult.None
                         Exit Sub
                     End If
@@ -111,7 +111,7 @@ Public Class frmValidateMember
                 End If
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             End Try
 
 
@@ -127,7 +127,7 @@ Public Class frmValidateMember
 
             If mState = 0 Then 'Member exists
                 If Not MemberExists(Trim(txtMember.Text)) = True Then
-                    MsgBox("Member not found!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Member not found!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     Exit Sub
                 End If
@@ -142,10 +142,10 @@ Public Class frmValidateMember
                     mMemberDisc = table.Rows(0).Item(5)
                     mMemberMinPayment = table.Rows(0).Item(6)
 
-                    MsgBox("Member Valid", MsgBoxStyle.Information, Title)
+                    MsgBox("Member Valid", MsgBoxStyle.Information, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.OK
                 Else
-                    MsgBox("No event disc for this member!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("No event disc for this member!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     DialogResult = Windows.Forms.DialogResult.None
                     Exit Sub
                 End If
@@ -160,7 +160,7 @@ Public Class frmValidateMember
             End If
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub

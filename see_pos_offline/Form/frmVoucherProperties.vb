@@ -56,7 +56,7 @@ Public Class frmVoucherProperties
             cmbVoucherType.SelectedIndex = 0
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
 
@@ -67,28 +67,28 @@ Public Class frmVoucherProperties
         Try
 
             If Trim(txtEventName.Text) = "" Then
-                MsgBox("Please input voucher event", MsgBoxStyle.Information, Title)
+                MsgBox("Please input voucher event", MsgBoxStyle.Information, applicationSettings.Title)
                 txtEventName.Focus()
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
 
             If Trim(txtNote.Text) = "" Then
-                MsgBox("Please input voucher note", MsgBoxStyle.Information, Title)
+                MsgBox("Please input voucher note", MsgBoxStyle.Information, applicationSettings.Title)
                 txtNote.Focus()
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
 
             If Trim(cmbVoucherType.Text) = "" Then
-                MsgBox("Please select voucher type", MsgBoxStyle.Information, Title)
+                MsgBox("Please select voucher type", MsgBoxStyle.Information, applicationSettings.Title)
                 cmbVoucherType.Focus()
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
 
             If Not GridVoucher.Rows.Count > 0 Then
-                MsgBox("No detail", MsgBoxStyle.Information, Title)
+                MsgBox("No detail", MsgBoxStyle.Information, applicationSettings.Title)
                 DialogResult = Windows.Forms.DialogResult.None
                 Exit Sub
             End If
@@ -99,7 +99,7 @@ Public Class frmVoucherProperties
             UpdateHistoryPOS(lblDocNo.Text, "VC")
         Catch ex As Exception
             DialogResult = Windows.Forms.DialogResult.None
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -226,7 +226,7 @@ Public Class frmVoucherProperties
         If txtVoucherCode.Text.Length > 0 Then
 
             If IsExists(txtVoucherCode.Text) Then
-                MsgBox("Voucher Code is Exists!!!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Voucher Code is Exists!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                 Exit Sub
             End If
 
@@ -294,7 +294,7 @@ Public Class frmVoucherProperties
     End Sub
 
     Private Sub btnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete.Click
-        If MsgBox("Are you sure Remove Voucher " & GridVoucher.Rows(GridVoucher.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, Title) = MsgBoxResult.No Then Exit Sub
+        If MsgBox("Are you sure Remove Voucher " & GridVoucher.Rows(GridVoucher.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, applicationSettings.Title) = MsgBoxResult.No Then Exit Sub
         GridVoucher.Rows.RemoveAt(GridVoucher.CurrentRow.Index)
     End Sub
 

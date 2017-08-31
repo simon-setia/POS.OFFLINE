@@ -1364,7 +1364,7 @@ Partial Class frmPOS
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.lblTitle)
+        Me.Controls.Add(Me.lblapplicationSettings.Title)
         Me.Controls.Add(Me.btnPrint)
         Me.Controls.Add(Me.btnBrowse)
         Me.Controls.Add(Me.btnVoid)

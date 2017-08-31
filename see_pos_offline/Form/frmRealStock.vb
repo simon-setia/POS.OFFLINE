@@ -45,7 +45,7 @@ ReClipboard:
                         End If
 
                         If d.Columns.Count > 1 Then
-                            MsgBox("Data Clipboard Not Valid!!", MsgBoxStyle.Exclamation, Title)
+                            MsgBox("Data Clipboard Not Valid!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                             Exit Sub
 
                         End If
@@ -140,7 +140,7 @@ ReClipboard:
                 GridRealStock.DataSource = ClipboardItemRealStock(d, cmbOption.SelectedIndex, Trim(txtSearch.Text))
 
             Catch ex As Exception
-                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+                MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
             Finally
                 Me.Cursor = Cursors.Default
             End Try
@@ -173,15 +173,15 @@ ReClipboard:
 
                 mDataset.Tables.Add(table.Copy)
                 If WriteXLSFile(strFileName, mDataset) Then
-                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
                 End If
 
             Else
                 Call ExporttoCSV(table, strFileName, vbTab)
-                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub

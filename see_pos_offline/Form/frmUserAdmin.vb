@@ -237,7 +237,7 @@ Public Class frmUserAdmin
             If mstate = 1 Then
                 'cek 
                 If GridUsers.CurrentRow.Cells(0).Value = "" Then
-                    MsgBox("User ID must be fill!!!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("User ID must be fill!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     GridUsers.CurrentRow.Cells(0).Selected = True
 
                     Exit Sub
@@ -262,7 +262,7 @@ Public Class frmUserAdmin
             btnNew.Enabled = True
             mstate = 0
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -315,7 +315,7 @@ Public Class frmUserAdmin
 
     Private Sub btnClose_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClose.Click
         If mstate = 1 Or mstate = 2 Then
-            MsgBox("Please finish your process!!", MsgBoxStyle.Exclamation, Title)
+            MsgBox("Please finish your process!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
             Exit Sub
         Else

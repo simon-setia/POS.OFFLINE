@@ -107,7 +107,7 @@ Public Class frmChangePassword
         Try
             If e.KeyCode = Keys.Enter Then
                 If Not PasswordCorrect(Trim(txtUserId.Text), Trim(txtOldPassword.Text)) Then
-                    MsgBox("Password is wrong!", MsgBoxStyle.Exclamation, Title)
+                    MsgBox("Password is wrong!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                     Exit Sub
                 End If
 
@@ -116,7 +116,7 @@ Public Class frmChangePassword
                 txtNewPassword.Focus()
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -127,7 +127,7 @@ Public Class frmChangePassword
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
         Try
             If Trim(txtOldPassword.Text) = "" Then
-                MsgBox("Old Password Blank!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Old Password Blank!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                 txtNewPassword.Clear()
                 txtConfirmPassword.Clear()
@@ -138,17 +138,17 @@ Public Class frmChangePassword
                 txtOldPassword.Focus()
                 Exit Sub
             ElseIf Trim(txtNewPassword.Text) = "" Then
-                MsgBox("New Password Blank!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("New Password Blank!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                 txtNewPassword.Focus()
                 Exit Sub
             ElseIf Trim(txtConfirmPassword.Text) = "" Then
-                MsgBox("Confirm Password Blank!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Confirm Password Blank!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                 txtConfirmPassword.Focus()
                 Exit Sub
             ElseIf txtNewPassword.Text <> txtConfirmPassword.Text Then
-                MsgBox("Validate Password not valid!", MsgBoxStyle.Exclamation, Title)
+                MsgBox("Validate Password not valid!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                 txtNewPassword.Focus()
                 Exit Sub
@@ -163,11 +163,11 @@ Public Class frmChangePassword
                 .ExecuteNonQuery()
             End With
             cn.Close()
-            MsgBox("Password have been update", MsgBoxStyle.Information, Title)
+            MsgBox("Password have been update", MsgBoxStyle.Information, applicationSettings.Title)
             Me.Close()
         Catch ex As Exception
             cn.Close()
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
            
         End Try
     End Sub

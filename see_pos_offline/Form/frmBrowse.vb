@@ -1,14 +1,15 @@
 ﻿Imports System.Drawing.Drawing2D
-Imports connlib.DBConnection
-Imports genLib.General
-Imports prolib.Process
-Imports saveLib.Save
+Imports connLib.DBConnection
 Imports System.IO
-Imports mainLib
+Imports mainlib
+Imports SEE_POS_COMMON
 
 Public Class frmBrowse
 
+    Private applicationSettings As ApplicationSetting
+    Private parameterService As ParameterService = New ParameterService()
     Private table As DataTable
+    Private query As String
     Private first As Boolean = False
     Private mEmp As String
 
@@ -49,7 +50,7 @@ Public Class frmBrowse
             Cursor = Cursors.Default
         Catch ex As Exception
             Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
 
     End Sub
@@ -60,24 +61,24 @@ Public Class frmBrowse
             table = New DataTable
 
 
-            If logOn = "00-IT" Then
-                query = "SELECT tpayrech.salesorderno Invoice,tpayrech.documentdate Date,tpayrech.salesamount Sales" & _
-                                               ",tpayrech.returnamount Change,tpayrech.cashamount Cash,tpayrech.cardamount Card" & _
-                                               ",ISNULL((SELECT SUM(tpayrecd.BankChargeAmt) " & _
-                                               "FROM tpayrecd WHERE tpayrecd.receiptno=tpayrech.receiptno),0) Bank_Charge," & _
-                                               "tpayrech.roundingamount RoundingAmt FROM " & DB & ".dbo.tpayrech " & _
-                                               "INNER JOIN " & DB & ".dbo.tslsh on tpayrech.salesorderno=hs_invoice " & _
-                                               "WHERE tpayrech.documentdate BETWEEN '" & Format(dtFrom.Value, "yyyy-MM-dd") & "' " & _
+            If applicationSettings.logOn = "00-IT" Then
+                query = "SELECT tpayrech.salesorderno Invoice,tpayrech.documentdate Date,tpayrech.salesamount Sales" &
+                                               ",tpayrech.returnamount Change,tpayrech.cashamount Cash,tpayrech.cardamount Card" &
+                                               ",ISNULL((SELECT SUM(tpayrecd.BankChargeAmt) " &
+                                               "FROM tpayrecd WHERE tpayrecd.receiptno=tpayrech.receiptno),0) Bank_Charge," &
+                                               "tpayrech.roundingamount RoundingAmt FROM " & applicationSettings.DB & ".dbo.tpayrech " &
+                                               "INNER JOIN " & applicationSettings.DB & ".dbo.tslsh on tpayrech.salesorderno=hs_invoice " &
+                                               "WHERE tpayrech.documentdate BETWEEN '" & Format(dtFrom.Value, "yyyy-MM-dd") & "' " &
                                                "AND '" & Format(dtTo.Value, "yyyy-MM-dd") & "' "
             Else
-                query = "SELECT tpayrech.salesorderno Invoice,tpayrech.documentdate Date,tpayrech.salesamount Sales" & _
-                                               ",tpayrech.returnamount Change,tpayrech.cashamount Cash,tpayrech.cardamount Card" & _
-                                               ",ISNULL((SELECT SUM(tpayrecd.BankChargeAmt) " & _
-                                               "FROM tpayrecd WHERE tpayrecd.receiptno=tpayrech.receiptno),0) Bank_Charge," & _
-                                               "tpayrech.roundingamount RoundingAmt FROM " & DB & ".dbo.tpayrech " & _
-                                               "INNER JOIN " & DB & ".dbo.tslsh on tpayrech.salesorderno=hs_invoice " & _
-                                               "WHERE tpayrech.documentdate BETWEEN '" & Format(dtFrom.Value, "yyyy-MM-dd") & "' " & _
-                                               "AND '" & Format(dtTo.Value, "yyyy-MM-dd") & "' " & _
+                query = "SELECT tpayrech.salesorderno Invoice,tpayrech.documentdate Date,tpayrech.salesamount Sales" &
+                                               ",tpayrech.returnamount Change,tpayrech.cashamount Cash,tpayrech.cardamount Card" &
+                                               ",ISNULL((SELECT SUM(tpayrecd.BankChargeAmt) " &
+                                               "FROM tpayrecd WHERE tpayrecd.receiptno=tpayrech.receiptno),0) Bank_Charge," &
+                                               "tpayrech.roundingamount RoundingAmt FROM " & applicationSettings.DB & ".dbo.tpayrech " &
+                                               "INNER JOIN " & applicationSettings.DB & ".dbo.tslsh on tpayrech.salesorderno=hs_invoice " &
+                                               "WHERE tpayrech.documentdate BETWEEN '" & Format(dtFrom.Value, "yyyy-MM-dd") & "' " &
+                                               "AND '" & Format(dtTo.Value, "yyyy-MM-dd") & "' " &
                                                "AND tpayrech.employeeid='" & mEmp & "'"
             End If
 
@@ -124,10 +125,10 @@ Public Class frmBrowse
             table = New DataTable
             With cm
                 .Connection = cn
-                .CommandText = "SELECT ds_partnumber Item,type_description Judul," & _
-                                "ds_uom UOM,ds_qty Qty,ds_dpp+ds_ppn Amount " & _
-                                "FROM " & DB & ".dbo.tslsd " & _
-                                "INNER JOIN " & DB & ".dbo.mtipe on type_partnumber=ds_partnumber " & _
+                .CommandText = "SELECT ds_partnumber Item,type_description Judul," &
+                                "ds_uom UOM,ds_qty Qty,ds_dpp+ds_ppn Amount " &
+                                "FROM " & applicationSettings.DB & ".dbo.tslsd " &
+                                "INNER JOIN " & applicationSettings.DB & ".dbo.mtipe on type_partnumber=ds_partnumber " &
                                 "WHERE ds_invoice = '" & doc & "'"
             End With
 

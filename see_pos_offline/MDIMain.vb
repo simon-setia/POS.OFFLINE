@@ -1,25 +1,8 @@
-Imports System.Net
-Imports System.Net.Sockets
 Imports System.IO
-Imports System.Drawing
-Imports System.Threading
-Imports System.Runtime.InteropServices
-Imports System
-Imports System.Collections.Generic
-Imports System.ComponentModel
-Imports System.Data
-Imports System.Text
-Imports System.Windows.Forms
-Imports System.Diagnostics
 Imports System.Drawing.Drawing2D
-Imports genLib.General
 Imports secuLib.Security
-Imports connlib.DBConnection
-Imports iniLib.Ini
-Imports proLib.Process
-Imports sqlLib.Sql
-Imports mainLib
-Imports Microsoft.VisualBasic
+Imports connLib.DBConnection
+Imports SEE_POS_COMMON
 
 Public Class MDIMain
     Private konek As Boolean = False
@@ -40,17 +23,22 @@ Public Class MDIMain
     Private FILE_NAME As String = ""
     Private firstLoad As Boolean = False
 
-    ''Public Sub New()
+    Private iniFactory As IniFactory = New IniFactory()
+    Private applicationSettings As ApplicationSetting
+    Private parameterService As ParameterService = New ParameterService()
+    Private appData As New AppData()
 
-    ''    ' This call is required by the designer.
-    ''    InitializeComponent()
+    Public Sub New()
 
-    ''    '    'Set the Mode of Drawing as Owner Drawn
-    ''    '    TabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed
+        ''    ' This call is required by the designer.
+        InitializeComponent()
 
-    ''    '    'Add the Handler to draw the Image on Tab Pages
-    ''    '    AddHandler TabControl1.DrawItem, AddressOf TabControl1_DrawItem
-    ''End Sub
+        ''Set the Mode of Drawing as Owner Drawn
+        'TabControl1.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed
+
+        ''Add the Handler to draw the Image on Tab Pages
+        'AddHandler TabControl1.DrawItem, AddressOf TabControl1_DrawItem
+    End Sub
 
     Private Sub btnMnuSales_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles mnuSales.Click
 
@@ -64,7 +52,7 @@ Public Class MDIMain
             Me.Text = "TMBookstore - Sales"
             mnuStripSub.Visible = True
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
 
         End Try
 
@@ -103,8 +91,6 @@ Public Class MDIMain
 
             'Me.ActiveMdiChild.WindowState = FormWindowState.Maximized
 
-
-
             If Not Exists(Me.ActiveMdiChild.Text) Then
 
                 Dim tp As New TabPage(Me.ActiveMdiChild.Text)
@@ -112,10 +98,10 @@ Public Class MDIMain
 
                 tp.Parent = TabControl1
 
-                ActiveMdiChild.Height = mainHeight - 125
-                ActiveMdiChild.Width = mainWidth - 30
+                ActiveMdiChild.Height = applicationSettings.mainHeight - 125
+                ActiveMdiChild.Width = applicationSettings.mainWidth - 30
 
-                ActiveMdiChild.Location = New Point((mainWidth - 25) / 2 - ActiveMdiChild.Width / 2, (ActiveMdiChild.Height + 5) / 2 - ActiveMdiChild.Height / 2)
+                ActiveMdiChild.Location = New Point((applicationSettings.mainWidth - 25) / 2 - ActiveMdiChild.Width / 2, (ActiveMdiChild.Height + 5) / 2 - ActiveMdiChild.Height / 2)
 
 
                 TabControl1.SelectedTab = tp
@@ -175,24 +161,24 @@ Public Class MDIMain
 
         Dim temp As String = ""
 
-        ProjectID = Environment.MachineName.ToString
+        applicationSettings.ProjectID = Environment.MachineName.ToString
 
-        srcPath = Application.StartupPath & "\config.ini"
-        If File.Exists(srcPath) Then
-            temp = INIRead(srcPath, ProjectID, "Server", "")
+        applicationSettings.srcPath = Application.StartupPath & "\config.ini"
+        If File.Exists(applicationSettings.srcPath) Then
+            temp = iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Server", "")
 
             If temp = "" Then
                 GoTo konek
             End If
 
             server = temp
-            hostname = decryptString(INIRead(srcPath, ProjectID, "HostName", ""))
-            database = decryptString(INIRead(srcPath, ProjectID, "Database", ""))
-            authentication = decryptString(INIRead(srcPath, ProjectID, "Authentication", "0"))
-            port = decryptString(INIRead(srcPath, ProjectID, "Port", "0"))
-            user = decryptString(INIRead(srcPath, ProjectID, "User", ""))
-            password = decryptString(INIRead(srcPath, ProjectID, "Password", ""))
-            posPrinter = decryptString(INIRead(srcPath, ProjectID, "PosPrinter", ""))
+            hostname = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "HostName", ""))
+            database = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Database", ""))
+            authentication = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Authentication", "0"))
+            port = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Port", "0"))
+            user = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "User", ""))
+            password = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "Password", ""))
+            applicationSettings.posPrinter = decryptString(iniFactory.INIRead(applicationSettings.srcPath, applicationSettings.ProjectID, "PosPrinter", ""))
             Try
 
                 If authentication = 0 Then
@@ -202,23 +188,23 @@ Public Class MDIMain
                 End If
 
 
-                Connect = True
+                applicationSettings.Connect = True
 
             Catch ex As Exception
-                MsgBox(Err.Description, MsgBoxStyle.Exclamation, Title)
-                Connect = False
+                MsgBox(Err.Description, MsgBoxStyle.Exclamation, applicationSettings.applicationSettings.Title)
+                applicationSettings.Connect = False
                 frmSetupSQL.ShowDialog()
             End Try
 
         Else
 konek:
-            Connect = False
+            applicationSettings.Connect = False
             frmSetupSQL.ShowDialog()
         End If
 
 
         If frmLogin.ShowDialog() = Windows.Forms.DialogResult.Cancel Then
-            If Not Online = True Then
+            If Not applicationSettings.Online = True Then
                 End
             Else
                 GoTo ShowMainMenu
@@ -231,42 +217,42 @@ ShowMainMenu:
         Me.Show()
 
         Try
-            tblParam = New DataTable
+            applicationSettings.tblParam = New DataTable
 
-            tblParam = GetParameter()
+            applicationSettings.tblParam = appData.GetParameter()
 
-            DB = database
+            applicationSettings.DB = database
             Call StatusBar()
-            Default_WH = GetValueParamText("DEFAULT WH")
+            applicationSettings.Default_WH = parameterService.GetValueParamText("DEFAULT WH")
 
 
-            Default_Branch = GetValueParamText("DEFAULT BRANCH")
+            applicationSettings.Default_Branch = parameterService.GetValueParamText("DEFAULT BRANCH")
 
-            Default_PPN = GetValueParamMoney("DEFAULT PPN")
+            applicationSettings.Default_PPN = parameterService.GetValueParamMoney("DEFAULT PPN")
 
 
-            tblMenuAccess = New DataTable
-            tblMenuAccess = GetMenuAccess(UserGroup)
+            applicationSettings.tblMenuAccess = New DataTable
+            applicationSettings.tblMenuAccess = appData.GetMenuAccess(applicationSettings.UserGroup)
 
             'LoadMenuParent First
-            MenuParent(tblMenuAccess)
+            MenuParent(applicationSettings.tblMenuAccess)
 
-            mnuUserMenu.Text = UserName
+            mnuUserMenu.Text = applicationSettings.UserName
 
             'close voucher
-            Call CloseVoucher()
+            Call appData.CloseVoucher()
 
             'check best price
-            If GetValueParamNumber("BEST PRICE") = 1 Then
-                If Not BestPriceExists() = True Then
+            If parameterService.GetValueParamNumber("BEST PRICE") = 1 Then
+                If Not appData.BestPriceExists() = True Then
 
                     Dim docBestPrice As String = ""
 
                     docBestPrice = GetLastTransNo("MP")
                     'Check Best Price Promo Exists Today
-                    CreateBestPrice(docBestPrice)
+                    appData.CreateBestPrice(docBestPrice)
 
-                    UpdateHistoryPOS(docBestPrice, "MP")
+                    appData.UpdateHistoryPOS(docBestPrice, "MP")
 
                 End If
             End If
@@ -287,15 +273,15 @@ ShowMainMenu:
             Dim screenHeight As Integer = Screen.PrimaryScreen.Bounds.Height
 
 
-            mainHeight = screenHeight - 45
-            mainWidth = screenWidth
+            applicationSettings.mainHeight = screenHeight - 45
+            applicationSettings.mainWidth = screenWidth
 
-            Me.Height = mainHeight
-            Me.Width = mainWidth
+            Me.Height = applicationSettings.mainHeight
+            Me.Width = applicationSettings.mainWidth
 
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
 
     End Sub
@@ -329,18 +315,18 @@ ShowMainMenu:
         Dim systemdate As Date
         Dim today As Date = CDate(Format(Now, "yyyy-MM-dd"))
 
-        systemdate = CDate(GetValueParamDate("SYSTEM DATE"))
+        systemdate = CDate(parameterService.GetValueParamDate("SYSTEM DATE"))
         'GETSystemDate()
 
         If today > systemdate Then
-            UpdateSystemDate(today, "SYSTEM DATE")
+            appData.UpdateSystemDate(today, "SYSTEM DATE")
 
-            tblParam = GetParameter()
+            applicationSettings.tblParam = appData.GetParameter()
         Else
 
         End If
-        statusComp.Text = "  " & GetComputerName()
-        statusServer.Text = "  " & hostname & " - " & DB
+        statusComp.Text = "  " & ParameterService.GetComputerName()
+        statusServer.Text = "  " & hostname & " - " & applicationSettings.DB
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
@@ -405,11 +391,11 @@ ShowMainMenu:
 
     ''        r = Me.TabControl1.GetTabRect(e.Index)
     ''        r.Offset(2, 2)
-    ''        Dim TitleBrush As Brush = New SolidBrush(Color.Black)
+    ''        Dim applicationSettings.TitleBrush As Brush = New SolidBrush(Color.Black)
     ''        Dim f As Font = Me.Font
-    ''        Dim title As String = Me.TabControl1.TabPages(e.Index).Text
+    ''        Dim applicationSettings.Title As String = Me.TabControl1.TabPages(e.Index).Text
 
-    ''        e.Graphics.DrawString(title, f, TitleBrush, New PointF(r.X, r.Y))
+    ''        e.Graphics.DrawString(applicationSettings.Title, f, applicationSettings.TitleBrush, New PointF(r.X, r.Y))
     ''        e.Graphics.DrawImage(img, New Point(r.X + (Me.TabControl1.GetTabRect(e.Index).Width - _imageLocation.X), _imageLocation.Y))
 
     ''    Catch ex As Exception
@@ -471,10 +457,10 @@ ShowMainMenu:
     End Sub
 
     Private Sub mnuLogOut_Click(sender As Object, e As EventArgs) Handles mnuLogOut.Click
-        Online = False
+        applicationSettings.Online = False
         Me.Hide()
         If frmLogin.ShowDialog() = Windows.Forms.DialogResult.Cancel Then
-            If Not Online = True Then
+            If Not applicationSettings.Online = True Then
                 End
             Else
                 GoTo ShowMainMenu
@@ -487,28 +473,28 @@ ShowMainMenu:
         Me.Show()
 
         Try
-            tblParam = New DataTable
+            applicationSettings.tblParam = New DataTable
 
-            tblParam = GetParameter()
+            applicationSettings.tblParam = appData.GetParameter()
 
-            DB = database
+            applicationSettings.DB = database
             Call StatusBar()
-            Default_WH = GetValueParamText("DEFAULT WH")
+            applicationSettings.Default_WH = parameterService.GetValueParamText("DEFAULT WH")
 
 
-            Default_Branch = GetValueParamText("DEFAULT BRANCH")
+            applicationSettings.Default_Branch = parameterService.GetValueParamText("DEFAULT BRANCH")
 
-            Default_PPN = GetValueParamMoney("DEFAULT PPN")
+            applicationSettings.Default_PPN = parameterService.GetValueParamMoney("DEFAULT PPN")
 
 
-            tblMenuAccess = New DataTable
-            tblMenuAccess = GetMenuAccess(UserGroup)
+            applicationSettings.tblMenuAccess = New DataTable
+            applicationSettings.tblMenuAccess = appData.GetMenuAccess(applicationSettings.UserGroup)
 
             'LoadMenuParent First
-            MenuParent(tblMenuAccess)
+            MenuParent(applicationSettings.tblMenuAccess)
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.applicationSettings.Title)
         End Try
 
     End Sub

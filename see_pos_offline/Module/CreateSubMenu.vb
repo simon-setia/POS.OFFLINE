@@ -903,7 +903,7 @@ Module CreateSubMenu
                         table = ValidateOpenCashier()
 
                         If table.Rows.Count = 0 Then
-                            MsgBox("Please Open Cashier First!", MsgBoxStyle.Exclamation, Title)
+                            MsgBox("Please Open Cashier First!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                             Exit Sub
                         End If
                     End If
@@ -915,7 +915,7 @@ Module CreateSubMenu
                         fValidateEmp.FormState = 1
                         If fValidateEmp.ShowDialog = DialogResult.OK Then
                             If fValidateEmp.GetEmpIDValid = False Then
-                                MsgBox("Userid and Employee ID not valid!!", MsgBoxStyle.Exclamation, Title)
+                                MsgBox("Userid and Employee ID not valid!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                                 Exit Sub
                             End If
                         Else
@@ -956,7 +956,7 @@ Module CreateSubMenu
                         table = ValidateOpenCashier()
 
                         If table.Rows.Count = 0 Then
-                            MsgBox("Please Open Cashier First!", MsgBoxStyle.Exclamation, Title)
+                            MsgBox("Please Open Cashier First!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                             Exit Sub
                         End If
                     End If
@@ -968,10 +968,10 @@ Module CreateSubMenu
                         fValidateEmp.FormState = 1
                         If fValidateEmp.ShowDialog = DialogResult.OK Then
                             If fValidateEmp.GetEmpIDValid = False Then
-                                MsgBox("Userid and Employee ID not valid!!", MsgBoxStyle.Exclamation, Title)
+                                MsgBox("Userid and Employee ID not valid!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                                 Exit Sub
                             Else
-                                MsgBox("Userid and Employee ID valid!!", MsgBoxStyle.Information, Title)
+                                MsgBox("Userid and Employee ID valid!!", MsgBoxStyle.Information, applicationSettings.Title)
                             End If
                         End If
                     End If
@@ -1005,7 +1005,7 @@ Module CreateSubMenu
                     table = ValidateOpenCashier()
 
                     If table.Rows.Count > 0 Then
-                        MsgBox("Please Close Cashier First!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Please Close Cashier First!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
 
@@ -1023,14 +1023,14 @@ Module CreateSubMenu
 
                     For Each child In MDIMain.MdiChildren
                         If child.Name = "frmPOS" Then
-                            MsgBox("POS active, please close this form first!!!", MsgBoxStyle.Exclamation, Title)
+                            MsgBox("POS active, please close this form first!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
 
                             Exit Sub
                         End If
                     Next
 
                     If Not table.Rows.Count > 0 Then
-                        MsgBox("Please Open Cashier First!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("Please Open Cashier First!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
                     End If
 
@@ -1398,7 +1398,7 @@ Module CreateSubMenu
 
                     If Not logOn = "00-IT" Then
 
-                        MsgBox("You don't have access to this menu!!!", MsgBoxStyle.Exclamation, Title)
+                        MsgBox("You don't have access to this menu!!!", MsgBoxStyle.Exclamation, applicationSettings.Title)
                         Exit Sub
 
                     End If
@@ -1426,7 +1426,7 @@ Module CreateSubMenu
             End Select
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub

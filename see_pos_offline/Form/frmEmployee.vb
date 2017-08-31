@@ -22,7 +22,7 @@ Public Class frmEmployee
             GridEmpCatalog.Columns(3).Frozen = True
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
 
@@ -90,7 +90,7 @@ Public Class frmEmployee
             gridAll.Columns(1).Width = gridAll.Width - 54
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -123,7 +123,7 @@ Public Class frmEmployee
             gridAll2.Columns(1).Width = gridAll2.Width - 54
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 

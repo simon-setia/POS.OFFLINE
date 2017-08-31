@@ -52,7 +52,7 @@ Public Class frmBestSeller
 
         Catch ex As Exception
 
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -78,15 +78,15 @@ Public Class frmBestSeller
 
                 mDataset.Tables.Add(table.Copy)
                 If WriteXLSFile(strFileName, mDataset) Then
-                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
 
                 End If
             Else
                 Call ExporttoCSV(table, strFileName, vbTab)
-                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
 
@@ -165,7 +165,7 @@ Public Class frmBestSeller
             gridAll.Columns(0).Width = 50
             gridAll.Columns(1).Width = gridAll.Width - 54
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
 
     End Sub
@@ -245,9 +245,9 @@ Public Class frmBestSeller
             RepairRFS(Trim(GridBestSeller.SelectedCells(0).Value), cmbWarehouse.SelectedValue, lastSaldo)
 
 
-            MsgBox("Calculate Finish", MsgBoxStyle.Information, Title)
+            MsgBox("Calculate Finish", MsgBoxStyle.Information, applicationSettings.Title)
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 

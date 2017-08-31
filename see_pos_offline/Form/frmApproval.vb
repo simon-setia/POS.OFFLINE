@@ -78,7 +78,7 @@ Public Class frmApproval
             Me.Cursor = Cursors.Default
         Catch ex As Exception
             Me.Cursor = Cursors.Default
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -87,7 +87,7 @@ Public Class frmApproval
         Try
             If GridDocument.Rows.Count > 0 And Not GridDocument.SelectedCells(0).Value Is Nothing Then
 
-                If MsgBox("Are you sure?", MsgBoxStyle.YesNo + MsgBoxStyle.Information, Title) = MsgBoxResult.No Then Exit Sub
+                If MsgBox("Are you sure?", MsgBoxStyle.YesNo + MsgBoxStyle.Information, applicationSettings.Title) = MsgBoxResult.No Then Exit Sub
 
                 If cmbTransaction.SelectedValue = "GR102" Or cmbTransaction.SelectedValue = "GR101" Or cmbTransaction.SelectedValue = "TR100" Then
                     If btnValidate.Text = "Validate" Then
@@ -101,7 +101,7 @@ Public Class frmApproval
                 RefreshData()
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
 
@@ -124,20 +124,20 @@ Public Class frmApproval
         Try
             If GridDocument.Rows.Count > 0 And Not GridDocument.SelectedCells(0).Value Is Nothing Then
 
-                If MsgBox("Are you sure?", MsgBoxStyle.YesNo + MsgBoxStyle.Information, Title) = MsgBoxResult.No Then Exit Sub
+                If MsgBox("Are you sure?", MsgBoxStyle.YesNo + MsgBoxStyle.Information, applicationSettings.Title) = MsgBoxResult.No Then Exit Sub
 
                 If cmbTransaction.SelectedValue = "GR102" Or cmbTransaction.SelectedValue = "GR101" Or cmbTransaction.SelectedValue = "TR100" Then
 
                     PostingBM(GridDocument.SelectedCells(1).Value, GridDocument.SelectedCells(10).Value, _
                                logOn)
 
-                    MsgBox("Posting " & Trim(GridDocument.SelectedCells(1).Value) & " Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Posting " & Trim(GridDocument.SelectedCells(1).Value) & " Finish", MsgBoxStyle.Information, applicationSettings.Title)
                 End If
 
                 RefreshData()
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub
@@ -175,7 +175,7 @@ Public Class frmApproval
             gridAll.Columns(1).Width = gridAll.Width - 54
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 

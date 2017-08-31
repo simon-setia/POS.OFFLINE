@@ -89,7 +89,7 @@ Public Class frmMasterEvent
             GridEventHeader.DataSource = table
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -156,7 +156,7 @@ Public Class frmMasterEvent
 
             gridAll.Columns(1).Width = gridAll.Width - 54
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
@@ -200,13 +200,13 @@ Public Class frmMasterEvent
             gridEventDetail.DataSource = table
 
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
         End Try
     End Sub
 
     Private Sub btnValidate_Click(sender As System.Object, e As System.EventArgs) Handles btnValidate.Click
         If Not GridEventHeader.Rows.Count > 0 Then
-            MsgBox("No Data", MsgBoxStyle.Information, Title)
+            MsgBox("No Data", MsgBoxStyle.Information, applicationSettings.Title)
         Else
             If MsgBox("Are you sure validate this promo id " & GridEventHeader.SelectedCells(0).Value & " ?", MsgBoxStyle.Information + MsgBoxStyle.YesNo) = MsgBoxResult.No Then Exit Sub
             ValidatePromo(GridEventHeader.SelectedCells(0).Value)
@@ -218,7 +218,7 @@ Public Class frmMasterEvent
 
     Private Sub btnAbort_Click(sender As System.Object, e As System.EventArgs) Handles btnAbort.Click
         If Not GridEventHeader.Rows.Count > 0 Then
-            MsgBox("No Data", MsgBoxStyle.Information, Title)
+            MsgBox("No Data", MsgBoxStyle.Information, applicationSettings.Title)
         Else
             If MsgBox("Are you sure close this promo id " & GridEventHeader.SelectedCells(0).Value & " ?", MsgBoxStyle.Information + MsgBoxStyle.YesNo) = MsgBoxResult.No Then Exit Sub
             ClosePromo(GridEventHeader.SelectedCells(0).Value)
@@ -251,15 +251,15 @@ Public Class frmMasterEvent
 
                 mDataset.Tables.Add(table.Copy)
                 If WriteXLSFile(strFileName, mDataset) Then
-                    MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                    MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
                 End If
 
             Else
                 Call ExporttoCSV(table, strFileName, vbTab)
-                MsgBox("Export Finish", MsgBoxStyle.Information, Title)
+                MsgBox("Export Finish", MsgBoxStyle.Information, applicationSettings.Title)
             End If
         Catch ex As Exception
-            MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            MsgBox(ex.Message, MsgBoxStyle.Critical, applicationSettings.Title)
 
         End Try
     End Sub
