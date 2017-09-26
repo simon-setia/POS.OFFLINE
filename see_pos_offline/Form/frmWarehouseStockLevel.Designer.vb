@@ -53,6 +53,7 @@ Partial Class frmWarehouseStockLevel
         Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.gridAll = New System.Windows.Forms.DataGridView()
         Me.GridWarehouseStockLevel = New System.Windows.Forms.DataGridView()
+        Me.colVendor = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colItem = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colDescription = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colType = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -63,6 +64,7 @@ Partial Class frmWarehouseStockLevel
         Me.colProdhier4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colProdhier5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colAuthor = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.colISBN = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colPurchase = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colHET = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colRFS = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -195,7 +197,7 @@ Partial Class frmWarehouseStockLevel
         Me.GridWarehouseStockLevel.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.GridWarehouseStockLevel.ColumnHeadersHeight = 30
         Me.GridWarehouseStockLevel.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.GridWarehouseStockLevel.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colItem, Me.colDescription, Me.colType, Me.colProduct, Me.colProdhier1, Me.colProdhier2, Me.colProdhier3, Me.colProdhier4, Me.colProdhier5, Me.colAuthor, Me.colPurchase, Me.colHET, Me.colRFS})
+        Me.GridWarehouseStockLevel.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.colVendor, Me.colItem, Me.colDescription, Me.colType, Me.colProduct, Me.colProdhier1, Me.colProdhier2, Me.colProdhier3, Me.colProdhier4, Me.colProdhier5, Me.colAuthor, Me.colISBN, Me.colPurchase, Me.colHET, Me.colRFS})
         Me.GridWarehouseStockLevel.ContextMenuStrip = Me.ContextMenuStrip1
         DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle15.BackColor = System.Drawing.Color.White
@@ -233,6 +235,13 @@ Partial Class frmWarehouseStockLevel
         Me.GridWarehouseStockLevel.Size = New System.Drawing.Size(917, 518)
         Me.GridWarehouseStockLevel.TabIndex = 411
         Me.GridWarehouseStockLevel.VirtualMode = True
+        '
+        'colVendor
+        '
+        Me.colVendor.Frozen = True
+        Me.colVendor.HeaderText = "Vendor Code"
+        Me.colVendor.Name = "colVendor"
+        Me.colVendor.ReadOnly = True
         '
         'colItem
         '
@@ -327,6 +336,12 @@ Partial Class frmWarehouseStockLevel
         Me.colAuthor.Name = "colAuthor"
         Me.colAuthor.ReadOnly = True
         Me.colAuthor.Width = 130
+        '
+        'colISBN
+        '
+        Me.colISBN.HeaderText = "ISBN"
+        Me.colISBN.Name = "colISBN"
+        Me.colISBN.ReadOnly = True
         '
         'colPurchase
         '
@@ -508,7 +523,7 @@ Partial Class frmWarehouseStockLevel
         Me.cmbFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cmbFilter.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cmbFilter.FormattingEnabled = True
-        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description", "ISBN", "Prodhier1", "Prodhier3", "Prodhier4", "Prodhier5"})
+        Me.cmbFilter.Items.AddRange(New Object() {"Item", "Description", "ISBN", "Prodhier1", "Prodhier3", "Prodhier4", "Prodhier5", "Vendor"})
         Me.cmbFilter.Location = New System.Drawing.Point(12, 615)
         Me.cmbFilter.Name = "cmbFilter"
         Me.cmbFilter.Size = New System.Drawing.Size(108, 21)
@@ -896,6 +911,7 @@ Partial Class frmWarehouseStockLevel
     Friend WithEvents Label3 As Label
     Private WithEvents btnClose As Button
     Friend WithEvents Label7 As Label
+    Friend WithEvents colVendor As DataGridViewTextBoxColumn
     Friend WithEvents colItem As DataGridViewTextBoxColumn
     Friend WithEvents colDescription As DataGridViewTextBoxColumn
     Friend WithEvents colType As DataGridViewTextBoxColumn
@@ -906,6 +922,7 @@ Partial Class frmWarehouseStockLevel
     Friend WithEvents colProdhier4 As DataGridViewTextBoxColumn
     Friend WithEvents colProdhier5 As DataGridViewTextBoxColumn
     Friend WithEvents colAuthor As DataGridViewTextBoxColumn
+    Friend WithEvents colISBN As DataGridViewTextBoxColumn
     Friend WithEvents colPurchase As DataGridViewTextBoxColumn
     Friend WithEvents colHET As DataGridViewTextBoxColumn
     Friend WithEvents colRFS As DataGridViewTextBoxColumn
