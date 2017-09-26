@@ -126,9 +126,8 @@ Public Class Sql
                     If opt = 0 Then 'item
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
-                                "SELECT TOP 1 stok_partnumber FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber='" & data.Rows(a).Item(0) & "' " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410') " &
+                                "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
+                                "WHERE type_partnumber='" & data.Rows(a).Item(0) & "' " &
                                 "COMMIT TRANSACTION"
 
                     ElseIf opt = 1 Then 'description
@@ -136,55 +135,43 @@ Public Class Sql
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
                                 "WHERE type_description LIKE '%" & data.Rows(a).Item(0) & "%' " &
-                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber=type_partnumber " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
                                 "COMMIT TRANSACTION"
                     ElseIf opt = 2 Then 'isbn
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
-                                "WHERE type_spl_material1 LIKE '%" & data.Rows(a).Item(0) & "'% " &
-                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber=type_partnumber " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
+                                "WHERE type_spl_material2 LIKE '%" & data.Rows(a).Item(0) & "%' " &
                                 "COMMIT TRANSACTION"
                     ElseIf opt = 3 Then 'prodhier1
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
                                 "WHERE type_prodhier1='" & data.Rows(a).Item(0) & "' " &
-                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber=type_partnumber " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
                                 "COMMIT TRANSACTION"
                     ElseIf opt = 4 Then 'prodhier3
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
                                 "WHERE type_prodhier3='" & data.Rows(a).Item(0) & "' " &
-                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber=type_partnumber " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
                                 "COMMIT TRANSACTION"
                     ElseIf opt = 5 Then 'prodhier4
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
                                 "WHERE type_prodhier4='" & data.Rows(a).Item(0) & "' " &
-                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber=type_partnumber " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
                                 "COMMIT TRANSACTION"
 
-                    Else 'prodhier5
+                    ElseIf opt = 6 Then 'prodhier5
                         query = "BEGIN TRANSACTION " &
                                 "INSERT INTO Tool.dbo.Sams " &
                                 "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
                                 "WHERE type_prodhier5='" & data.Rows(a).Item(0) & "' " &
-                                "AND EXISTS (SELECT * FROM " & DB & ".dbo.hkstok " &
-                                "WHERE stok_partnumber=type_partnumber " &
-                                "AND Stok_txcode IN ('GR102','GR101','GR410')) " &
+                                "COMMIT TRANSACTION"
+                    Else 'vendor
+                        query = "BEGIN TRANSACTION " &
+                                "INSERT INTO Tool.dbo.Sams " &
+                                "SELECT type_partnumber FROM " & DB & ".dbo.mtipe " &
+                                "WHERE type_spl_material1 LIKE '%" & data.Rows(a).Item(0) & "%' " &
                                 "COMMIT TRANSACTION"
                     End If
 
@@ -201,10 +188,10 @@ Public Class Sql
 
             Next
 
-            query = "SELECT LTRIM(RTRIM(PART_PartNumber)) AS item,TYPE_Description name," &
+            query = "SELECT LTRIM(RTRIM(type_spl_material1)) AS vendor,LTRIM(RTRIM(PART_PartNumber)) AS item,TYPE_Description name," &
                    "type_materialtype type,product_description product,type_prodhier1 prodhier1," &
                    "type_prodhier2 prodhier2,type_prodhier3 prodhier3,type_prodhier4 prodhier4," &
-                   "type_prodhier5 prodhier5,type_materialinfo author, " &
+                   "type_prodhier5 prodhier5,type_materialinfo author,LTRIM(RTRIM(type_spl_material2)) AS isbn," &
                    "(SELECT TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice " &
                    "WHERE MP_PartNumber=PART_PartNumber " &
                    "AND MP_PriceGroup ='01' " &
@@ -214,13 +201,12 @@ Public Class Sql
                    "AND MP_PriceGroup='02' " &
                    "AND MP_EffectiveDate<= GETDATE() and MP_ExpDate >= GETDATE() " &
                    "ORDER BY MP_EffectiveDate desc)het,PART_RFSStock stock " &
-                   "FROM " & DB & ".dbo.mpart WITH(NOLOCK) " &
-                   "INNER JOIN " & DB & ".dbo.mtipe WITH(NOLOCK) on TYPE_PartNumber=PART_PartNumber AND type_status<>1 " &
-                   "INNER JOIN " & DB & ".dbo.mctprod WITH(NOLOCK) on TYPE_Product=PRODUCT_code " &
-                   "INNER JOIN " & DB & ".dbo.mmca WITH(NOLOCK) on mat_tipe=type_materialtype " &
+                   "FROM " & DB & ".dbo.mpart " &
+                   "INNER JOIN " & DB & ".dbo.mtipe on TYPE_PartNumber=PART_PartNumber AND type_status<>1 " &
+                   "INNER JOIN " & DB & ".dbo.mctprod on TYPE_Product=PRODUCT_code " &
+                   "INNER JOIN " & DB & ".dbo.mmca on mat_tipe=type_materialtype " &
                    "WHERE PART_WH='" & wh & "' " &
-                   "AND EXISTS(SELECT * FROM " & DB & ".dbo.hkstok WITH(NOLOCK) WHERE stok_partnumber=part_partnumber " &
-                   "AND stok_warehouse='" & wh & "') AND EXISTS (SELECT * FROM tool.dbo.sams WHERE item=type_partnumber)"
+                   "AND EXISTS (SELECT * FROM tool.dbo.sams WHERE item=type_partnumber)"
 
 
             If cn.State = ConnectionState.Closed Then cn.Open()
@@ -1327,26 +1313,24 @@ Public Class Sql
                                     "'" & sts & "','" & product & "','" & wh & "','" & state & "'," & _
                                     "'" & Trim(text) & "','" & OPTSTOCK & "'"
             Else
-                query = "SELECT LTRIM(RTRIM(PART_PartNumber)) AS item,TYPE_Description name," &
+                query = "SELECT LTRIM(RTRIM(type_spl_material1)) AS vendor,LTRIM(RTRIM(PART_PartNumber)) AS item,TYPE_Description name," &
                    "type_materialtype type,product_description product,type_prodhier1 prodhier1," &
                    "type_prodhier2 prodhier2,type_prodhier3 prodhier3,type_prodhier4 prodhier4," &
-                   "type_prodhier5 prodhier5,type_materialinfo author," &
-                   "(SELECT TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice with (nolock) " &
+                   "type_prodhier5 prodhier5,type_materialinfo author,LTRIM(RTRIM(type_spl_material2)) isbn," &
+                   "(SELECT TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice " &
                    "WHERE MP_PartNumber=PART_PartNumber " &
                    "AND MP_PriceGroup ='01' " &
                    "AND MP_EffectiveDate<= GETDATE() and MP_ExpDate >= GETDATE() " &
-                   "ORDER BY MP_EffectiveDate desc)purchase,(Select TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice with (nolock) " &
+                   "ORDER BY MP_EffectiveDate desc)purchase,(Select TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice " &
                    "WHERE MP_PartNumber=PART_PartNumber " &
                    "AND MP_PriceGroup='02' " &
                    "AND MP_EffectiveDate<= GETDATE() and MP_ExpDate >= GETDATE() " &
                    "ORDER BY MP_EffectiveDate desc)het,PART_RFSStock stock " &
                    "FROM " & DB & ".dbo.mpart " &
-                   "INNER JOIN " & DB & ".dbo.mtipe with (nolock) on TYPE_PartNumber=PART_PartNumber AND type_status<>1 " &
-                   "INNER JOIN " & DB & ".dbo.mctprod with (nolock) on TYPE_Product=PRODUCT_code  AND product_group LIKE '%" & group & "%' " &
-                   "INNER JOIN " & DB & ".dbo.mmca with (nolock) on mat_tipe=type_materialtype AND mat_status LIKE '%" & sts & "%' " &
-                   "WHERE PART_WH='" & wh & "' " &
-                   "AND EXISTS(SELECT * FROM " & DB & ".dbo.hkstok with (nolock) WHERE stok_partnumber=part_partnumber " &
-                   "AND stok_warehouse='" & wh & "') "
+                   "INNER JOIN " & DB & ".dbo.mtipe on TYPE_PartNumber=PART_PartNumber AND type_status<>1 " &
+                   "INNER JOIN " & DB & ".dbo.mctprod on TYPE_Product=PRODUCT_code  AND product_group LIKE '%" & group & "%' " &
+                   "INNER JOIN " & DB & ".dbo.mmca on mat_tipe=type_materialtype AND mat_status LIKE '%" & sts & "%' " &
+                   "WHERE PART_WH='" & wh & "' "
 
                 If state = 0 Then
                     If OPTSTOCK = "0" Then
@@ -1376,8 +1360,10 @@ Public Class Sql
                     query = query + "AND type_prodhier1 = '" & Trim(text) & "'"
                 ElseIf state = 5 Then
                     query = query + "AND type_prodhier4 = '" & Trim(text) & "'"
-                Else
+                ElseIf state = 6 Then
                     query = query + "AND type_prodhier5 = '" & Trim(text) & "'"
+                Else
+                    query = query + "AND type_spl_material1 LIKE '%" & Trim(text) & "%'"
                 End If
             End If
 

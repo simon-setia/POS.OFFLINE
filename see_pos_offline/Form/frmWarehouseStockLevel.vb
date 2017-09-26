@@ -94,19 +94,21 @@ Public Class frmWarehouseStockLevel
 
                 With GridWarehouseStockLevel
                     .AutoGenerateColumns = False
-                    .Columns(0).DataPropertyName = "item"
-                    .Columns(1).DataPropertyName = "name"
-                    .Columns(2).DataPropertyName = "type"
-                    .Columns(3).DataPropertyName = "product"
-                    .Columns(4).DataPropertyName = "prodhier1"
-                    .Columns(5).DataPropertyName = "prodhier2"
-                    .Columns(6).DataPropertyName = "prodhier3"
-                    .Columns(7).DataPropertyName = "prodhier4"
-                    .Columns(8).DataPropertyName = "prodhier5"
-                    .Columns(9).DataPropertyName = "author"
-                    .Columns(10).DataPropertyName = "purchase"
-                    .Columns(11).DataPropertyName = "het"
-                    .Columns(12).DataPropertyName = "stock"
+                    .Columns(0).DataPropertyName = "vendor"
+                    .Columns(1).DataPropertyName = "item"
+                    .Columns(2).DataPropertyName = "name"
+                    .Columns(3).DataPropertyName = "type"
+                    .Columns(4).DataPropertyName = "product"
+                    .Columns(5).DataPropertyName = "prodhier1"
+                    .Columns(6).DataPropertyName = "prodhier2"
+                    .Columns(7).DataPropertyName = "prodhier3"
+                    .Columns(8).DataPropertyName = "prodhier4"
+                    .Columns(9).DataPropertyName = "prodhier5"
+                    .Columns(10).DataPropertyName = "author"
+                    .Columns(11).DataPropertyName = "isbn"
+                    .Columns(12).DataPropertyName = "purchase"
+                    .Columns(13).DataPropertyName = "het"
+                    .Columns(14).DataPropertyName = "stock"
 
 
                 End With
@@ -209,8 +211,8 @@ Public Class frmWarehouseStockLevel
 
     Private Sub GridWarehouseStockLevel_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridWarehouseStockLevel.DoubleClick
         If GridWarehouseStockLevel.SelectedCells(0).Value <> "" Then
-            frmStockCard.ItemCode = GridWarehouseStockLevel.SelectedCells(0).Value
-            frmStockCard.Description = GridWarehouseStockLevel.SelectedCells(1).Value
+            frmStockCard.ItemCode = GridWarehouseStockLevel.SelectedCells(1).Value
+            frmStockCard.Description = GridWarehouseStockLevel.SelectedCells(2).Value
             frmStockCard.WHCode = cmbWarehouse.SelectedValue
             frmStockCard.WHName = cmbWarehouse.Text
             frmStockCard.ShowDialog()
@@ -228,19 +230,21 @@ Public Class frmWarehouseStockLevel
 
                 With GridWarehouseStockLevel
                     .AutoGenerateColumns = False
-                    .Columns(0).DataPropertyName = "item"
-                    .Columns(1).DataPropertyName = "name"
-                    .Columns(2).DataPropertyName = "type"
-                    .Columns(3).DataPropertyName = "product"
-                    .Columns(4).DataPropertyName = "prodhier1"
-                    .Columns(5).DataPropertyName = "prodhier2"
-                    .Columns(6).DataPropertyName = "prodhier3"
-                    .Columns(7).DataPropertyName = "prodhier4"
-                    .Columns(8).DataPropertyName = "prodhier5"
-                    .Columns(9).DataPropertyName = "author"
-                    .Columns(10).DataPropertyName = "purchase"
-                    .Columns(11).DataPropertyName = "het"
-                    .Columns(12).DataPropertyName = "stock"
+                    .Columns(0).DataPropertyName = "vendor"
+                    .Columns(1).DataPropertyName = "item"
+                    .Columns(2).DataPropertyName = "name"
+                    .Columns(3).DataPropertyName = "type"
+                    .Columns(4).DataPropertyName = "product"
+                    .Columns(5).DataPropertyName = "prodhier1"
+                    .Columns(6).DataPropertyName = "prodhier2"
+                    .Columns(7).DataPropertyName = "prodhier3"
+                    .Columns(8).DataPropertyName = "prodhier4"
+                    .Columns(9).DataPropertyName = "prodhier5"
+                    .Columns(10).DataPropertyName = "author"
+                    .Columns(11).DataPropertyName = "isbn"
+                    .Columns(12).DataPropertyName = "purchase"
+                    .Columns(13).DataPropertyName = "het"
+                    .Columns(14).DataPropertyName = "stock"
 
 
                 End With
@@ -415,19 +419,21 @@ ReClipboard:
             If d.Rows.Count <> 0 Then
                 With GridWarehouseStockLevel
                     .AutoGenerateColumns = False
-                    .Columns(0).DataPropertyName = "item"
-                    .Columns(1).DataPropertyName = "name"
-                    .Columns(2).DataPropertyName = "type"
-                    .Columns(3).DataPropertyName = "product"
-                    .Columns(4).DataPropertyName = "prodhier1"
-                    .Columns(5).DataPropertyName = "prodhier2"
-                    .Columns(6).DataPropertyName = "prodhier3"
-                    .Columns(7).DataPropertyName = "prodhier4"
-                    .Columns(8).DataPropertyName = "prodhier5"
-                    .Columns(9).DataPropertyName = "author"
-                    .Columns(10).DataPropertyName = "purchase"
-                    .Columns(11).DataPropertyName = "het"
-                    .Columns(12).DataPropertyName = "stock"
+                    .Columns(0).DataPropertyName = "vendor"
+                    .Columns(1).DataPropertyName = "item"
+                    .Columns(2).DataPropertyName = "name"
+                    .Columns(3).DataPropertyName = "type"
+                    .Columns(4).DataPropertyName = "product"
+                    .Columns(5).DataPropertyName = "prodhier1"
+                    .Columns(6).DataPropertyName = "prodhier2"
+                    .Columns(7).DataPropertyName = "prodhier3"
+                    .Columns(8).DataPropertyName = "prodhier4"
+                    .Columns(9).DataPropertyName = "prodhier5"
+                    .Columns(10).DataPropertyName = "author"
+                    .Columns(11).DataPropertyName = "isbn"
+                    .Columns(12).DataPropertyName = "purchase"
+                    .Columns(13).DataPropertyName = "het"
+                    .Columns(14).DataPropertyName = "stock"
 
 
                 End With
