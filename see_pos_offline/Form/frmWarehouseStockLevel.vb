@@ -210,7 +210,7 @@ Public Class frmWarehouseStockLevel
     End Sub
 
     Private Sub GridWarehouseStockLevel_DoubleClick(ByVal sender As Object, ByVal e As System.EventArgs) Handles GridWarehouseStockLevel.DoubleClick
-        If GridWarehouseStockLevel.SelectedCells(0).Value <> "" Then
+        If GridWarehouseStockLevel.SelectedCells(1).Value <> "" Then
             frmStockCard.ItemCode = GridWarehouseStockLevel.SelectedCells(1).Value
             frmStockCard.Description = GridWarehouseStockLevel.SelectedCells(2).Value
             frmStockCard.WHCode = cmbWarehouse.SelectedValue
