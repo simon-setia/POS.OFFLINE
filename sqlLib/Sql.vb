@@ -200,9 +200,9 @@ Public Class Sql
                    "WHERE MP_PartNumber=TYPE_PartNumber " &
                    "AND MP_PriceGroup='02' " &
                    "AND MP_EffectiveDate<= GETDATE() and MP_ExpDate >= GETDATE() " &
-                   "ORDER BY MP_EffectiveDate desc)het,ISNULL(PART_RFSStock,0) stock " &
+                   "ORDER BY MP_EffectiveDate desc)het," &
+                    "ISNULL((SELECT PART_RFSStock FROM " & DB & ".dbo.mpart WHERE part_wh='" & wh & "' AND part_partnumber=type_partnumber) ,0) stock " &
                    "FROM " & DB & ".dbo.mtipe " &
-                   "LEFT JOIN " & DB & ".dbo.mpart on PART_PartNumber=TYPE_PartNumber " &
                    "INNER JOIN " & DB & ".dbo.mctprod on TYPE_Product=PRODUCT_code " &
                    "INNER JOIN " & DB & ".dbo.mmca on mat_tipe=type_materialtype " &
                    "WHERE EXISTS (SELECT * FROM tool.dbo.sams WHERE item=type_partnumber)"
@@ -1358,8 +1358,10 @@ Public Class Sql
                 ElseIf state = 4 Then
                     query = query + "AND type_prodhier1 = '" & Trim(text) & "'"
                 ElseIf state = 5 Then
-                    query = query + "AND type_prodhier4 = '" & Trim(text) & "'"
+                    query = query + "AND type_prodhier3 = '" & Trim(text) & "'"
                 ElseIf state = 6 Then
+                    query = query + "AND type_prodhier4 = '" & Trim(text) & "'"
+                ElseIf state = 7 Then
                     query = query + "AND type_prodhier5 = '" & Trim(text) & "'"
                 Else
                     query = query + "AND type_spl_material1 LIKE '%" & Trim(text) & "%'"
