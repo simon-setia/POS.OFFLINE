@@ -188,25 +188,24 @@ Public Class Sql
 
             Next
 
-            query = "SELECT LTRIM(RTRIM(type_spl_material1)) AS vendor,LTRIM(RTRIM(PART_PartNumber)) AS item,TYPE_Description name," &
+            query = "SELECT LTRIM(RTRIM(type_spl_material1)) AS vendor,LTRIM(RTRIM(TYPE_PartNumber)) AS item,TYPE_Description name," &
                    "type_materialtype type,product_description product,type_prodhier1 prodhier1," &
                    "type_prodhier2 prodhier2,type_prodhier3 prodhier3,type_prodhier4 prodhier4," &
                    "type_prodhier5 prodhier5,type_materialinfo author,LTRIM(RTRIM(type_spl_material2)) AS isbn," &
                    "(SELECT TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice " &
-                   "WHERE MP_PartNumber=PART_PartNumber " &
+                   "WHERE MP_PartNumber=TYPE_PartNumber " &
                    "AND MP_PriceGroup ='01' " &
                    "AND MP_EffectiveDate<= GETDATE() and MP_ExpDate >= GETDATE() " &
                    "ORDER BY MP_EffectiveDate desc)purchase,(Select TOP 1 mp_nextprice FROM " & DB & ".dbo.mprice " &
-                   "WHERE MP_PartNumber=PART_PartNumber " &
+                   "WHERE MP_PartNumber=TYPE_PartNumber " &
                    "AND MP_PriceGroup='02' " &
                    "AND MP_EffectiveDate<= GETDATE() and MP_ExpDate >= GETDATE() " &
-                   "ORDER BY MP_EffectiveDate desc)het,PART_RFSStock stock " &
-                   "FROM " & DB & ".dbo.mpart " &
-                   "INNER JOIN " & DB & ".dbo.mtipe on TYPE_PartNumber=PART_PartNumber AND type_status<>1 " &
+                   "ORDER BY MP_EffectiveDate desc)het,ISNULL(PART_RFSStock,0) stock " &
+                   "FROM " & DB & ".dbo.mtipe " &
+                   "LEFT JOIN " & DB & ".dbo.mpart on PART_PartNumber=TYPE_PartNumber " &
                    "INNER JOIN " & DB & ".dbo.mctprod on TYPE_Product=PRODUCT_code " &
                    "INNER JOIN " & DB & ".dbo.mmca on mat_tipe=type_materialtype " &
-                   "WHERE PART_WH='" & wh & "' " &
-                   "AND EXISTS (SELECT * FROM tool.dbo.sams WHERE item=type_partnumber)"
+                   "WHERE EXISTS (SELECT * FROM tool.dbo.sams WHERE item=type_partnumber)"
 
 
             If cn.State = ConnectionState.Closed Then cn.Open()
@@ -299,8 +298,8 @@ Public Class Sql
                         "and MP_PriceGroup='02' " &
                         "order by MP_EffectiveDate desc) AS wholesale_price,TYPE_SPL_Material1 AS product_code,'YES' AS can_be_ordered," &
                         "CASE WHEN TYPE_MaterialType IN ('520','510','610') THEN 'YES' " &
-                        "ELSE 'NO' END AS is_consignment,'S' + type_prodhier5 AS supplier_code FROM " & DB & ".dbo.MTIPE with (nolock) " &
-                        "inner join " & DB & ".dbo.MPDISC with (nolock) on product=TYPE_DiscGroup " &
+                        "ELSE 'NO' END AS is_consignment,'S' + type_prodhier5 AS supplier_code FROM " & DB & ".dbo.MTIPE " &
+                        "inner join " & DB & ".dbo.MPDISC on product=TYPE_DiscGroup " &
                         "where DiscGroup='01' " &
                         "and Salesorg='101' " &
                         "And SalesOffice='0110' " &
