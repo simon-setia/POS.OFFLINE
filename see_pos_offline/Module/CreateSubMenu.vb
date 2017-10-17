@@ -484,6 +484,8 @@ Module CreateSubMenu
         Dim mnuInterbranch As ToolStripMenuItem
         Dim mnuReturnSupplier As ToolStripMenuItem
         Dim mnuSepStoresInventory1 As ToolStripSeparator
+        Dim mnuStockOpname As ToolStripMenuItem
+        Dim mnuSepStoresInventory2 As ToolStripSeparator
 
         'Stores Menu
         mnuStockOrders = New ToolStripMenuItem
@@ -524,6 +526,18 @@ Module CreateSubMenu
         End With
 
 
+        mnuSepStoresInventory2 = New ToolStripSeparator
+        With mnuSepStoresInventory2
+            .Name = "mnuSepStoresInventory2"
+        End With
+
+        mnuStockOpname = New ToolStripMenuItem
+        With mnuStockOpname
+            .Text = "Stock Opname"
+            .Name = "mnuStockOpname"
+        End With
+
+
         'Warehouse
         'stores.DropDownItems.Add(mnuStockOrders)
         stores.DropDownItems.Add(mnuWarehouseStockTakes)
@@ -531,11 +545,15 @@ Module CreateSubMenu
         stores.DropDownItems.Add(mnuWarehouseStockTransfer)
         stores.DropDownItems.Add(mnuSepStoresInventory1)
         stores.DropDownItems.Add(mnuReturnSupplier)
+        stores.DropDownItems.Add(mnuSepStoresInventory2)
+        stores.DropDownItems.Add(mnuStockOpname)
 
         DropMenuWarehouseStockTakes(mnuWarehouseStockTakes)
         DropMenuInterbranch(mnuInterbranch)
         DropMenuWarehouseStockTransfer(mnuWarehouseStockTransfer)
         DropMenuReturnSupplier(mnuReturnSupplier)
+
+        AddHandler mnuStockOpname.Click, AddressOf MenuItemClicked
     End Sub
 
     Private Sub DropMenuWarehouseStockTransfer(ByVal mnu As ToolStripMenuItem)
@@ -799,6 +817,7 @@ Module CreateSubMenu
         Dim mnuListingWarehouseReceive As ToolStripMenuItem
         Dim mnuListingWarehouseMovement As ToolStripMenuItem
         Dim mnuInventoryDemand As ToolStripMenuItem
+        Dim mnuSummaryStockOpnameByItem As ToolStripMenuItem
         Dim mnuHeaderSupplier As ToolStripMenuItem
         Dim mnuInventorySupplier As ToolStripMenuItem
         Dim mnuStockAgingSupplier As ToolStripMenuItem
@@ -845,6 +864,12 @@ Module CreateSubMenu
             .Name = "mnuInventoryDemand"
         End With
 
+        mnuSummaryStockOpnameByItem = New ToolStripMenuItem
+        With mnuSummaryStockOpnameByItem
+            .Text = "Summary Stock Opname By Item"
+            .Name = "mnuSummaryStockOpnameByItem"
+        End With
+
         mnuHeaderSupplier = New ToolStripMenuItem
         With mnuHeaderSupplier
             .Text = "Suppliers"
@@ -877,6 +902,7 @@ Module CreateSubMenu
         mnu.DropDownItems.Add(mnuListingWarehouseReceive)
         mnu.DropDownItems.Add(mnuListingWarehouseMovement)
         mnu.DropDownItems.Add(mnuInventoryDemand)
+        mnu.DropDownItems.Add(mnuSummaryStockOpnameByItem)
         mnu.DropDownItems.Add(mnuHeaderSupplier)
         mnu.DropDownItems.Add(mnuInventorySupplier)
         mnu.DropDownItems.Add(mnuStockAgingSupplier)
@@ -890,6 +916,9 @@ Module CreateSubMenu
         AddHandler mnuInventorySupplier.Click, AddressOf MenuItemClicked
         AddHandler mnuStockAgingSupplier.Click, AddressOf MenuItemClicked
         AddHandler mnuBaseOnSupplierInventory.Click, AddressOf MenuItemClicked
+
+        AddHandler mnuSummaryStockOpnameByItem.Click, AddressOf MenuItemClicked
+
     End Sub
 
     Private Sub MenuItemClicked(ByVal sender As System.Object, ByVal e As System.EventArgs)
@@ -1152,6 +1181,13 @@ Module CreateSubMenu
 
                     AddHandler f.FormClosed, AddressOf ActiveMdiChild_FormClosed
                     MDIMain.Text = "TMBookstore - Inventory"
+                Case "mnuStockOpname"
+                    frm = frmStockOpnameList
+                    frm.MdiParent = MDIMain
+                    frm.Show()
+
+                    AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Inventory"
                 Case "mnuApproval"
                     frm = frmApproval
                     frm.MdiParent = MDIMain
@@ -1301,6 +1337,14 @@ Module CreateSubMenu
                     MDIMain.Text = "TMBookstore - Reports"
                 Case "mnuBaseOnSupplierInventory"
                     frm = frmBaseOnSupplier2
+                    frm.MdiParent = MDIMain
+
+                    frm.Show()
+
+                    AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Reports"
+                Case "mnuSummaryStockOpnameByItem"
+                    frm = frmSummaryStockOpnameByItem
                     frm.MdiParent = MDIMain
 
                     frm.Show()
