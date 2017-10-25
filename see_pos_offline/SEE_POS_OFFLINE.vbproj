@@ -20,6 +20,8 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -34,8 +36,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -192,6 +192,12 @@
       <DependentUpon>frmCreateAdministrator.vb</DependentUpon>
     </Compile>
     <Compile Include="Form\frmCreateAdministrator.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmCreateStockOpname.Designer.vb">
+      <DependentUpon>frmCreateStockOpname.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmCreateStockOpname.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\frmDailySalesPayments.Designer.vb">
@@ -416,6 +422,18 @@
     <Compile Include="Form\frmStockCard.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\frmStockOpname.Designer.vb">
+      <DependentUpon>frmStockOpname.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmStockOpname.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmStockOpnameList.Designer.vb">
+      <DependentUpon>frmStockOpnameList.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmStockOpnameList.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\frmSummarySalesItem.Designer.vb">
       <DependentUpon>frmSummarySalesItem.vb</DependentUpon>
     </Compile>
@@ -426,6 +444,12 @@
       <DependentUpon>frmSummarySalesProduct.vb</DependentUpon>
     </Compile>
     <Compile Include="Form\frmSummarySalesProduct.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\frmSummaryStockOpnameByItem.Designer.vb">
+      <DependentUpon>frmSummaryStockOpnameByItem.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmSummaryStockOpnameByItem.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form\frmTransfer.Designer.vb">
@@ -538,6 +562,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmCreateAdministrator.resx">
       <DependentUpon>frmCreateAdministrator.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmCreateStockOpname.resx">
+      <DependentUpon>frmCreateStockOpname.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmDailySalesPayments.resx">
       <DependentUpon>frmDailySalesPayments.vb</DependentUpon>
@@ -655,11 +682,20 @@
     <EmbeddedResource Include="Form\frmStockCard.resx">
       <DependentUpon>frmStockCard.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmStockOpname.resx">
+      <DependentUpon>frmStockOpname.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmStockOpnameList.resx">
+      <DependentUpon>frmStockOpnameList.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmSummarySalesItem.resx">
       <DependentUpon>frmSummarySalesItem.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmSummarySalesProduct.resx">
       <DependentUpon>frmSummarySalesProduct.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmSummaryStockOpnameByItem.resx">
+      <DependentUpon>frmSummaryStockOpnameByItem.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmTransfer.resx">
       <DependentUpon>frmTransfer.vb</DependentUpon>

@@ -445,7 +445,7 @@ Public Class Sql
 
     End Function
 
-    Public Shared Function ReportBestSeller(ByVal top As Integer, ByVal startDate As Date, ByVal endDate As Date, _
+    Public Shared Function ReportBestSeller(ByVal top As Integer, ByVal startDate As Date, ByVal endDate As Date,
                                   ByVal group As String, ByVal wh As String, ByVal branch As String, ByVal org As String) As DataTable
 
         Try
@@ -454,26 +454,26 @@ Public Class Sql
             dtTable = New DataTable
 
             If GetValueParamNumber("SYSTEM SQL") = 0 Then
-                query = "EXECUTE " & DB & ".dbo.P_BestSeller '" & top & "','" & Format(startDate, formatDate) & "','" & Format(endDate, formatDate) & "','" & group & "','" & wh & "'," & _
+                query = "EXECUTE " & DB & ".dbo.P_BestSeller '" & top & "','" & Format(startDate, formatDate) & "','" & Format(endDate, formatDate) & "','" & group & "','" & wh & "'," &
                                                   "'" & branch & "','" & org & "'"
 
             Else
-                query = "SELECT TOP " & top & " LTRIM(RTRIM(tslsd.DS_PartNumber)) Item,mtipe.TYPE_Description Judul,mctprod.Product_Description Product," & _
-                        "mtipe.type_uom UOM,mprice.mp_nextprice HET,CAST(SUM(tslsd.DS_Qty) AS INT) Sales,CAST(mpart.PART_RFSStock AS INT) Stock " & _
-                        "FROM " & DB & ".dbo.tslsd WITH(NOLOCK) " & _
-                        "INNER JOIN tslsh WITH(NOLOCK) on hs_invoicedate BETWEEN '" & Format(startDate, formatDate) & "' " & _
-                        "AND '" & Format(endDate, formatDate) & "' AND tslsh.hs_branch='" & branch & "' " & _
-                        "AND tslsh.hs_salesorg='" & org & "'  AND tslsh.hs_warehouse='" & wh & "' AND tslsh.HS_Invoice=tslsd.DS_Invoice " & _
-                        "INNER JOIN " & DB & ".dbo.mtipe WITH(NOLOCK) on mtipe.type_product<>'120' and mtipe.type_status<>1 AND mtipe.TYPE_PartNumber=tslsd.DS_PartNumber " & _
-                        "INNER JOIN " & DB & ".dbo.mctprod WITH(NOLOCK) on mctprod.PRODUCT_GROUP='" & group & "' AND mctprod.product_code=mtipe.TYPE_Product " & _
-                        "INNER JOIN " & DB & ".dbo.mpart WITH(NOLOCK) on mpart.part_wh='" & wh & "' AND mpart.PART_PartNumber=tslsd.DS_PartNumber " & _
-                        "INNER JOIN " & DB & ".dbo.mprice WITH(NOLOCK) ON mprice.mp_partnumber=tslsd.DS_PartNumber " & _
-                        "WHERE tslsd.DS_InvoiceDate BETWEEN '" & Format(startDate, formatDate) & "' AND " & _
-                        "'" & Format(endDate, formatDate) & "' " & _
-                        "AND mprice.mp_pricegroup='" & GetValueParamText("HET PRICE") & "' " & _
-                        "AND mprice.mp_effectivedate <= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " & _
-                        "AND mprice.mp_expdate >= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " & _
-                        "GROUP BY tslsd.DS_PartNumber,mtipe.TYPE_Description,mctprod.Product_Description,mtipe.type_uom,mpart.PART_RFSStock,mprice.mp_nextprice " & _
+                query = "SELECT TOP " & top & " LTRIM(RTRIM(tslsd.DS_PartNumber)) Item,mtipe.TYPE_Description Judul,mctprod.Product_Description Product," &
+                        "mtipe.type_uom UOM,mprice.mp_nextprice HET,CAST(SUM(tslsd.DS_Qty) AS INT) Sales,CAST(mpart.PART_RFSStock AS INT) Stock " &
+                        "FROM " & DB & ".dbo.tslsd WITH(NOLOCK) " &
+                        "INNER JOIN tslsh WITH(NOLOCK) on hs_invoicedate BETWEEN '" & Format(startDate, formatDate) & "' " &
+                        "AND '" & Format(endDate, formatDate) & "' AND tslsh.hs_branch='" & branch & "' " &
+                        "AND tslsh.hs_salesorg='" & org & "'  AND tslsh.hs_warehouse='" & wh & "' AND tslsh.HS_Invoice=tslsd.DS_Invoice " &
+                        "INNER JOIN " & DB & ".dbo.mtipe WITH(NOLOCK) on mtipe.type_product<>'120' and mtipe.type_status<>1 AND mtipe.TYPE_PartNumber=tslsd.DS_PartNumber " &
+                        "INNER JOIN " & DB & ".dbo.mctprod WITH(NOLOCK) on mctprod.PRODUCT_GROUP='" & group & "' AND mctprod.product_code=mtipe.TYPE_Product " &
+                        "INNER JOIN " & DB & ".dbo.mpart WITH(NOLOCK) on mpart.part_wh='" & wh & "' AND mpart.PART_PartNumber=tslsd.DS_PartNumber " &
+                        "INNER JOIN " & DB & ".dbo.mprice WITH(NOLOCK) ON mprice.mp_partnumber=tslsd.DS_PartNumber " &
+                        "WHERE tslsd.DS_InvoiceDate BETWEEN '" & Format(startDate, formatDate) & "' AND " &
+                        "'" & Format(endDate, formatDate) & "' " &
+                        "AND mprice.mp_pricegroup='" & GetValueParamText("HET PRICE") & "' " &
+                        "AND mprice.mp_effectivedate <= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " &
+                        "AND mprice.mp_expdate >= '" & Format(GetValueParamDate("SYSTEM DATE"), formatDate) & "' " &
+                        "GROUP BY tslsd.DS_PartNumber,mtipe.TYPE_Description,mctprod.Product_Description,mtipe.type_uom,mpart.PART_RFSStock,mprice.mp_nextprice " &
                         "ORDER BY SUM(tslsd.DS_Qty) DESC"
             End If
 
@@ -507,11 +507,58 @@ Public Class Sql
 
     End Function
 
+    Public Shared Function ReportSummaryStockOpnameByItem(ByVal startDate As Date, ByVal endDate As Date, ByVal wh As String) As DataTable
+
+        Try
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+
+            query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no,STL.sku,type_description AS name," &
+                     "(SELECT TOp 1 CAST(MP_NextPrice As Decimal(18,4)) FROM " & DB & ".dbo.mprice " &
+                        "where MP_PartNumber=STL.sku " &
+                        "And MP_EffectiveDate <= GETDATE() And MP_ExpDate >= GETDATE() " &
+                        "And MP_PriceGroup='01' " &
+                        "order by MP_EffectiveDate desc) AS supply_price," &
+                     "purchase_discount,SUM(STL.quantity) AS quantity," &
+                     "CAST(purchase_price - (purchase_price * purchase_discount / 100) AS DECIMAL(18,4)) AS average_cost," &
+                     "part_rfsstock AS stock " &
+                     "FROM " & DB & ".dbo.stock_take_lines STL " &
+                     "INNER JOIN " & DB & ".dbo.mtipe ON type_partnumber=STL.sku " &
+                     "INNER JOIN " & DB & ".dbo.mpart ON part_partnumber=STL.sku And part_wh = '" & wh & "' " &
+                     "LEFT JOIN tool.dbo.SUPPLIER_DISC SD ON SD.sku=STL.sku " &
+                     "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.stock_takes ST  " &
+                     "WHERE CAST(ST.created_at AS DATE) BETWEEN '" & Format(startDate, formatDate) & "' AND '" & Format(endDate, formatDate) & "' AND ST.id = STL.stok_take_id) " &
+                     "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price"
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cn.Close()
+        End Try
+
+        Return dtTable
+
+    End Function
+
     Public Shared Function GetDetailItemPOS(ByVal kode As String, ByVal discgroup As String, ByVal pricegroup As String) As DataTable
         dtTable = New DataTable
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
-            query = "SELECT TOP 1 type_partnumber,type_description,type_uom,Param_D1,Disc1 Disc1_Rate,Param_D2,Disc2 Disc2_Rate," &
+            query = "Select TOP 1 type_partnumber,type_description,type_uom,Param_D1,Disc1 Disc1_Rate,Param_D2,Disc2 Disc2_Rate," &
                                 "Param_D3,Disc3 Disc3_Rate,Param_D4,Disc4 Disc4_Rate,Param_D5,DiscPurch," &
                                 "Role Disc_Role,mp_currentprice,mp_nextprice,mp_effectivedate," &
                                 "mp_expdate,type_taxgroup,type_status,type_product,product_group,ISNULL(type_prodhier1,'')type_prodhier1,ISNULL(type_prodhier2,'')type_prodhier2," &
@@ -3517,6 +3564,223 @@ Public Class Sql
         Return dtTable
     End Function
 
+    Public Shared Function GetStockTakeList(status As Integer) As DataTable
+
+        dtTable = New DataTable
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            query = "SELECT id,location,description,created_at FROM " & DB & ".dbo.stock_takes WHERE status='" & status & "' ORDER BY location ASC"
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+            cn.Close()
+            query = ""
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+
+        Return dtTable
+    End Function
+
+    Public Shared Sub AddStockOpname(ByVal dateSto As DateTime, ByVal location As String, ByVal status As Integer, ByVal user As String, Optional ByVal description As String = "")
+        Dim result As Boolean = False
+
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            cm = New SqlCommand
+
+            With cm
+                .Connection = cn
+                .CommandText = "INSERT INTO " & DB & ".dbo.stock_takes (location,description,status" &
+                                ",created_at,created_by)" &
+                                " VALUES ('" & location & "','" & description & "','" & status & "','" & dateSto & "','" & user & "')"
+                .ExecuteNonQuery()
+            End With
+
+            cn.Close()
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Sub
+
+    Public Shared Sub UpdateStockOpname(ByVal id As Integer, ByVal location As String, Optional ByVal description As String = "")
+        Dim result As Boolean = False
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            query = "UPDATE " & DB & ".dbo.stok_takes SET location='" & location & "'," &
+                                "description='" & description & "' WHERE id='" & id & "'"
+
+            With cm
+                .Connection = cn
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+
+
+            cn.Close()
+
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Sub
+
+    Public Shared Sub AddStockOpnameDetail(ByVal id As Integer, ByVal sku As String, ByVal user As String, ByVal Optional qty As Integer = 1)
+        Dim result As Boolean = False
+
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            cm = New SqlCommand
+
+            With cm
+                .Connection = cn
+                .CommandText = "INSERT INTO " & DB & ".dbo.stock_take_lines (stok_take_id,sku,quantity,created_at,created_by)" &
+                                " VALUES ('" & id & "','" & sku & "','" & qty & "','" & Now & "','" & user & "')"
+                .ExecuteNonQuery()
+            End With
+
+            cn.Close()
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Sub
+
+
+    Public Shared Sub UpdateStockOpnameDetail(ByVal id As Integer, ByVal stok_take_id As Integer, ByVal qty As Integer)
+        Dim result As Boolean = False
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            query = "UPDATE " & DB & ".dbo.stock_take_lines SET quantity='" & qty & "' WHERE id='" & id & "' AND stock_take_id='" & stok_take_id & "'"
+
+            With cm
+                .Connection = cn
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+            cn.Close()
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Sub
+
+    Public Shared Sub DeleteStockOpnameDetail(ByVal id As Integer)
+        Dim result As Boolean = False
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            query = "DELETE FROM " & DB & ".dbo.stock_take_lines WHERE id='" & id & "'"
+
+            With cm
+                .Connection = cn
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+
+
+            cn.Close()
+
+
+        Catch ex As Exception
+            cn.Close()
+            Throw ex
+        End Try
+    End Sub
+
+    Public Shared Function GetStockOpnameDetailByUser(ByVal user As String, ByVal id As Integer) As DataTable
+        Dim result As Boolean = False
+
+        dtTable = New DataTable
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+            query = "SELECT id,sku,type_description AS name, quantity FROM " & DB & ".dbo.stock_take_lines " &
+                     "INNER JOIN " & DB & ".dbo.mtipe ON type_partnumber=sku " &
+                     "WHERE created_by='" & user & "' AND stok_take_id='" & id & "' " &
+                     "ORDER BY id DESC"
+
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cn.Close()
+            query = ""
+        End Try
+
+        Return dtTable
+    End Function
+
+    Public Shared Function GetStockOpnameDetailByFilter(ByVal id As Integer, ByVal search As String, ByVal state As Integer, ByVal user As String) As DataTable
+        Dim result As Boolean = False
+
+        dtTable = New DataTable
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+
+            query = "SELECT id,sku,type_description AS name, quantity FROM " & DB & ".dbo.stock_take_lines " &
+               "INNER JOIN " & DB & ".dbo.mtipe ON type_partnumber=sku " &
+               "WHERE created_by='" & user & "' AND stok_take_id='" & id & "' "
+
+            If state = 1 Then 'sku
+                query = query + "AND sku LIKE '%" & search & "%' "
+            Else
+                query = query + "AND type_description LIKE '%" & search & "%' "
+            End If
+
+            query = query + " ORDER BY id DESC"
+
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cn.Close()
+            query = ""
+        End Try
+
+        Return dtTable
+    End Function
+
 #End Region
 
 #Region "Products"
@@ -3546,7 +3810,7 @@ Public Class Sql
             cm = New SqlCommand
             With cm
                 .Connection = cn
-                .CommandText = "SELECT uid_user,uid_name,iud_usergroup FROM " & DB & ".dbo.musers " & _
+                .CommandText = "Select uid_user,uid_name,iud_usergroup FROM " & DB & ".dbo.musers " & _
                                 " WHERE uid_user='" & uid & "' AND uid_blocksts=0"
             End With
 

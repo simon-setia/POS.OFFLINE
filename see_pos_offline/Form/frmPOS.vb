@@ -2898,7 +2898,4 @@ reason:
         'Next
     End Sub
 
-    Private Sub btnUpload_Click(sender As Object, e As EventArgs) Handles btnUpload.Click
-
-    End Sub
 End Class

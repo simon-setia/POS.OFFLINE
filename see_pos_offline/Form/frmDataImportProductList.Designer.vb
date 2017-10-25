@@ -68,17 +68,6 @@ Partial Class frmDataImportProductList
         Me.DataGridViewTextBoxColumn11 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.DataGridViewTextBoxColumn13 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.GridDataImportProductList = New System.Windows.Forms.DataGridView()
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.txtSearch = New System.Windows.Forms.TextBox()
-        Me.cmbWarehouse = New System.Windows.Forms.ComboBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.cmbProduct = New System.Windows.Forms.ComboBox()
-        Me.btnRefresh = New System.Windows.Forms.Button()
-        Me.btnPrint = New System.Windows.Forms.Button()
-        Me.btnExport = New System.Windows.Forms.Button()
-        Me.btnDownload = New System.Windows.Forms.Button()
-        Me.btnPasteClipboard = New System.Windows.Forms.Button()
         Me.colSKU = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colProductName = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colBrand = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -94,6 +83,17 @@ Partial Class frmDataImportProductList
         Me.colCanBeOrdered = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colIsConsignment = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.colSupplierCode = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtSearch = New System.Windows.Forms.TextBox()
+        Me.cmbWarehouse = New System.Windows.Forms.ComboBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.cmbProduct = New System.Windows.Forms.ComboBox()
+        Me.btnRefresh = New System.Windows.Forms.Button()
+        Me.btnPrint = New System.Windows.Forms.Button()
+        Me.btnExport = New System.Windows.Forms.Button()
+        Me.btnDownload = New System.Windows.Forms.Button()
+        Me.btnPasteClipboard = New System.Windows.Forms.Button()
         CType(Me.GridDataImportProductList, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -354,6 +354,152 @@ Partial Class frmDataImportProductList
         Me.GridDataImportProductList.TabIndex = 514
         Me.GridDataImportProductList.VirtualMode = True
         '
+        'colSKU
+        '
+        Me.colSKU.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colSKU.DefaultCellStyle = DataGridViewCellStyle14
+        Me.colSKU.Frozen = True
+        Me.colSKU.HeaderText = "SKU"
+        Me.colSKU.MaxInputLength = 13
+        Me.colSKU.Name = "colSKU"
+        '
+        'colProductName
+        '
+        Me.colProductName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle15.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.colProductName.DefaultCellStyle = DataGridViewCellStyle15
+        Me.colProductName.Frozen = True
+        Me.colProductName.HeaderText = "Product Name"
+        Me.colProductName.Name = "colProductName"
+        Me.colProductName.Width = 400
+        '
+        'colBrand
+        '
+        Me.colBrand.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle16.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colBrand.DefaultCellStyle = DataGridViewCellStyle16
+        Me.colBrand.Frozen = True
+        Me.colBrand.HeaderText = "Brand Name"
+        Me.colBrand.Name = "colBrand"
+        Me.colBrand.Width = 50
+        '
+        'colType
+        '
+        Me.colType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle17.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colType.DefaultCellStyle = DataGridViewCellStyle17
+        Me.colType.HeaderText = "Type Name"
+        Me.colType.Name = "colType"
+        Me.colType.Width = 50
+        '
+        'colTag
+        '
+        Me.colTag.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colTag.HeaderText = "Tag Name"
+        Me.colTag.Name = "colTag"
+        Me.colTag.Width = 50
+        '
+        'colTrackInventory
+        '
+        Me.colTrackInventory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.colTrackInventory.DefaultCellStyle = DataGridViewCellStyle18
+        Me.colTrackInventory.HeaderText = "Track Inventory (YES/NO)"
+        Me.colTrackInventory.Name = "colTrackInventory"
+        Me.colTrackInventory.Width = 50
+        '
+        'colStoreSupplyPrice
+        '
+        Me.colStoreSupplyPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle19.Format = "#.####"
+        DataGridViewCellStyle19.NullValue = "0"
+        Me.colStoreSupplyPrice.DefaultCellStyle = DataGridViewCellStyle19
+        Me.colStoreSupplyPrice.HeaderText = "Store Supply Price (Inc Tax)"
+        Me.colStoreSupplyPrice.Name = "colStoreSupplyPrice"
+        Me.colStoreSupplyPrice.Width = 70
+        '
+        'colStoreRetailPrice
+        '
+        Me.colStoreRetailPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle20.Format = "#.####"
+        DataGridViewCellStyle20.NullValue = "0"
+        Me.colStoreRetailPrice.DefaultCellStyle = DataGridViewCellStyle20
+        Me.colStoreRetailPrice.HeaderText = "Store Retail Price (Ex Tax)"
+        Me.colStoreRetailPrice.Name = "colStoreRetailPrice"
+        Me.colStoreRetailPrice.Width = 70
+        '
+        'colTax
+        '
+        Me.colTax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.colTax.DefaultCellStyle = DataGridViewCellStyle21
+        Me.colTax.HeaderText = "Tax Name"
+        Me.colTax.Name = "colTax"
+        Me.colTax.Width = 40
+        '
+        'colCompanySupplyPrice
+        '
+        Me.colCompanySupplyPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle22.Format = "#.####"
+        DataGridViewCellStyle22.NullValue = "0"
+        Me.colCompanySupplyPrice.DefaultCellStyle = DataGridViewCellStyle22
+        Me.colCompanySupplyPrice.HeaderText = "Company Supply Price (Inc Tax)"
+        Me.colCompanySupplyPrice.Name = "colCompanySupplyPrice"
+        Me.colCompanySupplyPrice.Width = 80
+        '
+        'colWhosalePrice
+        '
+        Me.colWhosalePrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle23.Format = "#.####"
+        DataGridViewCellStyle23.NullValue = "0"
+        Me.colWhosalePrice.DefaultCellStyle = DataGridViewCellStyle23
+        Me.colWhosalePrice.HeaderText = "Wholesale Price (Ex Tax)"
+        Me.colWhosalePrice.Name = "colWhosalePrice"
+        Me.colWhosalePrice.Width = 70
+        '
+        'colProductCode
+        '
+        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        DataGridViewCellStyle24.Format = "N0"
+        DataGridViewCellStyle24.NullValue = "0"
+        Me.colProductCode.DefaultCellStyle = DataGridViewCellStyle24
+        Me.colProductCode.HeaderText = "Product Code"
+        Me.colProductCode.Name = "colProductCode"
+        '
+        'colCanBeOrdered
+        '
+        Me.colCanBeOrdered.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle25.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.colCanBeOrdered.DefaultCellStyle = DataGridViewCellStyle25
+        Me.colCanBeOrdered.HeaderText = "Can Be Ordered (YES/NO)"
+        Me.colCanBeOrdered.Name = "colCanBeOrdered"
+        Me.colCanBeOrdered.Width = 75
+        '
+        'colIsConsignment
+        '
+        Me.colIsConsignment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        Me.colIsConsignment.DefaultCellStyle = DataGridViewCellStyle26
+        Me.colIsConsignment.HeaderText = "Is Consignment"
+        Me.colIsConsignment.Name = "colIsConsignment"
+        Me.colIsConsignment.Width = 80
+        '
+        'colSupplierCode
+        '
+        Me.colSupplierCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.colSupplierCode.HeaderText = "Supplier Code"
+        Me.colSupplierCode.Name = "colSupplierCode"
+        Me.colSupplierCode.Width = 80
+        '
         'Label3
         '
         Me.Label3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -511,152 +657,6 @@ Partial Class frmDataImportProductList
         Me.btnPasteClipboard.TabIndex = 538
         Me.btnPasteClipboard.Text = "Paste Clipboard"
         Me.btnPasteClipboard.UseVisualStyleBackColor = False
-        '
-        'colSKU
-        '
-        Me.colSKU.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colSKU.DefaultCellStyle = DataGridViewCellStyle14
-        Me.colSKU.Frozen = True
-        Me.colSKU.HeaderText = "SKU"
-        Me.colSKU.MaxInputLength = 13
-        Me.colSKU.Name = "colSKU"
-        '
-        'colProductName
-        '
-        Me.colProductName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.colProductName.DefaultCellStyle = DataGridViewCellStyle15
-        Me.colProductName.Frozen = True
-        Me.colProductName.HeaderText = "Product Name"
-        Me.colProductName.Name = "colProductName"
-        Me.colProductName.Width = 400
-        '
-        'colBrand
-        '
-        Me.colBrand.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colBrand.DefaultCellStyle = DataGridViewCellStyle16
-        Me.colBrand.Frozen = True
-        Me.colBrand.HeaderText = "Brand Name"
-        Me.colBrand.Name = "colBrand"
-        Me.colBrand.Width = 50
-        '
-        'colType
-        '
-        Me.colType.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colType.DefaultCellStyle = DataGridViewCellStyle17
-        Me.colType.HeaderText = "Type Name"
-        Me.colType.Name = "colType"
-        Me.colType.Width = 50
-        '
-        'colTag
-        '
-        Me.colTag.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colTag.HeaderText = "Tag Name"
-        Me.colTag.Name = "colTag"
-        Me.colTag.Width = 50
-        '
-        'colTrackInventory
-        '
-        Me.colTrackInventory.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.colTrackInventory.DefaultCellStyle = DataGridViewCellStyle18
-        Me.colTrackInventory.HeaderText = "Track Inventory (YES/NO)"
-        Me.colTrackInventory.Name = "colTrackInventory"
-        Me.colTrackInventory.Width = 50
-        '
-        'colStoreSupplyPrice
-        '
-        Me.colStoreSupplyPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle19.Format = "#.####"
-        DataGridViewCellStyle19.NullValue = "0"
-        Me.colStoreSupplyPrice.DefaultCellStyle = DataGridViewCellStyle19
-        Me.colStoreSupplyPrice.HeaderText = "Store Supply Price (Inc Tax)"
-        Me.colStoreSupplyPrice.Name = "colStoreSupplyPrice"
-        Me.colStoreSupplyPrice.Width = 70
-        '
-        'colStoreRetailPrice
-        '
-        Me.colStoreRetailPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle20.Format = "#.####"
-        DataGridViewCellStyle20.NullValue = "0"
-        Me.colStoreRetailPrice.DefaultCellStyle = DataGridViewCellStyle20
-        Me.colStoreRetailPrice.HeaderText = "Store Retail Price (Ex Tax)"
-        Me.colStoreRetailPrice.Name = "colStoreRetailPrice"
-        Me.colStoreRetailPrice.Width = 70
-        '
-        'colTax
-        '
-        Me.colTax.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.colTax.DefaultCellStyle = DataGridViewCellStyle21
-        Me.colTax.HeaderText = "Tax Name"
-        Me.colTax.Name = "colTax"
-        Me.colTax.Width = 40
-        '
-        'colCompanySupplyPrice
-        '
-        Me.colCompanySupplyPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle22.Format = "#.####"
-        DataGridViewCellStyle22.NullValue = "0"
-        Me.colCompanySupplyPrice.DefaultCellStyle = DataGridViewCellStyle22
-        Me.colCompanySupplyPrice.HeaderText = "Company Supply Price (Inc Tax)"
-        Me.colCompanySupplyPrice.Name = "colCompanySupplyPrice"
-        Me.colCompanySupplyPrice.Width = 80
-        '
-        'colWhosalePrice
-        '
-        Me.colWhosalePrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle23.Format = "#.####"
-        DataGridViewCellStyle23.NullValue = "0"
-        Me.colWhosalePrice.DefaultCellStyle = DataGridViewCellStyle23
-        Me.colWhosalePrice.HeaderText = "Wholesale Price (Ex Tax)"
-        Me.colWhosalePrice.Name = "colWhosalePrice"
-        Me.colWhosalePrice.Width = 70
-        '
-        'colProductCode
-        '
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        DataGridViewCellStyle24.Format = "N0"
-        DataGridViewCellStyle24.NullValue = "0"
-        Me.colProductCode.DefaultCellStyle = DataGridViewCellStyle24
-        Me.colProductCode.HeaderText = "Product Code"
-        Me.colProductCode.Name = "colProductCode"
-        '
-        'colCanBeOrdered
-        '
-        Me.colCanBeOrdered.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle25.Font = New System.Drawing.Font("Comic Sans MS", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.colCanBeOrdered.DefaultCellStyle = DataGridViewCellStyle25
-        Me.colCanBeOrdered.HeaderText = "Can Be Ordered (YES/NO)"
-        Me.colCanBeOrdered.Name = "colCanBeOrdered"
-        Me.colCanBeOrdered.Width = 75
-        '
-        'colIsConsignment
-        '
-        Me.colIsConsignment.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        Me.colIsConsignment.DefaultCellStyle = DataGridViewCellStyle26
-        Me.colIsConsignment.HeaderText = "Is Consignment"
-        Me.colIsConsignment.Name = "colIsConsignment"
-        Me.colIsConsignment.Width = 80
-        '
-        'colSupplierCode
-        '
-        Me.colSupplierCode.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.colSupplierCode.HeaderText = "Supplier Code"
-        Me.colSupplierCode.Name = "colSupplierCode"
-        Me.colSupplierCode.Width = 80
         '
         'frmDataImportProductList
         '
