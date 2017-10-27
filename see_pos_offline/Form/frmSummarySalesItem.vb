@@ -134,46 +134,7 @@ Public Class frmSummarySalesItem
     End Sub
 
     Private Sub btnPrint_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPrint.Click
-        Dim ds As DataSet = New DataSet("SummarySalesbyItem_Table1")
-        Dim temp As New DataTable
 
-        table = New DataTable
-
-        Me.Cursor = Cursors.WaitCursor
-        With temp.Columns
-            .Add("Item", GetType(String))
-            .Add("Description", GetType(String))
-            .Add("UOM", GetType(String))
-            .Add("Qty", GetType(Integer))
-            .Add("Nett Price", GetType(Decimal))
-            .Add("Amount", GetType(Decimal))
-        End With
-
-        For i As Integer = 0 To GridSummarySales.RowCount - 1
-            With temp
-                .Rows.Add(New Object() {GridSummarySales.Rows(i).Cells(0).Value _
-                                       , GridSummarySales.Rows(i).Cells(1).Value _
-                                       , GridSummarySales.Rows(i).Cells(2).Value _
-                                       , GridSummarySales.Rows(i).Cells(3).Value _
-                                       , GridSummarySales.Rows(i).Cells(4).Value _
-                                       , GridSummarySales.Rows(i).Cells(6).Value})
-
-            End With
-        Next
-
-
-        table = temp.Copy
-
-        ds.Reset()
-        ds.Tables.Add(table)
-
-        Me.Cursor = Cursors.Default
-        frmReportViewer.Datasource = ds
-        frmReportViewer.ReportName = "SummarySalesItem"
-        frmReportViewer.ReportDocument = "SEE_POS_OFFLINE.Report.SummarySalesbyItem.rdlc"
-        frmReportViewer.ReportPath = "POS.Report.SummarySalesbyItem.rdlc"
-        frmReportViewer.ReportDatasetName = "SummarySalesbyItem_Table1"
-        frmReportViewer.ShowDialog()
     End Sub
 
     Private Sub CreateXMLToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CreateXMLToolStripMenuItem.Click

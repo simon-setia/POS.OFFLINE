@@ -34,7 +34,7 @@ Public Class frmSummaryStockOpnameByItem
             Me.Cursor = Cursors.WaitCursor
 
             table = New DataTable
-            table = ReportSummaryStockOpnameByItem(startDate, endDate, Default_WH)
+            table = ReportSummaryStockOpnameByItem(startDate, endDate, Default_WH, chckDifference.CheckState)
 
             If table.Rows.Count > 0 Then
 

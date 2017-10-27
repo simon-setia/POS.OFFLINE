@@ -340,44 +340,4 @@ Public Class frmSalesSupplier
         End If
     End Sub
 
-    Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
-        Dim ds As DataSet = New DataSet("SalesSupplier_Table")
-        Dim temp As New DataTable
-
-        table = New DataTable
-
-        Me.Cursor = Cursors.WaitCursor
-        With temp.Columns
-            .Add("Item", GetType(String))
-            .Add("Description", GetType(String))
-            .Add("Qty", GetType(Integer))
-            .Add("Purchase", GetType(Decimal))
-            .Add("Amount", GetType(Decimal))
-        End With
-
-        For i As Integer = 0 To GridSalesSupplier.RowCount - 1
-            With temp
-                .Rows.Add(New Object() {GridSalesSupplier.Rows(i).Cells(2).Value _
-                                       , GridSalesSupplier.Rows(i).Cells(3).Value _
-                                       , CInt(GridSalesSupplier.Rows(i).Cells(6).Value) _
-                                       , GridSalesSupplier.Rows(i).Cells(5).Value _
-                                       , GridSalesSupplier.Rows(i).Cells(7).Value})
-
-            End With
-        Next
-
-
-        table = temp.Copy
-
-        ds.Reset()
-        ds.Tables.Add(table)
-
-        Me.Cursor = Cursors.Default
-        frmReportViewer.Datasource = ds
-        frmReportViewer.ReportDocument = "SalesSupplier.rdlc"
-        frmReportViewer.ReportPath = ".\Report\SalesSupplier.rdlc"
-        frmReportViewer.ReportDatasetName = "SalesSupplier_Table"
-        frmReportViewer.ShowDialog()
-    End Sub
-
 End Class

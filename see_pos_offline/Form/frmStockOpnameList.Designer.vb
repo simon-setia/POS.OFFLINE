@@ -53,7 +53,7 @@ Partial Class frmStockOpnameList
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.btnNew = New System.Windows.Forms.Button()
-        Me.btnEdit = New System.Windows.Forms.Button()
+        Me.btnDelete = New System.Windows.Forms.Button()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.cmbStatus = New System.Windows.Forms.ComboBox()
         Me.GridStockOpnameList = New System.Windows.Forms.DataGridView()
@@ -267,22 +267,22 @@ Partial Class frmStockOpnameList
         Me.btnNew.TextAlign = System.Drawing.ContentAlignment.BottomCenter
         Me.btnNew.UseVisualStyleBackColor = False
         '
-        'btnEdit
+        'btnDelete
         '
-        Me.btnEdit.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.btnEdit.BackColor = System.Drawing.Color.White
-        Me.btnEdit.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.btnEdit.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnEdit.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnEdit.ForeColor = System.Drawing.Color.SteelBlue
-        Me.btnEdit.ImageAlign = System.Drawing.ContentAlignment.TopCenter
-        Me.btnEdit.Location = New System.Drawing.Point(934, 141)
-        Me.btnEdit.Name = "btnEdit"
-        Me.btnEdit.Size = New System.Drawing.Size(67, 58)
-        Me.btnEdit.TabIndex = 523
-        Me.btnEdit.Text = "Edit"
-        Me.btnEdit.TextAlign = System.Drawing.ContentAlignment.BottomCenter
-        Me.btnEdit.UseVisualStyleBackColor = False
+        Me.btnDelete.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnDelete.BackColor = System.Drawing.Color.White
+        Me.btnDelete.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.btnDelete.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnDelete.Font = New System.Drawing.Font("Tahoma", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnDelete.ForeColor = System.Drawing.Color.SteelBlue
+        Me.btnDelete.ImageAlign = System.Drawing.ContentAlignment.TopCenter
+        Me.btnDelete.Location = New System.Drawing.Point(934, 141)
+        Me.btnDelete.Name = "btnDelete"
+        Me.btnDelete.Size = New System.Drawing.Size(67, 58)
+        Me.btnDelete.TabIndex = 523
+        Me.btnDelete.Text = "Delete"
+        Me.btnDelete.TextAlign = System.Drawing.ContentAlignment.BottomCenter
+        Me.btnDelete.UseVisualStyleBackColor = False
         '
         'Label10
         '
@@ -411,7 +411,7 @@ Partial Class frmStockOpnameList
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Label8)
         Me.Controls.Add(Me.btnNew)
-        Me.Controls.Add(Me.btnEdit)
+        Me.Controls.Add(Me.btnDelete)
         Me.Controls.Add(Me.Label10)
         Me.Controls.Add(Me.cmbStatus)
         Me.Controls.Add(Me.GridStockOpnameList)
@@ -450,7 +450,7 @@ Partial Class frmStockOpnameList
     Friend WithEvents Label1 As Label
     Friend WithEvents Label8 As Label
     Friend WithEvents btnNew As Button
-    Friend WithEvents btnEdit As Button
+    Friend WithEvents btnDelete As Button
     Friend WithEvents Label10 As Label
     Friend WithEvents cmbStatus As ComboBox
     Friend WithEvents GridStockOpnameList As DataGridView
