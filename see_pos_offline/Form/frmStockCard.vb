@@ -72,6 +72,8 @@ Public Class frmStockCard
                 End With
 
                 GridStockCard.DataSource = temp
+            Else
+                GridStockCard.DataSource = Nothing
 
             End If
 
