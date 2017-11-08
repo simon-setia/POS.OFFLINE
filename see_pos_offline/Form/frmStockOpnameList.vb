@@ -16,7 +16,7 @@ Public Class frmStockOpnameList
     Private Sub LoadImage()
 
         btnNew.Image = mainClass.imgList.ImgBtnNew
-        btnEdit.Image = mainClass.imgList.ImgBtnEdit
+        btnDelete.Image = mainClass.imgList.ImgBtnRemove2S
 
     End Sub
 
@@ -65,6 +65,25 @@ Public Class frmStockOpnameList
 
                 RefreshData()
             End If
+        End If
+    End Sub
+
+    Private Sub btnDelete_Click(sender As Object, e As EventArgs) Handles btnDelete.Click
+        If GridStockOpnameList.SelectedCells(0).Value <> vbEmpty Then
+            If MsgBox("Are you sure Remove Stock Opname Document " & GridStockOpnameList.Rows(GridStockOpnameList.CurrentRow.Index).Cells(0).Value & " - " & GridStockOpnameList.Rows(GridStockOpnameList.CurrentRow.Index).Cells(1).Value & "?", MsgBoxStyle.YesNo + MsgBoxStyle.Exclamation, Title) = MsgBoxResult.No Then Exit Sub
+
+            Try
+                Cursor = Cursors.WaitCursor
+
+                RemoveStockTake(GridStockOpnameList.SelectedCells(0).Value)
+
+            Catch ex As Exception
+                MsgBox(ex.Message, MsgBoxStyle.Critical, Title)
+            Finally
+                RefreshData()
+                Cursor = Cursors.Default
+            End Try
+
         End If
     End Sub
 End Class

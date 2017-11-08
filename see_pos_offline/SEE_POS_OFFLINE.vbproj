@@ -70,14 +70,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\ExcelLibrary.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.Common\10.0.0.0__b03f5f7f11d50a3a\Microsoft.ReportViewer.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.ProcessingObjectModel\10.0.0.0__b03f5f7f11d50a3a\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Windows\assembly\GAC_MSIL\Microsoft.ReportViewer.WinForms\10.0.0.0__b03f5f7f11d50a3a\Microsoft.ReportViewer.WinForms.dll</HintPath>
@@ -128,12 +120,6 @@
     <Compile Include="Class\RawPrinterHelper.vb" />
     <Compile Include="Class\StackedHeaderDecorator..vb" />
     <Compile Include="Class\StackedHeaderGenerator.vb" />
-    <Compile Include="Form\FormTesting.Designer.vb">
-      <DependentUpon>FormTesting.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Form\FormTesting.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Form\frmAgingStock.Designer.vb">
       <DependentUpon>frmAgingStock.vb</DependentUpon>
     </Compile>
@@ -374,12 +360,6 @@
     <Compile Include="Form\frmRealStock.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form\frmReportReview.Designer.vb">
-      <DependentUpon>frmReportReview.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Form\frmReportReview.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Form\frmSalesConsignment.Designer.vb">
       <DependentUpon>frmSalesConsignment.vb</DependentUpon>
     </Compile>
@@ -526,9 +506,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Form\FormTesting.resx">
-      <DependentUpon>FormTesting.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Form\frmAgingStock.resx">
       <DependentUpon>frmAgingStock.vb</DependentUpon>
     </EmbeddedResource>
@@ -656,9 +633,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmRealStock.resx">
       <DependentUpon>frmRealStock.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form\frmReportReview.resx">
-      <DependentUpon>frmReportReview.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmSalesConsignment.resx">
       <DependentUpon>frmSalesConsignment.vb</DependentUpon>

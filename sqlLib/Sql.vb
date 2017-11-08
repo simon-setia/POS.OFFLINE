@@ -507,14 +507,15 @@ Public Class Sql
 
     End Function
 
-    Public Shared Function ReportSummaryStockOpnameByItem(ByVal startDate As Date, ByVal endDate As Date, ByVal wh As String) As DataTable
+    Public Shared Function ReportSummaryStockOpnameByItem(ByVal startDate As Date, ByVal endDate As Date, ByVal wh As String, ByVal difference As Integer) As DataTable
 
         Try
 
             If cn.State = ConnectionState.Closed Then cn.Open()
             dtTable = New DataTable
 
-            query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no,STL.sku,type_description AS name," &
+            If difference = 0 Then
+                query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no,STL.sku,type_description AS name," &
                      "(SELECT TOp 1 CAST(MP_NextPrice As Decimal(18,4)) FROM " & DB & ".dbo.mprice " &
                         "where MP_PartNumber=STL.sku " &
                         "And MP_EffectiveDate <= GETDATE() And MP_ExpDate >= GETDATE() " &
@@ -522,14 +523,36 @@ Public Class Sql
                         "order by MP_EffectiveDate desc) AS supply_price," &
                      "purchase_discount,SUM(STL.quantity) AS quantity," &
                      "CAST(purchase_price - (purchase_price * purchase_discount / 100) AS DECIMAL(18,4)) AS average_cost," &
-                     "part_rfsstock AS stock " &
+                     "ISNULL(part_rfsstock,0) AS stock " &
                      "FROM " & DB & ".dbo.stock_take_lines STL " &
                      "INNER JOIN " & DB & ".dbo.mtipe ON type_partnumber=STL.sku " &
-                     "INNER JOIN " & DB & ".dbo.mpart ON part_partnumber=STL.sku And part_wh = '" & wh & "' " &
+                     "LEFT JOIN " & DB & ".dbo.mpart ON part_partnumber=STL.sku And part_wh = '" & wh & "' " &
                      "LEFT JOIN tool.dbo.SUPPLIER_DISC SD ON SD.sku=STL.sku " &
                      "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.stock_takes ST  " &
                      "WHERE CAST(ST.created_at AS DATE) BETWEEN '" & Format(startDate, formatDate) & "' AND '" & Format(endDate, formatDate) & "' AND ST.id = STL.stok_take_id) " &
                      "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price"
+
+            Else
+                query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no,STL.sku,type_description AS name," &
+                     "(SELECT TOp 1 CAST(MP_NextPrice As Decimal(18,4)) FROM " & DB & ".dbo.mprice " &
+                        "where MP_PartNumber=STL.sku " &
+                        "And MP_EffectiveDate <= GETDATE() And MP_ExpDate >= GETDATE() " &
+                        "And MP_PriceGroup='01' " &
+                        "order by MP_EffectiveDate desc) AS supply_price," &
+                     "purchase_discount,SUM(STL.quantity) AS quantity," &
+                     "CAST(purchase_price - (purchase_price * purchase_discount / 100) AS DECIMAL(18,4)) AS average_cost," &
+                     "ISNULL(part_rfsstock,0) AS stock " &
+                     "FROM " & DB & ".dbo.stock_take_lines STL " &
+                     "INNER JOIN " & DB & ".dbo.mtipe ON type_partnumber=STL.sku " &
+                     "LEFT JOIN " & DB & ".dbo.mpart ON part_partnumber=STL.sku And part_wh = '" & wh & "' " &
+                     "LEFT JOIN tool.dbo.SUPPLIER_DISC SD ON SD.sku=STL.sku " &
+                     "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.stock_takes ST  " &
+                     "WHERE CAST(ST.created_at AS DATE) BETWEEN '" & Format(startDate, formatDate) & "' AND '" & Format(endDate, formatDate) & "' AND ST.id = STL.stok_take_id) " &
+                     "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price " &
+                     "HAVING SUM(STL.quantity) <> part_rfsstock"
+
+
+            End If
 
             cm = New SqlCommand
             With cm
@@ -3592,6 +3615,40 @@ Public Class Sql
         Return dtTable
     End Function
 
+    Public Shared Function RemoveStockTake(id As Integer) As DataTable
+
+        Try
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            'remove detail first
+            query = "DELETE FROM " & DB & ".dbo.stock_take_lines WHERE stok_take_id='" & id & "'"
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+
+            'remove stok take
+            query = "DELETE FROM " & DB & ".dbo.stock_takes WHERE id='" & id & "'"
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+                .ExecuteNonQuery()
+            End With
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cn.Close()
+        End Try
+
+        Return dtTable
+    End Function
+
     Public Shared Sub AddStockOpname(ByVal dateSto As DateTime, ByVal location As String, ByVal status As Integer, ByVal user As String, Optional ByVal description As String = "")
         Dim result As Boolean = False
 
@@ -3714,7 +3771,7 @@ Public Class Sql
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
             dtTable = New DataTable
-            query = "SELECT id,sku,type_description AS name, quantity FROM " & DB & ".dbo.stock_take_lines " &
+            query = "SELECT TOP 100 id,sku,type_description AS name, quantity FROM " & DB & ".dbo.stock_take_lines " &
                      "INNER JOIN " & DB & ".dbo.mtipe ON type_partnumber=sku " &
                      "WHERE created_by='" & user & "' AND stok_take_id='" & id & "' " &
                      "ORDER BY id DESC"
