@@ -516,11 +516,7 @@ Public Class Sql
 
             If difference = 0 Then
                 query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no,STL.sku,type_description AS name," &
-                     "(SELECT TOp 1 CAST(MP_NextPrice As Decimal(18,4)) FROM " & DB & ".dbo.mprice " &
-                        "where MP_PartNumber=STL.sku " &
-                        "And MP_EffectiveDate <= GETDATE() And MP_ExpDate >= GETDATE() " &
-                        "And MP_PriceGroup='01' " &
-                        "order by MP_EffectiveDate desc) AS supply_price," &
+                     "supply_price," &
                      "purchase_discount,SUM(STL.quantity) AS quantity," &
                      "CAST(purchase_price - (purchase_price * purchase_discount / 100) AS DECIMAL(18,4)) AS average_cost," &
                      "ISNULL(part_rfsstock,0) AS stock " &
@@ -530,15 +526,11 @@ Public Class Sql
                      "LEFT JOIN tool.dbo.SUPPLIER_DISC SD ON SD.sku=STL.sku " &
                      "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.stock_takes ST  " &
                      "WHERE CAST(ST.created_at AS DATE) BETWEEN '" & Format(startDate, formatDate) & "' AND '" & Format(endDate, formatDate) & "' AND ST.id = STL.stok_take_id) " &
-                     "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price"
+                     "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price,supply_price"
 
             Else
                 query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no,STL.sku,type_description AS name," &
-                     "(SELECT TOp 1 CAST(MP_NextPrice As Decimal(18,4)) FROM " & DB & ".dbo.mprice " &
-                        "where MP_PartNumber=STL.sku " &
-                        "And MP_EffectiveDate <= GETDATE() And MP_ExpDate >= GETDATE() " &
-                        "And MP_PriceGroup='01' " &
-                        "order by MP_EffectiveDate desc) AS supply_price," &
+                     "supply_price," &
                      "purchase_discount,SUM(STL.quantity) AS quantity," &
                      "CAST(purchase_price - (purchase_price * purchase_discount / 100) AS DECIMAL(18,4)) AS average_cost," &
                      "ISNULL(part_rfsstock,0) AS stock " &
@@ -548,7 +540,7 @@ Public Class Sql
                      "LEFT JOIN tool.dbo.SUPPLIER_DISC SD ON SD.sku=STL.sku " &
                      "WHERE EXISTS (SELECT * FROM " & DB & ".dbo.stock_takes ST  " &
                      "WHERE CAST(ST.created_at AS DATE) BETWEEN '" & Format(startDate, formatDate) & "' AND '" & Format(endDate, formatDate) & "' AND ST.id = STL.stok_take_id) " &
-                     "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price " &
+                     "GROUP BY STL.sku,type_description,part_rfsstock,TYPE_TaxGroup,purchase_discount,purchase_price,supply_price " &
                      "HAVING SUM(STL.quantity) <> part_rfsstock"
 
 
