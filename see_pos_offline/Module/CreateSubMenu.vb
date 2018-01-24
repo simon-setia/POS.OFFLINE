@@ -485,6 +485,7 @@ Module CreateSubMenu
         Dim mnuReturnSupplier As ToolStripMenuItem
         Dim mnuSepStoresInventory1 As ToolStripSeparator
         Dim mnuStockOpname As ToolStripMenuItem
+        Dim mnuStockOpnameLocation As ToolStripMenuItem
         Dim mnuSepStoresInventory2 As ToolStripSeparator
 
         'Stores Menu
@@ -537,6 +538,11 @@ Module CreateSubMenu
             .Name = "mnuStockOpname"
         End With
 
+        mnuStockOpnameLocation = New ToolStripMenuItem
+        With mnuStockOpnameLocation
+            .Text = "Stock Opname Location"
+            .Name = "mnuStockOpnameLocation"
+        End With
 
         'Warehouse
         'stores.DropDownItems.Add(mnuStockOrders)
@@ -547,6 +553,7 @@ Module CreateSubMenu
         stores.DropDownItems.Add(mnuReturnSupplier)
         stores.DropDownItems.Add(mnuSepStoresInventory2)
         stores.DropDownItems.Add(mnuStockOpname)
+        stores.DropDownItems.Add(mnuStockOpnameLocation)
 
         DropMenuWarehouseStockTakes(mnuWarehouseStockTakes)
         DropMenuInterbranch(mnuInterbranch)
@@ -554,6 +561,7 @@ Module CreateSubMenu
         DropMenuReturnSupplier(mnuReturnSupplier)
 
         AddHandler mnuStockOpname.Click, AddressOf MenuItemClicked
+        AddHandler mnuStockOpnameLocation.Click, AddressOf MenuItemClicked
     End Sub
 
     Private Sub DropMenuWarehouseStockTransfer(ByVal mnu As ToolStripMenuItem)
@@ -1183,6 +1191,13 @@ Module CreateSubMenu
                     MDIMain.Text = "TMBookstore - Inventory"
                 Case "mnuStockOpname"
                     frm = frmStockOpnameList
+                    frm.MdiParent = MDIMain
+                    frm.Show()
+
+                    AddHandler frm.FormClosed, AddressOf ActiveMdiChild_FormClosed
+                    MDIMain.Text = "TMBookstore - Inventory"
+                Case "mnuStockOpnameLocation"
+                    frm = frmStockOpnameLocation
                     frm.MdiParent = MDIMain
                     frm.Show()
 

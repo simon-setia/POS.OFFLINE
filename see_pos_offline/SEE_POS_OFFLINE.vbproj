@@ -414,6 +414,12 @@
     <Compile Include="Form\frmStockOpnameList.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Form\frmStockOpnameLocation.Designer.vb">
+      <DependentUpon>frmStockOpnameLocation.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form\frmStockOpnameLocation.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Form\frmSummarySalesItem.Designer.vb">
       <DependentUpon>frmSummarySalesItem.vb</DependentUpon>
     </Compile>
@@ -661,6 +667,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmStockOpnameList.resx">
       <DependentUpon>frmStockOpnameList.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\frmStockOpnameLocation.resx">
+      <DependentUpon>frmStockOpnameLocation.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form\frmSummarySalesItem.resx">
       <DependentUpon>frmSummarySalesItem.vb</DependentUpon>
