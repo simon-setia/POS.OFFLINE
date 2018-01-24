@@ -37,7 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExcelLibrary">
-      <HintPath>..\see_pos_offline\bin\Debug\ExcelLibrary.dll</HintPath>
+      <HintPath>..\see_pos_offline\Library\ExcelLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

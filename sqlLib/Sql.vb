@@ -569,6 +569,46 @@ Public Class Sql
 
     End Function
 
+    Public Shared Function GetStockOpnameLocation(ByVal search As String) As DataTable
+
+        Try
+
+            If cn.State = ConnectionState.Closed Then cn.Open()
+            dtTable = New DataTable
+
+            query = "SELECT ROW_NUMBER() OVER(ORDER BY type_description) AS no," &
+                     "UPPER(ST.location) AS location,STL.sku AS item,TYPE_Description AS name,sum(STL.quantity)AS qty FROM stock_take_lines STL " &
+                     "INNER JOIN stock_takes ST on ST.id=stok_take_id " &
+                     "INNER JOIN mtipe on TYPE_PartNumber=sku " &
+                     "WHERE sku LIKE '%" & search & "%' " &
+                     "GROUP BY ST.location,STL.sku,TYPE_Description " &
+                     "ORDER BY STL.sku"
+
+
+            cm = New SqlCommand
+            With cm
+                .Connection = cn
+                .CommandText = query
+            End With
+
+            da = New SqlDataAdapter
+
+            With da
+                .SelectCommand = cm
+                .Fill(dtTable)
+            End With
+
+        Catch ex As Exception
+            Throw ex
+        Finally
+            cn.Close()
+        End Try
+
+        Return dtTable
+
+    End Function
+
+
     Public Shared Function GetDetailItemPOS(ByVal kode As String, ByVal discgroup As String, ByVal pricegroup As String) As DataTable
         dtTable = New DataTable
         Try
