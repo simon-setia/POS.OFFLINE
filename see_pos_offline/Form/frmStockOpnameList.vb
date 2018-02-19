@@ -10,7 +10,7 @@ Public Class frmStockOpnameList
 
     Private Sub frmStockOpnameList_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadImage()
-        RefreshData(logOn)
+        RefreshData()
     End Sub
 
     Private Sub LoadImage()
@@ -33,11 +33,16 @@ Public Class frmStockOpnameList
         End If
     End Sub
 
-    Private Sub RefreshData(Optional user As String = "")
+    Private Sub RefreshData()
         Try
             table = New DataTable
 
-            table = GetStockTakeList(cmbStatus.SelectedValue, user)
+            If chckViewOtherLocation.Checked Then
+                table = GetStockTakeList(cmbStatus.SelectedValue)
+            Else
+                table = GetStockTakeList(cmbStatus.SelectedValue, logOn)
+            End If
+
 
             With GridStockOpnameList
                 .AutoGenerateColumns = False
@@ -62,7 +67,6 @@ Public Class frmStockOpnameList
             frm.id = GridStockOpnameList.SelectedCells(0).Value
             frm.LocationArea = GridStockOpnameList.SelectedCells(1).Value
             If (frm.ShowDialog = DialogResult.OK) Then
-
                 RefreshData()
             End If
         End If
@@ -88,10 +92,6 @@ Public Class frmStockOpnameList
     End Sub
 
     Private Sub chckViewOtherLocation_CheckedChanged(sender As Object, e As EventArgs) Handles chckViewOtherLocation.CheckedChanged
-        If chckViewOtherLocation.Checked Then
-            RefreshData()
-        Else
-            RefreshData(logOn)
-        End If
+        RefreshData()
     End Sub
 End Class
