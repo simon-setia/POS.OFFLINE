@@ -10,13 +10,13 @@ Public Class frmStockOpnameList
 
     Private Sub frmStockOpnameList_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadImage()
-        RefreshData()
+        RefreshData(logOn)
     End Sub
 
     Private Sub LoadImage()
 
         btnNew.Image = mainClass.imgList.ImgBtnNew
-        btnDelete.Image = mainClass.imgList.ImgBtnRemove2S
+        btnDelete.Image = mainClass.imgList.ImgBtnVoid
 
     End Sub
 
@@ -33,11 +33,11 @@ Public Class frmStockOpnameList
         End If
     End Sub
 
-    Private Sub RefreshData()
+    Private Sub RefreshData(Optional user As String = "")
         Try
             table = New DataTable
 
-            table = GetStockTakeList(cmbStatus.SelectedValue)
+            table = GetStockTakeList(cmbStatus.SelectedValue, user)
 
             With GridStockOpnameList
                 .AutoGenerateColumns = False
@@ -84,6 +84,14 @@ Public Class frmStockOpnameList
                 Cursor = Cursors.Default
             End Try
 
+        End If
+    End Sub
+
+    Private Sub chckViewOtherLocation_CheckedChanged(sender As Object, e As EventArgs) Handles chckViewOtherLocation.CheckedChanged
+        If chckViewOtherLocation.Checked Then
+            RefreshData()
+        Else
+            RefreshData(logOn)
         End If
     End Sub
 End Class
