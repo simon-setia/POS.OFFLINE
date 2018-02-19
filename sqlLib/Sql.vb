@@ -3619,12 +3619,18 @@ Public Class Sql
         Return dtTable
     End Function
 
-    Public Shared Function GetStockTakeList(status As Integer) As DataTable
+    Public Shared Function GetStockTakeList(status As Integer, Optional user As String = "") As DataTable
 
         dtTable = New DataTable
         Try
             If cn.State = ConnectionState.Closed Then cn.Open()
-            query = "SELECT id,location,description,created_at FROM " & DB & ".dbo.stock_takes WHERE status='" & status & "' ORDER BY location ASC"
+
+            If user <> "" Then
+                query = "SELECT id,location,description,created_at FROM " & DB & ".dbo.stock_takes WHERE status='" & status & "' AND created_by='" & user & "' ORDER BY location ASC"
+            Else
+                query = "SELECT id,location,description,created_at FROM " & DB & ".dbo.stock_takes WHERE status='" & status & "' ORDER BY location ASC"
+            End If
+
             cm = New SqlCommand
             With cm
                 .Connection = cn
